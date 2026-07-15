@@ -1,0 +1,210 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ─── Helper functions ────────────────────────────────────────────────────
+    function isAuth()     { return request.auth != null; }
+    function roleIs(r)    { return isAuth() && request.auth.token.get("role", "operator") == r; }
+    function isAdmin()    { return roleIs("admin"); }
+    function canSubmit()  { return isAuth() && (request.auth.token.get("canSubmit", false) == true || isAdmin()); }
+    function canAdminRV() { return isAuth() && (request.auth.token.get("canAdmin", false) == true || isAdmin()); }
+    function canViewRel() { return isAuth() && (request.auth.token.get("canViewRelatorios", false) == true || canAdminRV()); }
+    function canAdminTelecom() { return isAuth() && (request.auth.token.get("canAdmin", false) == true || isAdmin()); }
+
+    // ─── Fichas de Produto ───────────────────────────────────────────────────
+    match /fichas/{fichaId} {
+      allow read: if isAuth();
+      allow create: if isAuth()
+                   && request.resource.data.keys().hasAll(['impresso','status','createdBy','createdAt','updatedAt'])
+                   && request.resource.data.createdBy == request.auth.uid
+                   && request.resource.data.status == 'draft';
+      allow update: if isAuth();
+      allow delete: if isAdmin();
+
+      match /history/{entryId} {
+        allow read: if isAuth();
+        allow create: if isAuth();
+        allow update, delete: if false;
+      }
+    }
+
+    match /rawMaterials/{id} {
+      allow read: if isAuth();
+      allow create, update: if isAdmin();
+      allow delete: if false;
+    }
+
+    match /rals/{id} {
+      allow read: if isAuth();
+      allow create, update: if isAdmin();
+      allow delete: if false;
+    }
+
+    match /users/{uid} {
+      allow read: if isAuth();
+      allow create, update: if isAdmin();
+      allow delete: if false;
+    }
+
+    match /dossierMeta/{dossier} {
+      allow read: if isAuth();
+      allow create, update: if isAuth();
+      allow delete: if false;
+    }
+
+    // ─── Registo de Viaturas ─────────────────────────────────────────────────
+    match /viaturas/{id} {
+      allow read: if isAuth();
+      allow create, update: if canAdminRV()
+                            && request.resource.data.keys().hasAll(['matricula','marca','modelo','empresa'])
+                            && request.resource.data.matricula is string
+                            && request.resource.data.matricula.size() > 0;
+      allow delete: if canAdminRV();
+    }
+
+    match /registos_viatura/{id} {
+      allow read: if isAuth();
+      allow create: if canSubmit()
+                   && request.resource.data.keys().hasAll(['uid','condutor','matricula','dataRegisto','createdAt'])
+                   && request.resource.data.uid == request.auth.uid
+                   && request.resource.data.condutor is string
+                   && request.resource.data.condutor.size() >= 3;
+      allow update, delete: if canAdminRV();
+    }
+
+    match /relatorios_mensais/{id} {
+      allow read: if canViewRel();
+      allow create, update, delete: if false;
+    }
+
+    match /frota_audit_log/{id} {
+      allow read: if canAdminRV();
+      allow create: if isAuth()
+                   && request.resource.data.keys().hasAll(['uid','action','timestamp'])
+                   && request.resource.data.uid == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    // ─── Configurador de Produto ─────────────────────────────────────────────
+    match /configurador-de-produto-campos/{id} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /configurador-de-produto-produtos/{id} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Propostas contêm nome de cliente e preços — exige sessão. Qualquer
+    // comercial autenticado pode ler/editar qualquer proposta (o Histórico
+    // mostra as de todos, não só as próprias), mas nunca sem login.
+    match /configurador-de-produto-propostas/{id} {
+      allow read, write: if isAuth();
+    }
+
+    match /configurador-de-produto-precos/{id} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Catálogo de produtos partilhado (site, configurador e kit digital).
+    // Só leitura pública aqui — escrita continua reservada a quem já
+    // gere este catálogo hoje (nenhuma app escreve via client SDK).
+    match /products/{id} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // ─── Telecomunicações (Gestão de IT) ─────────────────────────────────────
+    match /colaboradores/{id} {
+      allow read: if isAuth();
+      allow create, update: if canAdminTelecom();
+      allow delete: if canAdminTelecom();
+    }
+    match /contratos/{id} {
+      allow read: if isAuth();
+      allow create, update: if canAdminTelecom();
+      allow delete: if canAdminTelecom();
+    }
+    match /ativos/{id} {
+      allow read: if isAuth();
+      allow create, update, delete: if canAdminTelecom();
+    }
+    match /licencas/{id} {
+      allow read: if isAuth();
+      allow create, update, delete: if canAdminTelecom();
+    }
+    match /dominios/{id} {
+      allow read: if isAuth();
+      allow create, update, delete: if canAdminTelecom();
+    }
+    match /planosM365/{id} {
+      allow read: if isAuth();
+      allow create, update, delete: if canAdminTelecom();
+    }
+    match /faturas/{id} {
+      allow read: if isAuth();
+      allow create, update, delete: if canAdminTelecom();
+    }
+
+    // ─── Legado ──────────────────────────────────────────────────────────────
+    match /ambi25-propostas/{id} {
+      allow read: if isAuth() && request.auth.uid == resource.data.uid;
+      allow create: if isAuth()
+        && request.resource.data.keys().hasAll(['uid','proposal','cart','status','createdAt'])
+        && request.resource.data.uid == request.auth.uid;
+      allow update: if isAuth() && request.auth.uid == resource.data.uid;
+      allow delete: if isAuth() && request.auth.uid == resource.data.uid;
+    }
+
+    match /ambi25-precos/{id} {
+      allow read: if isAuth();
+      allow write: if false;
+    }
+
+    // ─── Site Ambiconcept Waste Solutions ────────────────────────────────────
+    // Todo o conteúdo próprio deste site vive isolado neste namespace, para
+    // nunca colidir com coleções de outras ferramentas do grupo.
+    match /ambiconceptSite/{siteId} {
+      match /categories/{id} {
+        allow read: if true;
+        allow write: if isAuth(); // sem UI admin; só o script de seed escreve aqui
+      }
+      match /products/{id} {
+        allow read: if true;
+        allow write: if isAuth();
+      }
+      match /news/{id} {
+        allow read: if true;
+        allow write: if isAuth();
+      }
+      match /stats/{id} {
+        allow read: if true;
+        allow write: if isAuth();
+      }
+      match /heroSlides/{id} {
+        allow read: if true;
+        allow write: if isAuth();
+      }
+      match /siteContent/{id} {
+        allow read: if true;
+        allow write: if isAuth();
+      }
+
+      // Contactos: qualquer visitante pode criar; só admin lê/atualiza/elimina
+      match /contacts/{id} {
+        allow create: if request.resource.data.keys().hasAll(['name', 'email', 'subject', 'created_at', 'read'])
+          && request.resource.data.read == false
+          && request.resource.data.name is string
+          && request.resource.data.email is string;
+        allow read, update, delete: if isAuth();
+      }
+    }
+
+    // ─── Catch-all ───────────────────────────────────────────────────────────
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

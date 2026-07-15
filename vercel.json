@@ -1,0 +1,35 @@
+{
+  "redirects": [
+    { "source": "/produtos/carga-vertical/ambi-27", "destination": "/produtos/carga-vertical/ambi-2-7", "permanent": true },
+    { "source": "/produtos/ambi-27", "destination": "/produtos/carga-vertical/ambi-2-7", "permanent": true },
+    { "source": "/produtos/carga-vertical/ambi-25", "destination": "/produtos/carga-vertical/ambi-2-5", "permanent": true },
+    { "source": "/produtos/ambi-25", "destination": "/produtos/carga-vertical/ambi-2-5", "permanent": true },
+    { "source": "/produtos/carga-vertical/ambi-37", "destination": "/produtos/carga-vertical/ambi-3-7", "permanent": true },
+    { "source": "/produtos/ambi-37", "destination": "/produtos/carga-vertical/ambi-3-7", "permanent": true },
+    { "source": "/produtos/smart-box/ambi-10", "destination": "/produtos/smart-box/ambi-1-0", "permanent": true },
+    { "source": "/produtos/ambi-10", "destination": "/produtos/smart-box/ambi-1-0", "permanent": true },
+    { "source": "/produtos/carga-traseira/ambi-two-carga-traseira", "destination": "/produtos/carga-traseira/ambi-two-120l", "permanent": true },
+    { "source": "/produtos/carga-traseira/ambi-four", "destination": "/produtos/carga-traseira/ambi-four-800l", "permanent": true },
+    { "source": "/produtos/ambi-four", "destination": "/produtos/carga-traseira/ambi-four-800l", "permanent": true }
+  ],
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
+  ]
+}

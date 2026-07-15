@@ -1,0 +1,283 @@
+import type { Product, ProductCategory, NewsArticle, SiteStat, Municipality, HeroSlide } from '@/types'
+
+// Imagens hospedadas no Firebase Storage (bucket dedicado 'ambiconcept', pasta produtos/)
+export function storageUrl(path: string): string {
+  return `https://firebasestorage.googleapis.com/v0/b/ambiconcept/o/${encodeURIComponent(path)}?alt=media`
+}
+
+export const heroSlides: HeroSlide[] = [
+  {
+    id: 'slide-1',
+    image_url: '/assets/hero-ecoponto-ambi-27.webp',
+    title: 'A infraestrutura de recolha seletiva que a sua cidade merece.',
+    subtitle: 'Equipamento para municípios e operadores RSU. Contentores de carga traseira, carga vertical, porta-a-porta e limpeza urbana. Concebido para resistir ao tempo urbano.',
+    cta_label: 'Ver Soluções',
+    cta_url: '/produtos',
+    sort_order: 1,
+  },
+]
+
+export const categories: ProductCategory[] = [
+  { id: 'cat-1', slug: 'carga-traseira',    name: 'Carga Traseira',    description: 'Contentores de grande capacidade para recolha por viaturas de carga traseira.',  sort_order: 2 },
+  { id: 'cat-2', slug: 'carga-vertical',    name: 'Carga Vertical',    description: 'Ecopontos de superfície para deposição seletiva em espaço público.',              sort_order: 1 },
+  { id: 'cat-3', slug: 'smart-box',         name: 'Smart Box',         description: 'Contentores de superfície e inteligentes para fluxos especiais.',                sort_order: 3 },
+  { id: 'cat-4', slug: 'porta-a-porta',     name: 'Porta-a-porta',     description: 'Baldes e contentores para sistemas de recolha domiciliária.',                      sort_order: 4 },
+  { id: 'cat-5', slug: 'baldes-domesticos', name: 'Baldes Domésticos', description: 'Baldes de cozinha e proximidade para biorresíduos e outros fluxos.',               sort_order: 5 },
+  { id: 'cat-6', slug: 'papeleiras',        name: 'Papeleiras',        description: 'Papeleiras urbanas para espaço público e zonas balneares.',                        sort_order: 6 },
+]
+
+export const products: Product[] = [
+  {
+    id: 'prod-1', slug: 'ambi-2-7', name: 'AMBI 2.7', featured: true,
+    sort_order: 2,
+    short_description: 'Contentor de carga vertical de 2.700 Litros para recolha seletiva de\npapel & cartão, vidro, embalagens e indiferenciados em espaço público.',
+    description: 'O AMBI 2.7 é a solução de referência para ecopontos de superfície em Portugal. Desenvolvido em PEAD de alta resistência, combina durabilidade urbana com estética contemporânea. Disponível em múltiplas frações e cores RAL personalizadas. Compatível com volteador para preservação do material recolhido.',
+    category_id: 'cat-2', category: categories[1],
+    specifications: { Capacidade: '2.700 Litros', Material: 'PEAD', 'Sistema de elevação': 'ø1100 mm standard', Frações: 'Papel & Cartão, Vidro, Embalagens, Indiferenciados', Certificações: 'ISO 22628, EN 840', Personalização: 'Cor RAL, logótipo, adesivagem' },
+    cover_image: storageUrl('produtos/ambi_2.7/fotos/digital/00_capa.png'),
+    hero_images: [
+      storageUrl('produtos/ambi_2.7/fotos/digital/05_ambi2_7_papel.png'),
+      storageUrl('produtos/ambi_2.7/fotos/digital/07_ambi2_7_vidro.png'),
+      storageUrl('produtos/ambi_2.7/fotos/digital/04_ambi2_7_embalagens.png'),
+    ],
+    anatomy_image: storageUrl('produtos/ambi_2.7/fotos/digital/01_ambi2_7_chars1.png'),
+    anatomy_image_2: storageUrl('produtos/ambi_2.7/fotos/digital/02_ambi2_7_chars2.png'),
+    created_at: '2025-01-01T00:00:00Z',
+  },
+  {
+    id: 'prod-2', slug: 'ambi-2-5', name: 'AMBI 2.5', featured: false,
+    sort_order: 1,
+    short_description: 'Contentor de carga vertical de 2.500 Litros para recolha seletiva em espaço público, ideal para ruas mais estreitas ou locais com menor geração de resíduos.',
+    description: 'O AMBI 2.5 é um contentor de carga vertical com capacidade de 2.500 Litros, fabricado em PEAD de alta resistência. Oferece durabilidade urbana comprovada e compatibilidade universal com volteadores de carga vertical, sendo ideal para ruas mais estreitas ou locais com menor geração de resíduos. Suporta condições climáticas adversas e esforços de carga repetitivos.',
+    category_id: 'cat-2', category: categories[1],
+    specifications: { Capacidade: '2.500 Litros', Material: 'PEAD', 'Sistema de elevação': 'ø1100 mm standard', Frações: 'Papel & Cartão, Vidro, Embalagens, Indiferenciados', Personalização: 'Cor RAL, logótipo' },
+    cover_image: storageUrl('produtos/ambi_2.5/fotos/digital/00_capa_ambi2_5.png'),
+    hero_images: [
+      storageUrl('produtos/ambi_2.5/fotos/digital/00_capa_ambi2_5.png'),
+      storageUrl('produtos/ambi_2.5/fotos/digital/01_ambi2_5_papel_cartao.png'),
+      storageUrl('produtos/ambi_2.5/fotos/digital/03_ambi2_5_vidro.png'),
+      storageUrl('produtos/ambi_2.5/fotos/digital/04_ambi2_5_embalagens.png'),
+      storageUrl('produtos/ambi_2.5/fotos/digital/05_ambi2_5_indiferenciados.png'),
+    ],
+    anatomy_image: storageUrl('produtos/ambi_2.5/fotos/digital/10_ambi2_5_chars1.png'),
+    anatomy_image_2: storageUrl('produtos/ambi_2.5/fotos/digital/11_ambi2_5_chars2.png'),
+    created_at: '2025-01-01T00:00:00Z',
+  },
+  {
+    id: 'prod-3', slug: 'ambi-two-120l', name: 'AMBI TWO 120L', featured: true,
+    sort_order: 4,
+    short_description: 'Contentor de 120 Litros para sistemas de recolha porta-a-porta. Compatível com viatura de carga traseira.',
+    description: 'O AMBI TWO 120L é a solução de referência para programas de recolha seletiva domiciliária. Adapta-se a qualquer tipologia de habitação e de viatura. O design robusto e a qualidade dos materiais garantem uma vida útil longa mesmo em condições de uso intensivo.',
+    category_id: 'cat-1', category: categories[0],
+    specifications: { Capacidade: '120 Litros', Material: 'PEAD', Rodas: '2', 'Sistema de elevação': 'Carga traseira', Frações: 'Papel & Cartão, Embalagens, Indiferenciados, Biorresíduos', Personalização: 'Cor, RFID, logótipo' },
+    cover_image: '/assets/home-porta-a-porta.webp',
+    hero_images: ['/assets/home-porta-a-porta.webp'],
+    created_at: '2025-01-01T00:00:00Z',
+  },
+  {
+    id: 'prod-12', slug: 'ambi-two-140l', name: 'AMBI TWO 140L', featured: false,
+    sort_order: 5,
+    short_description: 'Contentor de 140 Litros para sistemas de recolha porta-a-porta. Compatível com viatura de carga traseira.',
+    description: 'O AMBI TWO 140L é a solução de referência para programas de recolha seletiva domiciliária. Adapta-se a qualquer tipologia de habitação e de viatura. O design robusto e a qualidade dos materiais garantem uma vida útil longa mesmo em condições de uso intensivo.',
+    category_id: 'cat-1', category: categories[0],
+    specifications: { Capacidade: '140 Litros', Material: 'PEAD', Rodas: '2', 'Sistema de elevação': 'Carga traseira', Frações: 'Papel & Cartão, Embalagens, Indiferenciados, Biorresíduos', Personalização: 'Cor, RFID, logótipo' },
+    cover_image: '/assets/home-porta-a-porta.webp',
+    hero_images: ['/assets/home-porta-a-porta.webp'],
+    created_at: '2025-01-01T00:00:00Z',
+  },
+  {
+    id: 'prod-13', slug: 'ambi-two-240l', name: 'AMBI TWO 240L', featured: false,
+    sort_order: 6,
+    short_description: 'Contentor de 240 Litros para sistemas de recolha porta-a-porta. Compatível com viatura de carga traseira.',
+    description: 'O AMBI TWO 240L é a solução de referência para programas de recolha seletiva domiciliária. Adapta-se a qualquer tipologia de habitação e de viatura. O design robusto e a qualidade dos materiais garantem uma vida útil longa mesmo em condições de uso intensivo.',
+    category_id: 'cat-1', category: categories[0],
+    specifications: { Capacidade: '240 Litros', Material: 'PEAD', Rodas: '2', 'Sistema de elevação': 'Carga traseira', Frações: 'Papel & Cartão, Embalagens, Indiferenciados, Biorresíduos', Personalização: 'Cor, RFID, logótipo' },
+    cover_image: '/assets/home-porta-a-porta.webp',
+    hero_images: ['/assets/home-porta-a-porta.webp'],
+    created_at: '2025-01-01T00:00:00Z',
+  },
+  {
+    id: 'prod-14', slug: 'ambi-two-340l', name: 'AMBI TWO 340L', featured: false,
+    sort_order: 7,
+    short_description: 'Contentor de 340 Litros para sistemas de recolha porta-a-porta. Compatível com viatura de carga traseira.',
+    description: 'O AMBI TWO 340L é a solução de referência para programas de recolha seletiva domiciliária. Adapta-se a qualquer tipologia de habitação e de viatura. O design robusto e a qualidade dos materiais garantem uma vida útil longa mesmo em condições de uso intensivo.',
+    category_id: 'cat-1', category: categories[0],
+    specifications: { Capacidade: '340 Litros', Material: 'PEAD', Rodas: '2', 'Sistema de elevação': 'Carga traseira', Frações: 'Papel & Cartão, Embalagens, Indiferenciados, Biorresíduos', Personalização: 'Cor, RFID, logótipo' },
+    cover_image: '/assets/home-porta-a-porta.webp',
+    hero_images: ['/assets/home-porta-a-porta.webp'],
+    created_at: '2025-01-01T00:00:00Z',
+  },
+  {
+    id: 'prod-4', slug: 'ambi-four-800l', name: 'AMBI FOUR 800L', featured: false,
+    sort_order: 8,
+    short_description: 'Contentor de carga traseira de 800 Litros para recolha de biorresíduos e outros fluxos em locais de alta geração.',
+    description: 'O AMBI FOUR 800L é um contentor de carga traseira de grande capacidade do portfólio Ambiconcept. Desenhado para condomínios, mercados, restauração e outros produtores intensivos, oferece volume generoso com compatibilidade universal de elevação.',
+    category_id: 'cat-1', category: categories[0],
+    specifications: { Capacidade: '800 Litros', Material: 'PEAD', Rodas: '4', 'Sistema de elevação': 'Carga traseira', Frações: 'Indiferenciados, Biorresíduos', Personalização: 'Cor RAL, RFID' },
+    cover_image: '/assets/home-biorresiduos.png',
+    hero_images: ['/assets/home-biorresiduos.png'],
+    created_at: '2025-01-01T00:00:00Z',
+  },
+  {
+    id: 'prod-15', slug: 'ambi-four-1100l', name: 'AMBI FOUR 1100L', featured: false,
+    sort_order: 9,
+    short_description: 'Contentor de carga traseira de 1.100 Litros para recolha de biorresíduos e outros fluxos em locais de alta geração.',
+    description: 'O AMBI FOUR 1100L é um contentor de carga traseira de grande capacidade do portfólio Ambiconcept. Desenhado para condomínios, mercados, restauração e outros produtores intensivos, oferece volume generoso com compatibilidade universal de elevação.',
+    category_id: 'cat-1', category: categories[0],
+    specifications: { Capacidade: '1.100 Litros', Material: 'PEAD', Rodas: '4', 'Sistema de elevação': 'Carga traseira', Frações: 'Indiferenciados, Biorresíduos', Personalização: 'Cor RAL, RFID' },
+    cover_image: '/assets/home-biorresiduos.png',
+    hero_images: ['/assets/home-biorresiduos.png'],
+    created_at: '2025-01-01T00:00:00Z',
+  },
+  {
+    id: 'prod-5', slug: 'ambi-1-0', name: 'AMBI 1.0', featured: true,
+    sort_order: 10,
+    short_description: 'Smart Box de superfície para recolha de biorresíduos e óleos alimentares usados. Compacta, segura e preparada para espaço público.',
+    description: 'O AMBI 1.0 é uma solução inteligente de recolha de óleos alimentares usados para instalação de superfície. A abertura controlada impede depósitos indevidos e a estrutura em aço e PEAD garante durabilidade e segurança. Ideal para condomínios, parques de estacionamento e espaço público.',
+    category_id: 'cat-3', category: categories[2],
+    specifications: { Capacidade: '1.000 Litros', Material: 'Aço + PEAD', Instalação: 'Superfície', Acesso: 'Abertura controlada', Fluxo: 'Óleos Alimentares Usados' },
+    cover_image: storageUrl('produtos/ambi_1.0/fotos/digital/00_capa_ro1.png'),
+    hero_images: [
+      storageUrl('produtos/ambi_1.0/fotos/digital/00_capa_ro1.png'),
+      storageUrl('produtos/ambi_1.0/fotos/digital/03_galeria_ambi1_0_0002_ambi1_0_oau1.png'),
+    ],
+    created_at: '2025-01-01T00:00:00Z',
+  },
+  {
+    id: 'prod-7', slug: 'ambi-urban', name: 'AMBI URBAN', featured: true,
+    sort_order: 13,
+    short_description: 'Papeleira urbana para espaço público de alta frequência. Design integrado que respeita o ambiente urbano.',
+    description: 'A AMBI URBAN foi concebida para se integrar harmoniosamente no mobiliário urbano de cidades exigentes. Com estrutura robusta em aço pintado e recipiente interior amovível, facilita a limpeza e a manutenção. Disponível com fixação a poste, mural ou ao solo.',
+    category_id: 'cat-6', category: categories[5],
+    specifications: { Capacidade: '80 Litros', Material: 'Aço pintado', Fixação: 'Poste / Mural / Solo', 'Interior amovível': 'Sim', Personalização: 'Cor RAL, logótipo' },
+    cover_image: storageUrl('produtos/ambi_urban/fotos/digital/00_capa_embalagens.png'),
+    hero_images: [
+      storageUrl('produtos/ambi_urban/fotos/digital/05_ambi_urban_papel.png'),
+      storageUrl('produtos/ambi_urban/fotos/digital/07_ambi_urban_vidro.png'),
+      storageUrl('produtos/ambi_urban/fotos/digital/01_ambi_urban_embalagens.png'),
+      storageUrl('produtos/ambi_urban/fotos/digital/04_ambi_urban_indiferenciados.png'),
+    ],
+    created_at: '2025-01-01T00:00:00Z',
+  },
+  {
+    id: 'prod-8', slug: 'ambi-beach', name: 'AMBI BEACH', featured: false,
+    sort_order: 14,
+    short_description: 'Papeleira para zonas balneares — resistente à corrosão salina, projetada para ambientes costeiros exigentes.',
+    description: 'A AMBI BEACH é a versão costeira da papeleira urbana Ambiconcept. O tratamento anticorrosão especial e os materiais selecionados garantem durabilidade em ambientes salinos. O design permite fácil esvaziamento e limpeza pela equipa de limpeza urbana.',
+    category_id: 'cat-6', category: categories[5],
+    specifications: { Capacidade: '80 Litros', Material: 'Aço inox / PEAD', Ambiente: 'Costeiro / Balnear', Tratamento: 'Anticorrosão salino', Fixação: 'Solo' },
+    cover_image: storageUrl('produtos/ambi_beach/fotos/digital/00_capa_embalagens.png'),
+    hero_images: [
+      storageUrl('produtos/ambi_beach/fotos/digital/06_ambi_beach_papel.png'),
+      storageUrl('produtos/ambi_beach/fotos/digital/08_ambi_beach_vidro.png'),
+      storageUrl('produtos/ambi_beach/fotos/digital/02_ambi_beach_embalagens.png'),
+      storageUrl('produtos/ambi_beach/fotos/digital/05_ambi_beach_indiferenciados.png'),
+    ],
+    created_at: '2025-01-01T00:00:00Z',
+  },
+  {
+    id: 'prod-9', slug: 'ambi-3-7', name: 'AMBI 3.7', featured: false,
+    sort_order: 3,
+    short_description: 'Contentor de carga vertical de 3.700 Litros para recolha seletiva em espaço público, ideal para locais de elevada geração de resíduos.',
+    description: 'O AMBI 3.7 é um contentor de carga vertical com capacidade de 3.700 Litros, fabricado em PEAD de alta resistência. Oferece durabilidade urbana comprovada e compatibilidade universal com volteadores de carga vertical, sendo o modelo de maior capacidade da gama, ideal para locais de elevada geração de resíduos. Suporta condições climáticas adversas e esforços de carga repetitivos.',
+    category_id: 'cat-2', category: categories[1],
+    specifications: { Capacidade: '3.700 Litros', Material: 'PEAD', 'Sistema de elevação': 'ø1100 mm standard', Frações: 'Papel & Cartão, Vidro, Embalagens, Indiferenciados', Certificações: 'ISO 22628, EN 840', Personalização: 'Cor RAL, logótipo, adesivagem' },
+    cover_image: storageUrl('produtos/ambi_3.7/fotos/digital/00_capa.png'),
+    hero_images: [
+      storageUrl('produtos/ambi_3.7/fotos/digital/05_ambi3_7_papel.png'),
+      storageUrl('produtos/ambi_3.7/fotos/digital/08_ambi3_7_vidro.png'),
+      storageUrl('produtos/ambi_3.7/fotos/digital/00_capa.png'),
+      storageUrl('produtos/ambi_3.7/fotos/digital/04_ambi3_7_indiferenciados.png'),
+    ],
+    anatomy_image: storageUrl('produtos/ambi_3.7/fotos/digital/01_ambi3_7_chars1.png'),
+    anatomy_image_2: storageUrl('produtos/ambi_3.7/fotos/digital/02_ambi3_7_chars2.png'),
+    created_at: '2025-01-01T00:00:00Z',
+  },
+  {
+    id: 'prod-10', slug: 'lockey-5l', name: 'LOCKEY 5L', featured: false,
+    sort_order: 11,
+    short_description: 'Balde doméstico com fecho de segurança para biorresíduos — capacidade de 5 Litros, ideal para cozinha e pontos de proximidade.',
+    description: 'O LOCKEY 5L é a versão compacta do sistema Lockey, desenvolvida para uso doméstico e pontos de proximidade em condomínios. O sistema de fecho integrado impede depósitos indevidos e reduz a contaminação da fração de biorresíduos, mantendo a praticidade de um balde de cozinha.',
+    category_id: 'cat-5', category: categories[4],
+    specifications: { Capacidade: '5 Litros', Material: 'PEAD', 'Sistema de fecho': 'Chave personalizada', Frações: 'Biorresíduos', Personalização: 'Cor, logótipo' },
+    cover_image: storageUrl('produtos/lockey_5l/fotos/digital/00_capa.png'),
+    hero_images: [
+      storageUrl('produtos/lockey_5l/fotos/digital/01_lockey5l.png'),
+    ],
+    created_at: '2025-01-01T00:00:00Z',
+  },
+  {
+    id: 'prod-11', slug: 'lockey-7l', name: 'LOCKEY 7L', featured: false,
+    sort_order: 12,
+    short_description: 'Balde doméstico com fecho de segurança para biorresíduos — capacidade de 7 Litros, ideal para cozinha e pontos de proximidade.',
+    description: 'O LOCKEY 7L é a versão de maior capacidade do sistema Lockey, desenvolvida para uso doméstico e pontos de proximidade em condomínios. O sistema de fecho integrado impede depósitos indevidos e reduz a contaminação da fração de biorresíduos, mantendo a praticidade de um balde de cozinha.',
+    category_id: 'cat-5', category: categories[4],
+    specifications: { Capacidade: '7 Litros', Material: 'PEAD', 'Sistema de fecho': 'Chave personalizada', Frações: 'Biorresíduos', Personalização: 'Cor, logótipo' },
+    cover_image: storageUrl('produtos/lockey_7l/fotos/digital/00_capa.png'),
+    hero_images: [
+      storageUrl('produtos/lockey_7l/fotos/digital/01_lockey7l_1_8bit.png'),
+    ],
+    created_at: '2025-01-01T00:00:00Z',
+  },
+]
+
+export const articles: NewsArticle[] = [
+  {
+    id: 'news-1',
+    slug: 'transformar-residuos-em-valor-o-ciclo-virtuoso',
+    title: 'Transformar resíduos em valor: o ciclo virtuoso',
+    excerpt:
+      'Descubra como a valorização de resíduos pode transformar o que era descartado em recursos valiosos, impulsionando a economia circular e reduzindo o impacto ambiental.',
+    content:
+      'A valorização de resíduos é um dos pilares da economia circular. Transformar o que antes era considerado lixo em matéria-prima secundária...',
+    category: 'Sustentabilidade',
+    language: 'pt',
+    image_url: '/assets/news-ban06dez24.jpg',
+    published_at: '2025-07-14T15:41:32Z',
+    created_at: '2025-07-14T15:41:32Z',
+  },
+  {
+    id: 'news-2',
+    slug: 'economia-circular-fechar-o-ciclo-dos-materiais',
+    title: 'Economia circular: fechar o ciclo dos materiais',
+    excerpt:
+      'Descubra como a economia circular propõe um modelo de produção e consumo que mantém os materiais em uso o maior tempo possível, reduzindo resíduos e o impacto ambiental.',
+    content:
+      'A economia circular é um modelo sistémico de produção e consumo que implica partilhar, reparar, reutilizar, renovar e reciclar materiais e produtos existentes o maior tempo possível. Desta forma, o ciclo de vida dos produtos é prolongado, enquanto os resíduos são reduzidos ao mínimo...',
+    category: 'Economia Circular',
+    language: 'pt',
+    image_url: '/assets/news-ban06dez24.jpg',
+    published_at: '2025-06-20T10:00:00Z',
+    created_at: '2025-06-20T10:00:00Z',
+  },
+]
+
+export const stats: SiteStat[] = [
+  {
+    id: 'stat-1',
+    key: 'containers_installed',
+    value: 1200,
+    label: 'Contentores Instalados',
+    updated_at: '2025-01-01T00:00:00Z',
+  },
+  {
+    id: 'stat-2',
+    key: 'municipalities_count',
+    value: 100,
+    label: 'Municípios Aderentes',
+    updated_at: '2025-01-01T00:00:00Z',
+  },
+]
+
+export const municipalities: Municipality[] = [
+  { id: 'm-1', name: 'Lisboa', sort_order: 1 },
+  { id: 'm-2', name: 'Porto', sort_order: 2 },
+  { id: 'm-3', name: 'Braga', sort_order: 3 },
+  { id: 'm-4', name: 'Coimbra', sort_order: 4 },
+  { id: 'm-5', name: 'Aveiro', sort_order: 5 },
+  { id: 'm-6', name: 'Viseu', sort_order: 6 },
+  { id: 'm-7', name: 'Setúbal', sort_order: 7 },
+  { id: 'm-8', name: 'Leiria', sort_order: 8 },
+  { id: 'm-9', name: 'Faro', sort_order: 9 },
+  { id: 'm-10', name: 'Évora', sort_order: 10 },
+]

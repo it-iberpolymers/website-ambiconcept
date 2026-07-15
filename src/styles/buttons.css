@@ -1,0 +1,66 @@
+/* ── Unified Button System ─────────────────────────────────── */
+
+.btn-primary,
+.btn-dark,
+.btn-outline,
+.btn-ghost {
+  display: inline-block;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  border: none;
+  line-height: 1;
+  transition: background .25s, opacity .25s, border-color .25s, color .25s;
+}
+
+/* Primary — green filled */
+.btn-primary {
+  padding: 14px 32px;
+  background: #7AB929;
+  color: #fff;
+  border-radius: 10px;
+}
+.btn-primary:hover { opacity: .85; }
+
+/* Dark — for dark backgrounds */
+.btn-dark {
+  padding: 17px 40px;
+  background: #0a1a0c;
+  color: #F0EDE6;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.25);
+  flex-shrink: 0;
+}
+.btn-dark:hover { background: #1a3a1e; }
+
+/* Outline — on light backgrounds */
+.btn-outline {
+  padding: 12.5px 30.5px;
+  background: transparent;
+  color: #1C2B1F;
+  border: 1.5px solid #1C2B1F;
+  border-radius: 10px;
+}
+.btn-outline:hover {
+  background: #7AB929;
+  border-color: #7AB929;
+  color: #fff;
+}
+
+/* Ghost — on dark or image backgrounds */
+.btn-ghost {
+  padding: 13px 31px;
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.4);
+  border-radius: 10px;
+}
+.btn-ghost:hover {
+  border-color: #fff;
+  background: rgba(255,255,255,.1);
+}

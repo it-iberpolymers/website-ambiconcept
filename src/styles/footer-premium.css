@@ -1,0 +1,209 @@
+/* ── Footer Premium ────────────────────────────────────────── */
+
+.ft-root {
+  background: #303F49;
+  font-family: Poppins, system-ui, sans-serif;
+  color: rgba(240,237,230,.55);
+}
+
+/* Brand bar */
+.ft-brand-bar {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 64px 20px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.ft-logo {
+  height: 84px;
+  width: auto;
+  display: block;
+}
+.ft-social-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ft-social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(122,185,41,.3);
+  flex-shrink: 0;
+  text-decoration: none;
+  transition: border-color .2s, background .2s;
+}
+.ft-social-btn:hover {
+  border-color: #7AB929;
+  background: rgba(122,185,41,.12);
+}
+.ft-social-icon {
+  height: 13px;
+  fill: #7AB929;
+}
+
+/* Navigation grid */
+.ft-nav {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 56px 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px 32px;
+}
+.ft-nav-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #7AB929;
+  margin-bottom: 20px;
+  display: block;
+}
+.ft-nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.ft-nav-link {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(240,237,230,.55);
+  text-decoration: none;
+  line-height: 1;
+  transition: color .2s;
+}
+.ft-nav-link:hover { color: #7AB929; }
+
+/* Iberpolymers logo within nav */
+.ft-iberpoly-logo {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 36px;
+}
+.ft-iberpoly-label {
+  font-size: 8px;
+  font-weight: 300;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #7AB929;
+  line-height: 1;
+}
+.ft-iberpoly-img {
+  width: 60px;
+  height: auto;
+  display: block;
+  opacity: 1;
+}
+
+/* Legal bar */
+.ft-legal-bg {
+  background: #22303A;
+}
+.ft-legal-inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 18px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 32px;
+}
+.ft-copyright {
+  font-size: 12px;
+  color: rgba(240,237,230,.28);
+  margin: 0;
+}
+.ft-legal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 28px;
+}
+.ft-legal-link {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(240,237,230,.35);
+  text-decoration: none;
+  transition: color .2s;
+}
+.ft-legal-link:hover { color: #7AB929; }
+
+/* Cofinancing */
+.ft-cofin-bg {
+  background: #22303A;
+  border-top: 1px solid rgba(255,255,255,.04);
+}
+.ft-cofin-inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 20px 20px 32px;
+}
+.ft-cofin-label {
+  font-size: 10px;
+  color: rgba(240,237,230,.25);
+  margin-bottom: 16px;
+}
+.ft-cofin-logos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px 80px;
+}
+.ft-cofin-img {
+  width: 100%;
+  height: auto;
+  opacity: .4;
+  transition: opacity .4s;
+  cursor: pointer;
+}
+.ft-cofin-img:hover { opacity: .8; }
+.ft-cofin-img--compete { max-width: 400px; }
+.ft-cofin-img--prr     { max-width: 300px; }
+
+/* Scroll-to-top button */
+.ft-scroll-btn {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background: #303F49;
+  border-radius: 5px;
+  border: 1px solid rgba(122,185,41,.25);
+  outline: none;
+  padding: 0;
+  cursor: pointer;
+  opacity: .7;
+  transition: opacity .3s;
+}
+.ft-scroll-btn:hover { opacity: 1; }
+.ft-scroll-btn--hidden { opacity: 0; pointer-events: none; }
+.ft-scroll-icon {
+  width: 14px;
+  height: 14px;
+  display: block;
+  fill: #7AB929;
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+  .ft-brand-bar { padding: 48px 20px 32px; }
+  .ft-nav { grid-template-columns: 1fr; }
+}
