@@ -32,5 +32,6 @@ export const DEFAULT_RAL_COLORS: Record<string, RalColor[]> = {
     { code: 'RAL 6029', hex: '#00703c' },
     { code: 'RAL 1023', hex: '#efb700' },
     { code: 'RAL 7016', hex: '#383e42' },
+    { code: 'RAL 8025', hex: '#755f4a' },
   ],
 }

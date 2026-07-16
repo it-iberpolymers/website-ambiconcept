@@ -10,6 +10,7 @@ const PapeleirasTemplate = lazy(() => import('@/templates/PapeleirasTemplate'))
 const BaldesDomesticosTemplate = lazy(() => import('@/templates/BaldesDomesticosTemplate'))
 const SmartBoxTemplate = lazy(() => import('@/templates/SmartBoxTemplate'))
 const CargaTraseiraTemplate = lazy(() => import('@/templates/CargaTraseiraTemplate'))
+const AmbiTwoTemplate = lazy(() => import('@/templates/AmbiTwoTemplate'))
 
 function ProductSkeleton() {
   return (
@@ -67,6 +68,10 @@ export default function ProductDetail() {
 
   if (product.category?.slug === 'smart-box') {
     return <Suspense fallback={<ProductSkeleton />}><SmartBoxTemplate product={product} /></Suspense>
+  }
+
+  if (product.category?.slug === 'carga-traseira' && product.slug.startsWith('ambi-two')) {
+    return <Suspense fallback={<ProductSkeleton />}><AmbiTwoTemplate product={product} /></Suspense>
   }
 
   if (product.category?.slug === 'carga-traseira') {

@@ -21,6 +21,13 @@ const SB_TABS = [
   { key: 'sensorizacao', label: 'Sensorização' },
 ]
 
+// TODO: placeholders (imagens do AMBI 2.5) — substituir por imagens próprias do AMBI 1.0
+const SB_CUSTOM_ITEMS = [
+  { label: 'Abertura Manual', img: storageUrl('produtos/ambi_2.5/fotos/digital/12_ambi2_5_decor.png') },
+  { label: 'Fecho com Amortecedor', img: storageUrl('produtos/ambi_2.5/fotos/digital/07_ambi2_5_vidro_pilhao.png') },
+  { label: 'Abertura com Pedal', img: storageUrl('produtos/ambi_2.5/fotos/digital/09_ambi2_5_volteador.png') },
+]
+
 const SCROLL_FRAME_COUNT = 60
 const SCROLL_FRAMES = Array.from(
   { length: SCROLL_FRAME_COUNT },
@@ -257,6 +264,32 @@ export default function SmartBoxTemplate({ product }: Props) {
             alt={`${product.name} — vista em detalhe`}
             className="sb-scroll-anim-img"
           />
+        </div>
+      </section>
+
+      {/* ── Personalização ────────────────────────────────── */}
+      <section className="sb-custom-section" aria-labelledby="sb-custom-heading">
+        <div className="sb-custom-inner">
+          <div className="sb-custom-head">
+            <h2 id="sb-custom-heading" className="sb-custom-title">
+              Características e Personalização do {product.name}
+            </h2>
+            <p className="sb-custom-sub">
+              Cada unidade pode ser configurada com opções de personalização visual e funcional,<br />
+              adaptadas às necessidades específicas do município ou condomínio<br />
+              e às frações de resíduo a recolher.
+            </p>
+          </div>
+          <div className="sb-custom-grid">
+            {SB_CUSTOM_ITEMS.map((item) => (
+              <div key={item.label} className="sb-custom-item">
+                <div className="sb-custom-img-wrap">
+                  <img src={item.img} alt={item.label} className="sb-custom-img" loading="lazy" />
+                </div>
+                <p className="sb-custom-label">{item.label}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

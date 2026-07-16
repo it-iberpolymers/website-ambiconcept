@@ -7,7 +7,7 @@ import { useProducts } from '@/hooks/useProducts'
 import { useRalColors } from '@/hooks/useRalColors'
 import { useCategoryHighlights } from '@/hooks/useCategoryHighlights'
 import PageSeo from '@/components/seo/PageSeo'
-import { FEATURE_ICONS } from './carga-vertical-feature-icons'
+import { BALDES_DOMESTICOS_FEATURE_ICONS as FEATURE_ICONS } from './baldes-domesticos-feature-icons'
 import '@/styles/template-baldes-domesticos.css'
 
 interface Props {

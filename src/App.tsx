@@ -9,6 +9,7 @@ import NewsArticle from '@/pages/NewsArticle'
 import PrivacyPolicy from '@/pages/PrivacyPolicy'
 import Contacts from '@/pages/Contacts'
 import CategoryPage from '@/pages/CategoryPage'
+import FlowPage from '@/pages/FlowPage'
 import AdminLayout from '@/admin/AdminLayout'
 import AdminLogin from '@/admin/AdminLogin'
 import AdminDashboard from '@/admin/pages/AdminDashboard'
@@ -42,6 +43,7 @@ export default function App() {
           <Route path="produtos/:categoria/:slug" element={<ProductDetail />} />
           <Route path="produtos/:slug" element={<ProductDetail />} />
           <Route path="categorias/:slug" element={<CategoryPage />} />
+          <Route path="fluxos/:slug" element={<FlowPage />} />
           <Route path="noticias" element={<News />} />
           <Route path="noticias/:slug" element={<NewsArticle />} />
           <Route path="politica-de-privacidade" element={<PrivacyPolicy />} />

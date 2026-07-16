@@ -119,24 +119,24 @@ export const categoriesContent: CategoryContent[] = [
     imageAlt: 'Balde doméstico LOCKEY para recolha de biorresíduos — Ambiconcept',
     highlights: [
       {
-        title: 'Higiene Garantida',
+        title: 'Aro para Saco',
         description:
-          'Interior de fácil limpeza que evita a acumulação de odores e favorece o uso diário na cozinha.',
+          'Possibilidade de integrar e fixar saco no interior para facilitar a higienização do balde.',
       },
       {
-        title: 'Fecho de Segurança',
+        title: 'Dois Tamanhos',
         description:
-          'Sistema de fecho integrado que impede depósitos indevidos e reduz a contaminação da fração orgânica.',
+          'Disponível em duas capacidades, 5L e 7L. É fácil de se adaptar às necessidades da família.',
       },
       {
-        title: 'Compacto',
+        title: 'Tampa Ventilada',
         description:
-          'Dimensões reduzidas, ideais para espaços de cozinha e áreas comuns de condomínio.',
+          'Opção de tampa ventilada com integração de filtro de carvão para evitar os odores.',
       },
       {
-        title: 'Robustez',
+        title: 'Bloqueio da Tampa',
         description:
-          'Material resistente a uso diário intensivo, com baixos custos de manutenção.',
+          'A tranca da tampa evita o derrame de biorresíduos por animais domésticos.',
       },
     ],
     specs: [
@@ -203,24 +203,24 @@ export const categoriesContent: CategoryContent[] = [
     imageAlt: 'Contentor AMBI TWO de carga traseira para recolha seletiva domiciliária — Ambiconcept',
     highlights: [
       {
-        title: 'Alta Capacidade',
+        title: 'Porta com Fechadura',
         description:
-          'Disponível em 120, 140, 240 e 340 Litros, adaptando-se a qualquer tipologia de habitação.',
+          'Opção de fechadura na tampa para bloqueio de acesso confere maior versatilidade ao contentor.',
       },
       {
-        title: 'Robustez',
+        title: 'Fácil Manuseamento',
         description:
-          'Estrutura em PEAD resistente a uso intensivo e a condições climáticas adversas.',
+          'Contentor compacto, com rodas e pegas para facilitar transporte e manutenção.',
       },
       {
-        title: 'Mobilidade',
+        title: 'Resistência e Durabilidade',
         description:
-          'Equipado com 2 ou 4 rodas para facilitar a movimentação e a recolha.',
+          'Produzido em polietileno de alta densidade, resistente à água e raios UV.',
       },
       {
-        title: 'Identificação RFID',
+        title: 'Limpeza Fácil',
         description:
-          'Sistema de identificação por RFID para controlo e monitorização da recolha.',
+          'Superfícies lisas garantem fácil limpeza e total esvaziamento na recolha.',
       },
     ],
     specs: [

@@ -175,15 +175,15 @@ export default function CategoryPage() {
       </section>
 
       {/* CTA */}
-      <section className="cp-cta-section" aria-labelledby="cta-cat-heading">
+      <section className="cp-cta-section cp-cta-section--green" aria-labelledby="cta-cat-heading">
         <div className="cp-cta-inner">
           <h2 id="cta-cat-heading" className="cp-cta-title">
-            Apresente o seu projeto. Os especialistas encontram a solução certa.
+            Apresente o seu projeto. <br /><span className="cp-cta-title-line">Os nossos especialistas encontram</span> <br />a solução certa.
           </h2>
           <p className="cp-cta-sub">
             Partilhe os requisitos do seu município ou operação RSU. Desenvolvemos a solução de {content.headline.toLowerCase()} mais adequada ao seu contexto.
           </p>
-          <Link to="/contactos" className="btn-primary">
+          <Link to="/contactos" className="btn-dark">
             Falar com um Especialista
           </Link>
         </div>

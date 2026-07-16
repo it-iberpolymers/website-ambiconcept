@@ -89,14 +89,14 @@ export default function Footer() {
             <span className="ft-nav-label">Fluxos</span>
             <ul className="ft-nav-list">
               {[
-                { label: 'Vidro',                    slug: 'carga-vertical' },
-                { label: 'Biorresíduos',             slug: 'porta-a-porta' },
-                { label: 'Porta-a-porta',            slug: 'porta-a-porta' },
-                { label: 'Óleos Alimentares Usados', slug: 'smart-box' },
-                { label: 'Limpeza Urbana',           slug: 'papeleiras' },
+                { label: 'Vidro',                    href: '/fluxos/vidro' },
+                { label: 'Biorresíduos',             href: '/fluxos/biorresiduos' },
+                { label: 'Porta-a-porta',            href: '/produtos?categoria=porta-a-porta' },
+                { label: 'Óleos Alimentares Usados', href: '/fluxos/oleos-alimentares-usados' },
+                { label: 'Limpeza Urbana',           href: '/produtos?categoria=papeleiras' },
               ].map(item => (
                 <li key={item.label}>
-                  <Link to={`/produtos?categoria=${item.slug}`} className="ft-nav-link">{item.label}</Link>
+                  <Link to={item.href} className="ft-nav-link">{item.label}</Link>
                 </li>
               ))}
             </ul>
