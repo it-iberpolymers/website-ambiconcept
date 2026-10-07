@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { categoryHref } from '@/lib/categorySlug'
+import { categoryHref, toPublicSlug } from '@/lib/categorySlug'
 import { useProducts, useProductCategories } from '@/hooks/useProducts'
 
 const navLinks = [
@@ -13,7 +13,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   // submenu de Produtos: fecha ao clicar numa ligação e volta ao normal quando o rato sai
   const [menuClosed, setMenuClosed] = useState(false)
-  const { pathname } = useLocation()
+  const { pathname, search } = useLocation()
   const { categories: allCategories } = useProductCategories()
   const { products } = useProducts()
   const categories = allCategories.filter((cat) => products.some((p) => p.category?.slug === cat.slug))
@@ -28,6 +28,10 @@ export default function Header() {
   // O header transparente/texto branco só faz sentido sobre o hero escuro da homepage.
   // Nas restantes páginas (templates de produto, etc.) o topo é claro, por isso o header
   // nasce já no estado "sólido" para se manter legível antes do primeiro scroll.
+  // categoria atual (página de categoria, de produto ou catálogo filtrado) e secção de produtos
+  const currentSeg = pathname.match(/^\/(?:categorias|produtos)\/([^/]+)/)?.[1]
+  const activeCat = toPublicSlug(currentSeg ?? new URLSearchParams(search).get('categoria') ?? '')
+  const productsActive = pathname.startsWith('/produtos') || pathname.startsWith('/categorias')
   const isHome = pathname === '/'
   const solid = scrolled || !isHome
 
@@ -66,7 +70,7 @@ export default function Header() {
                 to="/produtos"
                 className={({ isActive }) =>
                   `flex items-center gap-1 text-[13px] font-medium uppercase tracking-[0.08em] transition-colors ${
-                    isActive ? 'text-[color:var(--green-text)]' : navText
+                    isActive || productsActive ? `text-[color:var(--green-text)]` : navText
                   }`
                 }
               >
@@ -85,11 +89,18 @@ export default function Header() {
                       <Link
                         key={cat.id}
                         to={categoryHref(cat.slug)}
-                        className="group/item block rounded-2xl p-5 transition-colors hover:bg-[#f1fae8]"
+                        aria-current={activeCat === cat.slug ? 'page' : undefined}
+                        className={`group/item block rounded-2xl p-5 transition-colors hover:bg-[#f1fae8] ${
+                          activeCat === cat.slug ? 'bg-[#f1fae8] ring-2 ring-inset ring-[#7ab929]' : ''
+                        }`}
                       >
-                        <p className="flex items-center justify-between text-[13px] font-semibold uppercase tracking-[0.06em] text-[#303f49] transition-colors group-hover/item:text-[#448a15]">
+                        <p className={`flex items-center justify-between text-[13px] font-semibold uppercase tracking-[0.06em] transition-colors group-hover/item:text-[color:var(--green-text)] ${
+                          activeCat === cat.slug ? 'text-[color:var(--green-text)]' : 'text-[#303f49]'
+                        }`}>
                           {cat.name}
-                          <span aria-hidden="true" className="opacity-0 -translate-x-1 transition-all duration-200 group-hover/item:opacity-100 group-hover/item:translate-x-0">→</span>
+                          <span aria-hidden="true" className={`transition-all duration-200 group-hover/item:opacity-100 group-hover/item:translate-x-0 ${
+                            activeCat === cat.slug ? 'opacity-100' : 'opacity-0 -translate-x-1'
+                          }`}>→</span>
                         </p>
                         {cat.description && (
                           <p className="mt-1.5 text-[13px] leading-snug text-[#303f49]/55">
@@ -121,7 +132,7 @@ export default function Header() {
                   to={link.to}
                   className={({ isActive }) =>
                     `text-[13px] font-medium uppercase tracking-[0.08em] transition-colors ${
-                      isActive ? 'text-[color:var(--green-text)]' : navText
+                      isActive ? `text-[color:var(--green-text)]` : navText
                     }`
                   }
                 >
@@ -224,7 +235,7 @@ export default function Header() {
               onClick={() => setMobileOpen(false)}
               className={({ isActive }) =>
                 `block px-3 py-2 text-sm font-medium uppercase tracking-[0.06em] transition-colors ${
-                  isActive ? 'text-[color:var(--green-text)]' : 'text-[#303f49] hover:text-[color:var(--green-text)]'
+                  isActive || productsActive ? 'text-[color:var(--green-text)] border-l-4 border-[#7ab929] bg-[#f1fae8] font-semibold' : 'text-[#303f49] hover:text-[color:var(--green-text)]'
                 }`
               }
             >
@@ -236,7 +247,12 @@ export default function Header() {
                   key={cat.id}
                   to={categoryHref(cat.slug)}
                   onClick={() => setMobileOpen(false)}
-                  className="block px-3 py-1.5 text-sm text-[#303f49]/70 transition-colors hover:text-[color:var(--green-text)]"
+                  aria-current={activeCat === cat.slug ? 'page' : undefined}
+                  className={`block px-3 py-1.5 text-sm transition-colors hover:text-[color:var(--green-text)] ${
+                    activeCat === cat.slug
+                      ? 'text-[color:var(--green-text)] border-l-4 border-[#7ab929] bg-[#f1fae8] font-semibold'
+                      : 'text-[#303f49]/70'
+                  }`}
                 >
                   {cat.name}
                 </Link>
@@ -249,7 +265,7 @@ export default function Header() {
                 onClick={() => setMobileOpen(false)}
                 className={({ isActive }) =>
                   `block px-3 py-2 text-sm font-medium uppercase tracking-[0.06em] transition-colors ${
-                    isActive ? 'text-[color:var(--green-text)]' : 'text-[#303f49] hover:text-[color:var(--green-text)]'
+                    isActive ? 'text-[color:var(--green-text)] border-l-4 border-[#7ab929] bg-[#f1fae8] font-semibold' : 'text-[#303f49] hover:text-[color:var(--green-text)]'
                   }`
                 }
               >
