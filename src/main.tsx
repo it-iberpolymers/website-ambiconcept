@@ -7,6 +7,10 @@ import { Analytics } from '@vercel/analytics/react'
 import './index.css'
 import App from './App'
 
+// o painel de administração não entra nas estatísticas
+const skipAdmin = <T extends { url: string }>(event: T): T | null =>
+  new URL(event.url, window.location.origin).pathname.startsWith('/admin') ? null : event
+
 class ErrorBoundary extends Component<{ children: ReactNode }, { error: Error | null }> {
   state = { error: null }
 
@@ -45,7 +49,7 @@ createRoot(root).render(
         <App />
       </ErrorBoundary>
     </HelmetProvider>
-    <Analytics />
-    <SpeedInsights />
+    <Analytics beforeSend={skipAdmin} />
+    <SpeedInsights beforeSend={skipAdmin} />
   </StrictMode>
 )
