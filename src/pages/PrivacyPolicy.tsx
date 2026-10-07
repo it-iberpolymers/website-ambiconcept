@@ -7,7 +7,7 @@ export default function PrivacyPolicy() {
 
       <div className="ps-hero">
         <div className="max-w-[800px] mx-auto px-5 relative z-[1]">
-          <p className="text-[11px] font-semibold tracking-[0.14em] uppercase text-[#95d855] mb-3">Legal</p>
+          <p className="text-[12px] font-semibold tracking-[0.14em] uppercase text-[#95d855] mb-3">Legal</p>
           <h1 className="text-[34px] md:text-[48px] font-bold tracking-[-0.03em] text-white leading-tight">
             Política de Privacidade
           </h1>
@@ -59,7 +59,7 @@ export default function PrivacyPolicy() {
             <h2 className="text-[18px] font-semibold text-[#1c2b1f] mb-3">5. Direitos dos Titulares</h2>
             <p className="leading-relaxed text-[#303f49]/75">
               Tem direito de acesso, retificação, apagamento, limitação e portabilidade dos seus dados, bem como o direito de se opor ao tratamento. Para exercer estes direitos, contacte-nos através do formulário em{' '}
-              <Link to="/contactos" className="text-[#7ab929] hover:underline">Contactos</Link>.
+              <Link to="/contactos" className="text-[color:var(--green-text)] hover:underline">Contactos</Link>.
             </p>
           </section>
 
@@ -67,7 +67,7 @@ export default function PrivacyPolicy() {
             <h2 className="text-[18px] font-semibold text-[#1c2b1f] mb-3">6. Contacto</h2>
             <p className="leading-relaxed text-[#303f49]/75">
               Para qualquer questão relacionada com a proteção de dados, pode contactar-nos através da página de{' '}
-              <Link to="/contactos" className="text-[#7ab929] hover:underline">Contactos</Link>.
+              <Link to="/contactos" className="text-[color:var(--green-text)] hover:underline">Contactos</Link>.
             </p>
           </section>
 

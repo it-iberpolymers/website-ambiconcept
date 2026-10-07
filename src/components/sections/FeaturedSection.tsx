@@ -23,7 +23,7 @@ export default function FeaturedSection() {
       <div className="relative z-10 max-w-[1140px] mx-auto px-5 py-10 w-full">
         <div className="max-w-[500px]">
           {banner.subtitle && (
-            <p className="text-[11px] font-semibold tracking-[0.14em] uppercase text-[#7ab929] mb-3">
+            <p className="text-[12px] font-semibold tracking-[0.14em] uppercase text-[color:var(--green-text)] mb-3">
               {banner.subtitle}
             </p>
           )}

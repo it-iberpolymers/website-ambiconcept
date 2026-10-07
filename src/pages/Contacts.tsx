@@ -14,7 +14,7 @@ export default function Contacts() {
       {/* Cabeçalho de página — H1 exclusivo desta rota */}
       <div className="ps-hero">
         <div className="max-w-[1140px] mx-auto px-5 relative z-[1]">
-          <p className="text-[11px] font-semibold tracking-[0.14em] uppercase text-[#95d855] mb-3">Fale connosco</p>
+          <p className="text-[12px] font-semibold tracking-[0.14em] uppercase text-[#95d855] mb-3">Fale connosco</p>
           <h1 className="text-[40px] md:text-[56px] font-bold tracking-[-0.03em] text-white leading-none">
             Contactos
           </h1>

@@ -5,7 +5,7 @@ import Modal from '@/components/ui/Modal'
 import FirebaseNotice from '../FirebaseNotice'
 
 const inputClass = 'w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#7ab929]/40 focus:border-[#7ab929] transition-colors'
-const labelClass = 'block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-1'
+const labelClass = 'block text-[12px] font-semibold uppercase tracking-wide text-gray-400 mb-1'
 
 function slugify(text: string): string {
   return text
@@ -109,7 +109,7 @@ export default function AdminNoticias() {
         </div>
         <button
           onClick={openCreate}
-          className="flex items-center gap-2 px-4 py-2 bg-[#7ab929] text-white text-sm font-semibold rounded-xl hover:bg-[#6aa520] transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-[#7ab929] text-[#0e1a10] text-sm font-semibold rounded-xl hover:bg-[#6aa520] transition-colors"
         >
           <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
             <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
@@ -146,7 +146,7 @@ export default function AdminNoticias() {
                 <td className="px-5 py-4 text-right whitespace-nowrap">
                   <button
                     onClick={() => openEdit(article)}
-                    className="text-xs font-medium text-[#7ab929] hover:text-[#5d9519] transition-colors mr-4"
+                    className="text-xs font-medium text-[color:var(--green-text)] hover:text-[#5d9519] transition-colors mr-4"
                   >
                     Editar
                   </button>
@@ -246,7 +246,7 @@ export default function AdminNoticias() {
             </button>
             <button
               type="submit" disabled={saving}
-              className="px-4 py-2 bg-[#7ab929] text-white text-sm font-semibold rounded-xl hover:bg-[#6aa520] transition-colors disabled:opacity-60"
+              className="px-4 py-2 bg-[#7ab929] text-[#0e1a10] text-sm font-semibold rounded-xl hover:bg-[#6aa520] transition-colors disabled:opacity-60"
             >
               {saving ? 'A guardar…' : 'Guardar'}
             </button>

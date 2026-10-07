@@ -44,7 +44,7 @@ export default function AdminFeatured() {
           <p className="text-sm text-gray-400 mt-0.5">Secção em destaque na página inicial</p>
         </div>
         <div className="flex items-center gap-3">
-          {saved && <span className="text-sm text-[#7ab929] font-medium">Guardado!</span>}
+          {saved && <span className="text-sm text-[color:var(--green-text)] font-medium">Guardado!</span>}
           <button
             type="button"
             onClick={handleReset}
@@ -56,7 +56,7 @@ export default function AdminFeatured() {
             type="button"
             onClick={handleSave}
             disabled={saving}
-            className="px-4 py-2 bg-[#7ab929] text-white text-sm font-semibold rounded-xl hover:bg-[#6aa520] transition-colors disabled:opacity-60"
+            className="px-4 py-2 bg-[#7ab929] text-[#0e1a10] text-sm font-semibold rounded-xl hover:bg-[#6aa520] transition-colors disabled:opacity-60"
           >
             {saving ? 'A guardar…' : 'Guardar'}
           </button>
@@ -71,7 +71,7 @@ export default function AdminFeatured() {
         <div className="bg-white rounded-2xl border border-gray-100 p-5 space-y-4">
 
           <div>
-            <label className="block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
+            <label className="block text-[12px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
               URL da Imagem de Fundo
             </label>
             <input
@@ -84,7 +84,7 @@ export default function AdminFeatured() {
           </div>
 
           <div>
-            <label className="block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
+            <label className="block text-[12px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
               Título
             </label>
             <input
@@ -97,7 +97,7 @@ export default function AdminFeatured() {
           </div>
 
           <div>
-            <label className="block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
+            <label className="block text-[12px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
               Subtítulo <span className="normal-case font-normal text-gray-300">(opcional)</span>
             </label>
             <input
@@ -110,7 +110,7 @@ export default function AdminFeatured() {
           </div>
 
           <div>
-            <label className="block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
+            <label className="block text-[12px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
               Descrição
             </label>
             <textarea
@@ -124,7 +124,7 @@ export default function AdminFeatured() {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
+              <label className="block text-[12px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
                 Texto do Botão
               </label>
               <input
@@ -136,7 +136,7 @@ export default function AdminFeatured() {
               />
             </div>
             <div>
-              <label className="block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
+              <label className="block text-[12px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
                 URL do Botão
               </label>
               <input
@@ -150,7 +150,7 @@ export default function AdminFeatured() {
           </div>
 
           <div>
-            <label className="block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-2">
+            <label className="block text-[12px] font-semibold uppercase tracking-wide text-gray-400 mb-2">
               Opacidade do Overlay — {overlayPercent}%
             </label>
             <input
@@ -162,7 +162,7 @@ export default function AdminFeatured() {
               onChange={e => update({ overlay_opacity: parseFloat(e.target.value) })}
               className="w-full accent-[#7ab929]"
             />
-            <div className="flex justify-between text-[10px] text-gray-300 mt-1">
+            <div className="flex justify-between text-[12px] text-gray-300 mt-1">
               <span>Transparente</span>
               <span>Escuro</span>
             </div>
@@ -171,7 +171,7 @@ export default function AdminFeatured() {
 
         {/* Pré-visualização */}
         <div className="bg-white rounded-2xl border border-gray-100 p-5">
-          <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-3">
+          <p className="text-[12px] font-semibold uppercase tracking-wide text-gray-400 mb-3">
             Pré-visualização
           </p>
           <div
@@ -184,7 +184,7 @@ export default function AdminFeatured() {
             />
             <div className="relative z-10 p-6 max-w-[280px]">
               {banner.subtitle && (
-                <p className="text-[10px] font-semibold tracking-widest uppercase text-[#7ab929] mb-2">
+                <p className="text-[12px] font-semibold tracking-widest uppercase text-[color:var(--green-text)] mb-2">
                   {banner.subtitle}
                 </p>
               )}
@@ -194,13 +194,13 @@ export default function AdminFeatured() {
               <p className="text-white/80 text-[12px] leading-relaxed mb-4">
                 {banner.description || 'Descrição…'}
               </p>
-              <span className="inline-block bg-white text-[#303f49] text-[11px] font-medium uppercase tracking-wider px-4 py-2">
+              <span className="inline-block bg-white text-[#303f49] text-[12px] font-medium uppercase tracking-wider px-4 py-2">
                 {banner.cta_label || 'Botão'}
               </span>
             </div>
           </div>
           {!banner.image_url && (
-            <p className="text-[11px] text-gray-300 mt-2 text-center">
+            <p className="text-[12px] text-gray-300 mt-2 text-center">
               Introduz a URL da imagem para pré-visualizar
             </p>
           )}

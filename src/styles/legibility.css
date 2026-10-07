@@ -1,0 +1,86 @@
+/* ── Legibilidade — medida das linhas e alvos de toque ──────────
+   Resultado do teste de UI/UX em 360–2560 px: parágrafos com 95–170 caracteres por linha
+   em ecrãs grandes e ligações/botões com menos de 44 px em mobile e tablet.
+   O prefixo "body" dá-lhes prioridade sobre as folhas dos templates, carregadas depois. */
+
+/* Parágrafos alinhados à esquerda: ~70 caracteres por linha */
+body .cl-desc,
+body .fl-products-highlight-body,
+body .fl-intro-body,
+body .fl-impact-body,
+body .fl-sdg-body,
+body .hp-intro-body,
+body .cp-intro-body { max-width: 70ch; }
+
+/* Parágrafos centrados (secções dos templates) */
+body .cv-intro-text, body .at-intro-text, body .sb-intro-text, body .pp-intro-text, body .bd-intro-text, body .ct-intro-text,
+body .cv-custom-sub, body .at-custom-sub, body .sb-custom-sub, body .pp-custom-sub, body .bd-custom-sub, body .ct-custom-sub,
+body .at-sizes-sub, body .bd-sizes-sub, body .ct-sizes-sub {
+  max-width: 68ch;
+  margin-inline: auto;
+}
+
+/* Alvos de toque: mínimo de 44 px em tablet e mobile */
+@media (max-width: 1024px) {
+  body .btn-primary, body .btn-ghost, body .btn-outline, body .btn-dark {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  body .hp-product-cta, body .hp-aud-cta, body .ft-nav-link, body .ft-legal-link, body article a.inline-block {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  body .ft-social-btn { min-width: 44px; min-height: 44px; }
+  body .pc-filter-btn { min-height: 44px; }
+  body header button, body header nav a { min-height: 44px; min-width: 44px; display: inline-flex; align-items: center; }
+  /* migalhas de pão e ligação "voltar" */
+  body nav[aria-label="Localização"] a,
+  body .cv-breadcrumb a, body .at-breadcrumb a, body .sb-breadcrumb a, body .pp-breadcrumb a, body .bd-breadcrumb a, body .ct-breadcrumb a,
+  body a[href="/noticias"].inline-flex {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-inline: 6px;
+  }
+}
+
+/* Pontos dos carrosséis: a área de toque cresce sem aumentar o ponto */
+body .cv-dot, body .sb-dot, body .pp-dot, body .at-dot, body .bd-dot, body .ct-dot { position: relative; }
+body .cv-dot::after, body .sb-dot::after, body .pp-dot::after, body .at-dot::after, body .bd-dot::after, body .ct-dot::after {
+  content: '';
+  position: absolute;
+  inset: -9px;
+}
+
+/* Linhas que não quebram só cabem em ecrãs largos: abaixo disso as colunas ficam estreitas e a página alarga */
+@media (max-width: 1199px) {
+  body .sb-flow-sub-line, body .at-flow-sub-line, body .bd-flow-sub-line,
+  body .ct-flow-sub-line, body .pp-flow-sub-line, body .cv-flow-sub-line { white-space: normal; }
+}
+
+/* Abas das opções: em mobile deslizam na horizontal em vez de alargarem a página */
+@media (max-width: 680px) {
+  body [class$="-tabs-nav"] { overflow-x: auto; justify-content: flex-start; scrollbar-width: none; }
+  body [class$="-tabs-nav"]::-webkit-scrollbar { display: none; }
+  body [class$="-tab-btn"] { flex: none; white-space: nowrap; }
+}
+
+/* Texto corrido dentro das abas dos templates */
+body [class*="-tabs-body"] p { max-width: 70ch; }
+
+/* Cabeçalho: ligações sociais e logótipo com área de toque confortável */
+body header a[aria-label^="LinkedIn"], body header a[aria-label^="Instagram"] { position: relative; }
+body header a[aria-label^="LinkedIn"]::after, body header a[aria-label^="Instagram"]::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+}
+@media (max-width: 1024px) {
+  body header a.relative { min-height: 44px; display: inline-flex; align-items: center; }
+}
+
+/* Respostas das FAQs */
+body [class*="-faq-answer-inner"] p { max-width: 70ch; }

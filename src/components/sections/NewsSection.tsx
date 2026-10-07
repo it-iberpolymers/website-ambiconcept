@@ -37,21 +37,21 @@ export default function NewsSection() {
               </Link>
 
               {/* Badge — irmão do link, posicionado sobre o canto superior direito da imagem */}
-              <span className="absolute top-5 right-5 rounded-full bg-[#7ab929] text-white text-[12px] font-normal uppercase leading-none px-[1.2em] py-[0.6em] pointer-events-none select-none">
+              <span className="absolute top-5 right-5 rounded-full bg-[#7ab929] text-[#0e1a10] text-[12px] font-normal uppercase leading-none px-[1.2em] py-[0.6em] pointer-events-none select-none">
                 {article.category}
               </span>
 
               {/* Texto: mt-20px, padding lateral 30px */}
               <div className="mt-5 px-[30px]">
                 <h3 className="text-[21px] font-semibold text-[#303f49] leading-snug mb-[25px] mt-0">
-                  <Link to={`/noticias/${article.slug}`} className="text-[#303f49] hover:text-[#7ab929] transition-colors">
+                  <Link to={`/noticias/${article.slug}`} className="text-[#303f49] hover:text-[color:var(--green-text)] transition-colors">
                     {article.title}
                   </Link>
                 </h3>
 
                 <Link
                   to={`/noticias/${article.slug}`}
-                  className="inline-block text-[12px] font-bold uppercase text-[#7ab929] hover:text-[#303f49] transition-colors mb-5"
+                  className="inline-block text-[12px] font-bold uppercase text-[color:var(--green-text)] hover:text-[#303f49] transition-colors mb-5"
                 >
                   Ler Mais »
                 </Link>
@@ -61,7 +61,7 @@ export default function NewsSection() {
               <div className="mt-auto border-t border-[#eaeaea] px-[30px] py-[15px]">
                 <time
                   dateTime={article.published_at}
-                  className="text-[12px] text-[#adadad] leading-snug"
+                  className="text-[12px] text-[#6b6b6b] leading-snug"
                 >
                   {new Date(article.published_at).toLocaleDateString('pt-PT', {
                     day: 'numeric',

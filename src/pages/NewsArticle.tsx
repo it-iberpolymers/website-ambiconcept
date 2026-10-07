@@ -26,7 +26,7 @@ export default function NewsArticle() {
       <div className="ps-page flex flex-col items-center justify-center text-center px-5">
         <p className="text-6xl font-black text-[#eaeaea] mb-4">404</p>
         <h1 className="text-2xl font-semibold text-[#303f49] mb-2">Artigo não encontrado</h1>
-        <p className="text-[#adadad] mb-8">O artigo que procura não existe ou foi removido.</p>
+        <p className="text-[#6b6b6b] mb-8">O artigo que procura não existe ou foi removido.</p>
         <Link
           to="/noticias"
           className="btn-outline"
@@ -78,7 +78,7 @@ export default function NewsArticle() {
         <div className="max-w-[800px] mx-auto px-5 relative z-[1]">
           <Link
             to="/noticias"
-            className="inline-flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.08em] text-white/55 hover:text-[#95d855] transition-colors mb-6"
+            className="inline-flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.08em] text-white/75 hover:text-[#95d855] transition-colors mb-6"
           >
             <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="15 18 9 12 15 6"/>
@@ -87,10 +87,10 @@ export default function NewsArticle() {
           </Link>
 
           <div className="flex items-center gap-3 mb-4">
-            <span className="rounded-full bg-[#7ab929] text-white text-[11px] font-normal uppercase tracking-wide px-[1.2em] py-[0.5em]">
+            <span className="rounded-full bg-[#7ab929] text-[#0e1a10] text-[12px] font-normal uppercase tracking-wide px-[1.2em] py-[0.5em]">
               {article.category}
             </span>
-            <time dateTime={article.published_at} className="text-[12px] text-white/45">
+            <time dateTime={article.published_at} className="text-[12px] text-white/75">
               {new Date(article.published_at).toLocaleDateString('pt-PT', {
                 day: 'numeric', month: 'long', year: 'numeric',
               })}

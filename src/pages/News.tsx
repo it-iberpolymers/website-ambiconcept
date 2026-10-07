@@ -18,12 +18,12 @@ export default function News() {
       {/* Cabeçalho */}
       <div className="ps-hero">
         <div className="max-w-[1140px] mx-auto px-5 relative z-[1]">
-          <nav aria-label="Localização" className="flex items-center gap-2 text-[12px] text-white/45 mb-6">
+          <nav aria-label="Localização" className="flex items-center gap-2 text-[12px] text-white/75 mb-6">
             <Link to="/" className="hover:text-[#95d855] transition-colors">Início</Link>
             <span aria-hidden="true">/</span>
             <span className="text-white/75">Notícias</span>
           </nav>
-          <p className="text-[11px] font-semibold tracking-[0.14em] uppercase text-[#95d855] mb-3">Atualidade</p>
+          <p className="text-[12px] font-semibold tracking-[0.14em] uppercase text-[#95d855] mb-3">Atualidade</p>
           <h1 className="text-[40px] md:text-[56px] font-bold tracking-[-0.03em] text-white leading-none">Notícias</h1>
           <p className="mt-5 text-[#b4c7b8] max-w-xl text-[15px] leading-relaxed">
             Acompanhe as novidades sobre sustentabilidade, economia circular e gestão de resíduos.
@@ -44,7 +44,7 @@ export default function News() {
         ) : error ? (
           <p className="text-[#cc3b2d] text-sm py-8">Erro ao carregar notícias. Por favor recarregue a página.</p>
         ) : articles.length === 0 ? (
-          <p className="text-[#adadad] text-sm py-12 text-center">Nenhuma notícia publicada ainda.</p>
+          <p className="text-[#6b6b6b] text-sm py-12 text-center">Nenhuma notícia publicada ainda.</p>
         ) : (
           <ul className="grid md:grid-cols-2 gap-[25px]" role="list">
             {articles.map((article) => (
@@ -76,7 +76,7 @@ export default function News() {
                   </Link>
 
                   {/* Badge */}
-                  <span className="absolute top-5 right-5 rounded-full bg-[#7ab929] text-white text-[12px] font-normal uppercase leading-none px-[1.2em] py-[0.6em] pointer-events-none select-none">
+                  <span className="absolute top-5 right-5 rounded-full bg-[#7ab929] text-[#0e1a10] text-[12px] font-normal uppercase leading-none px-[1.2em] py-[0.6em] pointer-events-none select-none">
                     {article.category}
                   </span>
 
@@ -85,14 +85,14 @@ export default function News() {
                     <h2 className="text-[21px] font-semibold text-[#303f49] leading-snug mb-[25px] mt-0">
                       <Link
                         to={`/noticias/${article.slug}`}
-                        className="text-[#303f49] hover:text-[#7ab929] transition-colors"
+                        className="text-[#303f49] hover:text-[color:var(--green-text)] transition-colors"
                       >
                         {article.title}
                       </Link>
                     </h2>
                     <Link
                       to={`/noticias/${article.slug}`}
-                      className="inline-block text-[12px] font-bold uppercase text-[#7ab929] hover:text-[#303f49] transition-colors mb-5"
+                      className="inline-block text-[12px] font-bold uppercase text-[color:var(--green-text)] hover:text-[#303f49] transition-colors mb-5"
                     >
                       Ler Mais »
                     </Link>
@@ -100,7 +100,7 @@ export default function News() {
 
                   {/* Rodapé com data */}
                   <div className="mt-auto border-t border-[#eaeaea] px-[30px] py-[15px]">
-                    <time dateTime={article.published_at} className="text-[12px] text-[#adadad] leading-snug">
+                    <time dateTime={article.published_at} className="text-[12px] text-[#6b6b6b] leading-snug">
                       {new Date(article.published_at).toLocaleDateString('pt-PT', {
                         day: 'numeric', month: 'long', year: 'numeric',
                       })}

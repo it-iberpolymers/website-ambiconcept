@@ -67,12 +67,12 @@ export default function Products() {
       {/* Header */}
       <div className="ps-hero">
         <div className="max-w-[1140px] mx-auto px-5 text-center relative z-[1]">
-          <nav aria-label="Localização" className="flex items-center justify-center gap-1.5 text-[11px] text-white/45 mb-8">
+          <nav aria-label="Localização" className="flex items-center justify-center gap-1.5 text-[12px] text-white/75 mb-8">
             <Link to="/" className="hover:text-[#95d855] transition-colors">Início</Link>
             <span aria-hidden="true">/</span>
             <span className="text-white/75">Produtos</span>
           </nav>
-          <p className="text-[11px] font-semibold tracking-[0.14em] uppercase text-[#95d855] mb-3">Catálogo</p>
+          <p className="text-[12px] font-semibold tracking-[0.14em] uppercase text-[#95d855] mb-3">Catálogo</p>
           <h1 className="text-[42px] md:text-[56px] font-bold tracking-[-0.03em] text-white leading-none font-['Poppins',sans-serif]">
             Produtos
           </h1>
@@ -151,7 +151,7 @@ export default function Products() {
                 ))}
               </div>
             ) : products.length === 0 ? (
-              <p className="text-[#8a9a88] text-sm py-16 text-center">
+              <p className="text-[#4d5d53] text-sm py-16 text-center">
                 Nenhum produto encontrado para estes filtros.
               </p>
             ) : (

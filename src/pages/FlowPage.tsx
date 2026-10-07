@@ -519,7 +519,7 @@ export default function FlowPage() {
         <img src={content.image} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/10 pointer-events-none" />
         <div className="relative h-full flex flex-col">
-          <nav aria-label="Localização" className="flex items-center justify-center gap-1.5 text-[11px] text-white/50 pt-[100px] px-5">
+          <nav aria-label="Localização" className="flex items-center justify-center gap-1.5 text-[12px] text-white/75 pt-[100px] px-5">
             <Link to="/" className="hover:text-white transition-colors">Início</Link>
             <span aria-hidden="true">/</span>
             <span>Fluxos</span>
@@ -528,7 +528,7 @@ export default function FlowPage() {
           </nav>
 
           <div className="pt-10 px-5 text-center">
-            <p className="text-[11px] font-semibold tracking-[0.14em] uppercase text-white/50 mb-4">
+            <p className="text-[12px] font-semibold tracking-[0.14em] uppercase text-white/75 mb-4">
               {content.eyebrow}
             </p>
             <h1

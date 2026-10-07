@@ -82,19 +82,19 @@
 
 .cf-privacy-link {
   font-weight: 600;
-  color: #7ab929;
+  color: var(--green-text);
   text-decoration: none;
 }
 
 .cf-submit {
   align-self: center;
   padding: 16px 40px;
-  background: #5aad1e;
-  color: #fff;
-  border: 1.5px solid #5aad1e;
+  background: #7ab929;
+  color: #0e1a10;
+  border: 1.5px solid #7ab929;
   border-radius: 999px;
   font-family: 'Poppins', sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: .14em;
   text-transform: uppercase;
@@ -105,9 +105,9 @@
 }
 
 .cf-submit:hover {
-  background: #448a15;
-  border-color: #448a15;
-  color: #fff;
+  background: #95d855;
+  border-color: #95d855;
+  color: #0e1a10;
 }
 
 .cf-submit:focus-visible {
@@ -143,7 +143,7 @@
 
 .cf-success-text {
   font-size: 14px;
-  color: #7ab929;
+  color: var(--green-text);
   margin: 0;
 }
 

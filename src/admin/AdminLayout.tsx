@@ -126,7 +126,7 @@ export default function AdminLayout() {
           <button
             type="button"
             onClick={() => setOpen(false)}
-            className="md:hidden p-1 text-white/40 hover:text-white"
+            className="md:hidden p-1 text-white/75 hover:text-white"
             aria-label="Fechar menu"
           >
             <IconX />
@@ -135,7 +135,7 @@ export default function AdminLayout() {
 
         {/* Nav */}
         <nav className="flex-1 py-3 overflow-y-auto">
-          <p className="px-5 pb-2 pt-1 text-[10px] font-semibold uppercase tracking-widest text-white/25">
+          <p className="px-5 pb-2 pt-1 text-[12px] font-semibold uppercase tracking-widest text-white/75">
             Gestão
           </p>
           {navItems.map(({ to, label, Icon }) => (
@@ -147,7 +147,7 @@ export default function AdminLayout() {
                 `flex items-center gap-3 mx-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                   isActive
                     ? 'bg-[#7ab929] text-white'
-                    : 'text-white/55 hover:bg-white/8 hover:text-white'
+                    : 'text-white/75 hover:bg-white/8 hover:text-white'
                 }`
               }
             >
@@ -161,7 +161,7 @@ export default function AdminLayout() {
         <div className="px-4 pb-4 pt-2 border-t border-white/10 shrink-0">
           <Link
             to="/"
-            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-white/45 hover:text-white hover:bg-white/8 transition-colors"
+            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-white/75 hover:text-white hover:bg-white/8 transition-colors"
           >
             <IconLogout />
             Voltar ao site
@@ -182,7 +182,7 @@ export default function AdminLayout() {
             <IconMenu />
           </button>
           <div className="flex items-center gap-2 ml-auto">
-            <div className="h-8 w-8 rounded-full bg-[#7ab929]/15 flex items-center justify-center text-[#7ab929] text-xs font-bold">
+            <div className="h-8 w-8 rounded-full bg-[#7ab929]/15 flex items-center justify-center text-[color:var(--green-text)] text-xs font-bold">
               A
             </div>
           </div>

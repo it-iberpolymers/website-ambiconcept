@@ -82,12 +82,12 @@ export default function AdminEstatisticas() {
           <button
             type="submit"
             disabled={saving}
-            className="px-5 py-2.5 bg-[#7ab929] text-white text-sm font-semibold rounded-xl hover:bg-[#6aa520] transition-colors disabled:opacity-60"
+            className="px-5 py-2.5 bg-[#7ab929] text-[#0e1a10] text-sm font-semibold rounded-xl hover:bg-[#6aa520] transition-colors disabled:opacity-60"
           >
             {saving ? 'A guardar…' : 'Guardar'}
           </button>
           {saved && (
-            <p className="text-sm text-[#7ab929] font-medium">Guardado!</p>
+            <p className="text-sm text-[color:var(--green-text)] font-medium">Guardado!</p>
           )}
         </div>
       </form>

@@ -31,9 +31,9 @@ export default function Header() {
 
   const navText = solid
     ? 'text-[#303f49] hover:text-[#303f49]/60'
-    : 'text-white/90 hover:text-white/60'
+    : 'text-white/90 hover:text-white/75'
 
-  const navSep = solid ? 'text-[#303f49]/25' : 'text-white/30'
+  const navSep = solid ? 'text-[#303f49]/25' : 'text-white/75'
 
   return (
     <>
@@ -55,7 +55,7 @@ export default function Header() {
                 to="/produtos"
                 className={({ isActive }) =>
                   `flex items-center gap-1 text-[13px] font-medium uppercase tracking-[0.08em] transition-colors ${
-                    isActive ? 'text-[#7ab929]' : navText
+                    isActive ? 'text-[color:var(--green-text)]' : navText
                   }`
                 }
               >
@@ -93,7 +93,7 @@ export default function Header() {
                       <span className="text-[12px] text-[#303f49]/50">Veja também por fluxo de resíduos no catálogo.</span>
                       <Link
                         to="/produtos"
-                        className="rounded-full bg-[#5aad1e] px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-white transition-colors hover:bg-[#448a15]"
+                        className="rounded-full bg-[#5aad1e] px-5 py-2.5 text-[12px] font-semibold uppercase tracking-[0.1em] text-[#0e1a10] transition-colors hover:bg-[#448a15]"
                       >
                         Ver todos os produtos
                       </Link>
@@ -109,7 +109,7 @@ export default function Header() {
                   to={link.to}
                   className={({ isActive }) =>
                     `text-[13px] font-medium uppercase tracking-[0.08em] transition-colors ${
-                      isActive ? 'text-[#7ab929]' : navText
+                      isActive ? 'text-[color:var(--green-text)]' : navText
                     }`
                   }
                 >
@@ -182,7 +182,7 @@ export default function Header() {
             aria-label={mobileOpen ? 'Fechar menu' : 'Abrir menu'}
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
-            className={`md:hidden p-2 ml-4 transition-colors ${solid ? 'text-[#303f49]' : 'text-white'} hover:text-[#7ab929]`}
+            className={`md:hidden p-2 ml-4 transition-colors ${solid ? 'text-[#303f49]' : 'text-white'} hover:text-[color:var(--green-text)]`}
             onClick={() => setMobileOpen((v) => !v)}
           >
             {mobileOpen ? (
@@ -212,7 +212,7 @@ export default function Header() {
               onClick={() => setMobileOpen(false)}
               className={({ isActive }) =>
                 `block px-3 py-2 text-sm font-medium uppercase tracking-[0.06em] transition-colors ${
-                  isActive ? 'text-[#7ab929]' : 'text-[#303f49] hover:text-[#7ab929]'
+                  isActive ? 'text-[color:var(--green-text)]' : 'text-[#303f49] hover:text-[color:var(--green-text)]'
                 }`
               }
             >
@@ -224,7 +224,7 @@ export default function Header() {
                   key={cat.id}
                   to={categoryHref(cat.slug)}
                   onClick={() => setMobileOpen(false)}
-                  className="block px-3 py-1.5 text-sm text-[#303f49]/70 transition-colors hover:text-[#7ab929]"
+                  className="block px-3 py-1.5 text-sm text-[#303f49]/70 transition-colors hover:text-[color:var(--green-text)]"
                 >
                   {cat.name}
                 </Link>
@@ -237,7 +237,7 @@ export default function Header() {
                 onClick={() => setMobileOpen(false)}
                 className={({ isActive }) =>
                   `block px-3 py-2 text-sm font-medium uppercase tracking-[0.06em] transition-colors ${
-                    isActive ? 'text-[#7ab929]' : 'text-[#303f49] hover:text-[#7ab929]'
+                    isActive ? 'text-[color:var(--green-text)]' : 'text-[#303f49] hover:text-[color:var(--green-text)]'
                   }`
                 }
               >
@@ -248,7 +248,7 @@ export default function Header() {
               href="https://www.iberpolymers.pt"
               target="_blank"
               rel="noopener noreferrer"
-              className="block px-3 py-2 text-sm font-medium uppercase tracking-[0.06em] text-[#303f49] hover:text-[#7ab929] transition-colors"
+              className="block px-3 py-2 text-sm font-medium uppercase tracking-[0.06em] text-[#303f49] hover:text-[color:var(--green-text)] transition-colors"
               onClick={() => setMobileOpen(false)}
             >
               Iberpolymers Group

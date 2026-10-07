@@ -44,7 +44,7 @@ export default function ProductDetail() {
     return (
       <div className="min-h-screen bg-white flex flex-col items-center justify-center text-center px-5">
         <h1 className="text-2xl font-semibold text-[#303f49] mb-3">Produto não encontrado</h1>
-        <p className="text-[#adadad] mb-8">O produto que procura não existe ou foi removido.</p>
+        <p className="text-[#6b6b6b] mb-8">O produto que procura não existe ou foi removido.</p>
         <Link
           to="/produtos"
           className="btn-primary"
@@ -116,16 +116,16 @@ export default function ProductDetail() {
       {/* Breadcrumb */}
       <div className="bg-[#303f49] border-b border-white/10 pt-[90px]">
         <div className="max-w-[1140px] mx-auto px-5 py-4">
-          <nav aria-label="Localização" className="flex items-center gap-2 text-[12px] text-white/40">
-            <Link to="/" className="hover:text-[#7ab929] transition-colors">Início</Link>
+          <nav aria-label="Localização" className="flex items-center gap-2 text-[12px] text-white/75">
+            <Link to="/" className="hover:text-[color:var(--green-text)] transition-colors">Início</Link>
             <span aria-hidden="true">/</span>
-            <Link to="/produtos" className="hover:text-[#7ab929] transition-colors">Produtos</Link>
+            <Link to="/produtos" className="hover:text-[color:var(--green-text)] transition-colors">Produtos</Link>
             {product.category && (
               <>
                 <span aria-hidden="true">/</span>
                 <Link
                   to={categoryHref(product.category.slug)}
-                  className="hover:text-[#7ab929] transition-colors"
+                  className="hover:text-[color:var(--green-text)] transition-colors"
                 >
                   {product.category.name}
                 </Link>
@@ -179,7 +179,7 @@ export default function ProductDetail() {
           {/* Info */}
           <div>
             {product.category && (
-              <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[#7ab929] mb-3">
+              <p className="text-[12px] font-semibold uppercase tracking-[0.1em] text-[color:var(--green-text)] mb-3">
                 {product.category.name}
               </p>
             )}
@@ -206,7 +206,7 @@ export default function ProductDetail() {
             {/* Especificações */}
             {Object.keys(specs).length > 0 && (
               <div className="mt-10">
-                <p className="text-[11px] font-semibold tracking-[0.14em] uppercase text-[#7ab929] mb-4">
+                <p className="text-[12px] font-semibold tracking-[0.14em] uppercase text-[color:var(--green-text)] mb-4">
                   Especificações
                 </p>
                 <dl className="divide-y divide-[#eaeaea]">

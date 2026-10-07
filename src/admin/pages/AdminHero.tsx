@@ -77,11 +77,11 @@ export default function AdminHero() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          {saved && <span className="text-sm text-[#7ab929] font-medium">Guardado!</span>}
+          {saved && <span className="text-sm text-[color:var(--green-text)] font-medium">Guardado!</span>}
           <button
             type="button"
             onClick={addSlide}
-            className="flex items-center gap-2 px-4 py-2 border border-[#7ab929] text-[#7ab929] text-sm font-semibold rounded-xl hover:bg-[#7ab929]/5 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 border border-[#7ab929] text-[color:var(--green-text)] text-sm font-semibold rounded-xl hover:bg-[#7ab929]/5 transition-colors"
           >
             <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
               <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
@@ -92,7 +92,7 @@ export default function AdminHero() {
             type="button"
             onClick={handleSave}
             disabled={saving}
-            className="px-4 py-2 bg-[#7ab929] text-white text-sm font-semibold rounded-xl hover:bg-[#6aa520] transition-colors disabled:opacity-60"
+            className="px-4 py-2 bg-[#7ab929] text-[#0e1a10] text-sm font-semibold rounded-xl hover:bg-[#6aa520] transition-colors disabled:opacity-60"
           >
             {saving ? 'A guardar…' : 'Guardar'}
           </button>
@@ -124,7 +124,7 @@ export default function AdminHero() {
               {/* Campos */}
               <div className="flex-1 grid grid-cols-2 gap-3 min-w-0">
                 <div className="col-span-2">
-                  <label className="block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
+                  <label className="block text-[12px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
                     URL da Imagem
                   </label>
                   <input
@@ -136,7 +136,7 @@ export default function AdminHero() {
                   />
                 </div>
                 <div className="col-span-2">
-                  <label className="block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
+                  <label className="block text-[12px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
                     Título
                   </label>
                   <input
@@ -148,7 +148,7 @@ export default function AdminHero() {
                   />
                 </div>
                 <div className="col-span-2">
-                  <label className="block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
+                  <label className="block text-[12px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
                     Subtítulo
                   </label>
                   <textarea
@@ -160,7 +160,7 @@ export default function AdminHero() {
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
+                  <label className="block text-[12px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
                     Texto do Botão
                   </label>
                   <input
@@ -172,7 +172,7 @@ export default function AdminHero() {
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
+                  <label className="block text-[12px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
                     URL do Botão
                   </label>
                   <input
@@ -225,7 +225,7 @@ export default function AdminHero() {
               </div>
             </div>
 
-            <p className="mt-3 text-[10px] font-semibold uppercase tracking-widest text-gray-300">
+            <p className="mt-3 text-[12px] font-semibold uppercase tracking-widest text-gray-300">
               Slide {idx + 1}
             </p>
           </div>

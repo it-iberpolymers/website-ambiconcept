@@ -3,7 +3,7 @@
 .ft-root {
   background: #303F49;
   font-family: Poppins, system-ui, sans-serif;
-  color: rgba(240,237,230,.55);
+  color: rgba(240,237,230,.78);
 }
 
 /* Brand bar */
@@ -58,11 +58,11 @@
   gap: 40px 32px;
 }
 .ft-nav-label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: #7AB929;
+  color: var(--green-text);
   margin-bottom: 20px;
   display: block;
 }
@@ -77,12 +77,12 @@
 .ft-nav-link {
   font-size: 14px;
   font-weight: 400;
-  color: rgba(240,237,230,.55);
+  color: rgba(240,237,230,.78);
   text-decoration: none;
   line-height: 1;
   transition: color .2s;
 }
-.ft-nav-link:hover { color: #7AB929; }
+.ft-nav-link:hover { color: var(--green-text); }
 
 /* Iberpolymers logo within nav */
 .ft-iberpoly-logo {
@@ -92,11 +92,11 @@
   margin-top: 36px;
 }
 .ft-iberpoly-label {
-  font-size: 8px;
+  font-size: 12px;
   font-weight: 300;
   letter-spacing: .06em;
   text-transform: uppercase;
-  color: #7AB929;
+  color: var(--green-text);
   line-height: 1;
 }
 .ft-iberpoly-img {
@@ -122,7 +122,7 @@
 }
 .ft-copyright {
   font-size: 12px;
-  color: rgba(240,237,230,.28);
+  color: rgba(240,237,230,.72);
   margin: 0;
 }
 .ft-legal-links {
@@ -131,15 +131,15 @@
   gap: 0 28px;
 }
 .ft-legal-link {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: rgba(240,237,230,.35);
+  color: rgba(240,237,230,.72);
   text-decoration: none;
   transition: color .2s;
 }
-.ft-legal-link:hover { color: #7AB929; }
+.ft-legal-link:hover { color: var(--green-text); }
 
 /* Cofinancing */
 .ft-cofin-bg {
@@ -152,8 +152,8 @@
   padding: 20px 20px 32px;
 }
 .ft-cofin-label {
-  font-size: 10px;
-  color: rgba(240,237,230,.25);
+  font-size: 12px;
+  color: rgba(240,237,230,.72);
   margin-bottom: 16px;
 }
 .ft-cofin-logos {
