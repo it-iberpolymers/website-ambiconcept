@@ -11,6 +11,8 @@ const navLinks = [
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  // submenu de Produtos: fecha ao clicar numa ligação e volta ao normal quando o rato sai
+  const [menuClosed, setMenuClosed] = useState(false)
   const { pathname } = useLocation()
   const { categories: allCategories } = useProductCategories()
   const { products } = useProducts()
@@ -50,7 +52,16 @@ export default function Header() {
 
           {/* Nav desktop — esquerda */}
           <nav aria-label="Navegação principal" className="hidden md:flex items-center self-stretch">
-            <span className="relative flex items-center self-stretch group">
+            <span
+              className="relative flex items-center self-stretch group"
+              onMouseLeave={() => setMenuClosed(false)}
+              onClickCapture={(e) => {
+                if ((e.target as HTMLElement).closest('a')) {
+                  setMenuClosed(true)
+                  ;(document.activeElement as HTMLElement | null)?.blur()
+                }
+              }}
+            >
               <NavLink
                 to="/produtos"
                 className={({ isActive }) =>
@@ -65,6 +76,7 @@ export default function Header() {
                 </svg>
               </NavLink>
               <div
+                style={menuClosed ? { display: 'none' } : undefined}
                 className="fixed left-0 right-0 top-[90px] px-5 pt-3 opacity-0 translate-y-1 pointer-events-none transition-all duration-300 ease-out group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto"
               >
                 <div className="max-w-[1140px] mx-auto overflow-hidden rounded-[28px] bg-white shadow-[0_30px_70px_-20px_rgba(14,26,16,0.35)] ring-1 ring-black/5">
