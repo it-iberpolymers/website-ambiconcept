@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
+import { categoryHref } from '@/lib/categorySlug'
 import { useProducts, useProductCategories } from '@/hooks/useProducts'
 
 const navLinks = [
@@ -43,7 +44,7 @@ export default function Header() {
         onClick={() => setMobileOpen(false)}
       />
     )}
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-400 ${solid ? 'bg-white/75 backdrop-blur-[28px] shadow-[0_8px_32px_rgba(0,0,0,0.07),0_1px_0_rgba(255,255,255,0.6)] rounded-b-[20px]' : 'bg-transparent'}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-400 ${solid ? 'bg-white/92 backdrop-blur-[28px] shadow-[0_8px_32px_rgba(0,0,0,0.07),0_1px_0_rgba(255,255,255,0.6)] rounded-b-[20px]' : 'bg-transparent'}`}>
       <div className="max-w-[1140px] mx-auto px-5">
         <div className="flex items-center justify-between min-h-[90px]">
 
@@ -64,35 +65,40 @@ export default function Header() {
                 </svg>
               </NavLink>
               <div
-                className="fixed left-0 right-0 top-[90px] opacity-0 pointer-events-none transition-opacity duration-300 ease-out group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto"
+                className="fixed left-0 right-0 top-[90px] px-5 pt-3 opacity-0 translate-y-1 pointer-events-none transition-all duration-300 ease-out group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto"
               >
-                <div className="border-t border-[#303f49]/10 bg-white shadow-[0_20px_40px_rgba(0,0,0,0.1)]">
-                  <div className="max-w-[1140px] mx-auto px-5 py-10 grid grid-cols-3 gap-x-10 gap-y-8">
+                <div className="max-w-[1140px] mx-auto overflow-hidden rounded-[28px] bg-white shadow-[0_30px_70px_-20px_rgba(14,26,16,0.35)] ring-1 ring-black/5">
+                  <div className="p-4 grid grid-cols-3 gap-2">
                     {categories.map((cat) => (
                       <Link
                         key={cat.id}
-                        to={`/produtos?categoria=${cat.slug}`}
-                        className="group/item block border-l-2 border-transparent pl-4 transition-colors hover:border-[#7ab929]"
+                        to={categoryHref(cat.slug)}
+                        className="group/item block rounded-2xl p-5 transition-colors hover:bg-[#f1fae8]"
                       >
-                        <p className="text-[13px] font-semibold uppercase tracking-[0.06em] text-[#303f49] transition-colors group-hover/item:text-[#7ab929]">
+                        <p className="flex items-center justify-between text-[13px] font-semibold uppercase tracking-[0.06em] text-[#303f49] transition-colors group-hover/item:text-[#448a15]">
                           {cat.name}
+                          <span aria-hidden="true" className="opacity-0 -translate-x-1 transition-all duration-200 group-hover/item:opacity-100 group-hover/item:translate-x-0">→</span>
                         </p>
                         {cat.description && (
-                          <p className="mt-1 text-[13px] leading-snug text-[#303f49]/55">
+                          <p className="mt-1.5 text-[13px] leading-snug text-[#303f49]/55">
                             {cat.description}
                           </p>
                         )}
                       </Link>
                     ))}
                   </div>
-                  <div className="max-w-[1140px] mx-auto px-5 pb-6">
-                    <Link
-                      to="/produtos"
-                      className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#7ab929] hover:text-[#5e9420] transition-colors"
-                    >
-                      Ver todos os produtos →
-                    </Link>
-                  </div>
+                  {/* na própria página de produtos o botão levaria ao mesmo sítio */}
+                  {pathname !== '/produtos' && (
+                    <div className="flex items-center justify-between bg-[#f5f8f5] px-8 py-4">
+                      <span className="text-[12px] text-[#303f49]/50">Veja também por fluxo de resíduos no catálogo.</span>
+                      <Link
+                        to="/produtos"
+                        className="rounded-full bg-[#5aad1e] px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-white transition-colors hover:bg-[#448a15]"
+                      >
+                        Ver todos os produtos
+                      </Link>
+                    </div>
+                  )}
                 </div>
               </div>
             </span>
@@ -216,7 +222,7 @@ export default function Header() {
               {categories.map((cat) => (
                 <Link
                   key={cat.id}
-                  to={`/produtos?categoria=${cat.slug}`}
+                  to={categoryHref(cat.slug)}
                   onClick={() => setMobileOpen(false)}
                   className="block px-3 py-1.5 text-sm text-[#303f49]/70 transition-colors hover:text-[#7ab929]"
                 >

@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { categoryHref } from '@/lib/categorySlug'
+import { lenis } from '@/lib/lenis'
 import '@/styles/footer-premium.css'
 
 function SocialBtn({ href, label, children }: { href: string; label: string; children: React.ReactNode }) {
@@ -21,7 +23,7 @@ function ScrollToTopBtn() {
     <button
       type="button"
       aria-label="Voltar ao topo"
-      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      onClick={() => lenis ? lenis.scrollTo(0) : window.scrollTo({ top: 0, behavior: 'smooth' })}
       className={`ft-scroll-btn${visible ? '' : ' ft-scroll-btn--hidden'}`}
     >
       <svg aria-hidden="true" viewBox="0 0 448 512" className="ft-scroll-icon">
@@ -91,9 +93,9 @@ export default function Footer() {
               {[
                 { label: 'Vidro',                    href: '/fluxos/vidro' },
                 { label: 'Biorresíduos',             href: '/fluxos/biorresiduos' },
-                { label: 'Porta-a-porta',            href: '/produtos?categoria=porta-a-porta' },
+                { label: 'Porta-a-porta',            href: '/fluxos/porta-a-porta' },
                 { label: 'Óleos Alimentares Usados', href: '/fluxos/oleos-alimentares-usados' },
-                { label: 'Limpeza Urbana',           href: '/produtos?categoria=papeleiras' },
+                { label: 'Limpeza Urbana',           href: '/categorias/limpeza-urbana' },
               ].map(item => (
                 <li key={item.label}>
                   <Link to={item.href} className="ft-nav-link">{item.label}</Link>
@@ -112,10 +114,10 @@ export default function Footer() {
                 { label: 'Smart Box',         slug: 'smart-box' },
                 { label: 'Porta-a-porta',     slug: 'porta-a-porta' },
                 { label: 'Baldes Domésticos', slug: 'baldes-domesticos' },
-                { label: 'Papeleiras',        slug: 'papeleiras' },
+                { label: 'Limpeza Urbana',    slug: 'limpeza-urbana' },
               ].map(item => (
                 <li key={item.slug}>
-                  <Link to={`/produtos?categoria=${item.slug}`} className="ft-nav-link">{item.label}</Link>
+                  <Link to={categoryHref(item.slug)} className="ft-nav-link">{item.label}</Link>
                 </li>
               ))}
             </ul>

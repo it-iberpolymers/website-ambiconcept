@@ -36,7 +36,7 @@ ContactSection
 
 - Filtro por categoria via query string `?categoria=carga-vertical`
 - Cards de produto com imagem, nome, capacidade
-- Categorias: Carga Traseira, Carga Vertical, Smart Box, Porta-a-porta, Baldes Domésticos, Papeleiras
+- Categorias: Carga Traseira, Carga Vertical, Smart Box, Porta-a-porta, Baldes Domésticos, Limpeza Urbana
 
 ---
 

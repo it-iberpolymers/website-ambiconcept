@@ -14,7 +14,7 @@ export const DEFAULT_RAL_COLORS: Record<string, RalColor[]> = {
     { code: 'RAL 7016', hex: '#383e42' },
     { code: 'RAL 3020', hex: '#bb1e10' },
   ],
-  papeleiras: [
+  'limpeza-urbana': [
     { code: 'RAL 5013', hex: '#193153' },
     { code: 'RAL 6029', hex: '#00703c' },
     { code: 'RAL 1023', hex: '#efb700' },

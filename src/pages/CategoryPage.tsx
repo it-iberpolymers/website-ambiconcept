@@ -3,11 +3,14 @@ import { useProducts } from '@/hooks/useProducts'
 import { getCategoryContent } from '@/data/categories-content'
 import { categories } from '@/data/local'
 import { cardImgStyle } from '@/lib/cardImgStyle'
+import { toPublicSlug } from '@/lib/categorySlug'
 import PageSeo from '@/components/seo/PageSeo'
+import '@/styles/page-shell.css'
 import '@/styles/category-page.css'
 
 export default function CategoryPage() {
-  const { slug } = useParams<{ slug: string }>()
+  const { slug: rawSlug } = useParams<{ slug: string }>()
+  const slug = rawSlug ? toPublicSlug(rawSlug) : rawSlug
   const content = getCategoryContent(slug ?? '')
   const category = categories.find((c) => c.slug === slug)
   const { products, loading } = useProducts({ categorySlug: slug })
@@ -18,7 +21,7 @@ export default function CategoryPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white cp-page">
 
       <PageSeo
         title={content.seoTitle}
@@ -28,25 +31,28 @@ export default function CategoryPage() {
       />
 
       {/* Header */}
-      <div className="bg-white pt-[110px] pb-[48px] text-center">
-        <div className="max-w-[1140px] mx-auto px-5">
-          <nav aria-label="Localização" className="flex items-center justify-center gap-1.5 text-[11px] text-[#303f49]/35 mb-8">
-            <Link to="/" className="hover:text-[#7ab929] transition-colors">Início</Link>
+      <div className="ps-hero text-center">
+        <div className="max-w-[1140px] mx-auto px-5 relative z-[1]">
+          <nav aria-label="Localização" className="flex items-center justify-center gap-1.5 text-[11px] text-white/45 mb-8">
+            <Link to="/" className="hover:text-[#95d855] transition-colors">Início</Link>
             <span aria-hidden="true">/</span>
-            <Link to="/produtos" className="hover:text-[#7ab929] transition-colors">Produtos</Link>
+            <Link to="/produtos" className="hover:text-[#95d855] transition-colors">Produtos</Link>
             <span aria-hidden="true">/</span>
-            <span className="text-[#303f49]/60">{content.headline}</span>
+            <span className="text-white/75">{content.headline}</span>
           </nav>
-          <p className="text-[11px] font-semibold tracking-[0.14em] uppercase text-[#7ab929] mb-4">
+          <p className="text-[11px] font-semibold tracking-[0.14em] uppercase text-[#95d855] mb-4">
             {content.eyebrow}
           </p>
-          <h1 className="text-[42px] md:text-[52px] font-semibold uppercase text-[#303f49] leading-none mb-4">
+          <h1 className="text-[42px] md:text-[56px] font-bold tracking-[-0.03em] text-white leading-none mb-4">
             {content.headline}
           </h1>
-          <p className="text-[#303f49]/55 text-[15px] max-w-xl mx-auto leading-relaxed">
+          <p className="text-[#b4c7b8] text-[15px] max-w-xl mx-auto leading-relaxed">
             {content.tagline}
           </p>
         </div>
+        <svg className="ps-hero-wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 60V28C240 -4 480 -4 720 22s480 30 720 4V60z" />
+        </svg>
       </div>
 
       {/* Intro */}

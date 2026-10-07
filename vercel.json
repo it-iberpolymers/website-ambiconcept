@@ -10,7 +10,11 @@
     { "source": "/produtos/ambi-10", "destination": "/produtos/smart-box/ambi-1-0", "permanent": true },
     { "source": "/produtos/carga-traseira/ambi-two-carga-traseira", "destination": "/produtos/carga-traseira/ambi-two-120l", "permanent": true },
     { "source": "/produtos/carga-traseira/ambi-four", "destination": "/produtos/carga-traseira/ambi-four-800l", "permanent": true },
-    { "source": "/produtos/ambi-four", "destination": "/produtos/carga-traseira/ambi-four-800l", "permanent": true }
+    { "source": "/produtos/ambi-four", "destination": "/produtos/carga-traseira/ambi-four-800l", "permanent": true },
+    { "source": "/produtos/papeleiras/:slug", "destination": "/produtos/limpeza-urbana/:slug", "permanent": true },
+    { "source": "/categorias/papeleiras", "destination": "/categorias/limpeza-urbana", "permanent": true },
+    { "source": "/produtos", "has": [{ "type": "query", "key": "categoria", "value": "papeleiras" }], "destination": "/produtos?categoria=limpeza-urbana", "permanent": true },
+    { "source": "/produtos", "has": [{ "type": "query", "key": "categoria", "value": "porta-a-porta" }], "destination": "/fluxos/porta-a-porta", "permanent": true }
   ],
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }

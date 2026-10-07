@@ -53,6 +53,14 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Imagens com cantos suaves em todo o site — na layer base e com :where() para
+   as classes utilitárias (rounded-full, rounded-none…) continuarem a mandar */
+@layer base {
+  :where(main img:not([src$=".svg"])) {
+    border-radius: 20px;
+  }
+}
+
 /* Skip link de acessibilidade */
 .skip-link {
   position: absolute;

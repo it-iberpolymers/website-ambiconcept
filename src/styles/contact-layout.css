@@ -1,5 +1,7 @@
 .cl-section {
-  background-color: #ffffff;
+  background:
+    radial-gradient(700px 420px at 92% 35%, rgba(122, 185, 41, 0.14), transparent 70%),
+    linear-gradient(180deg, #ffffff 0%, #F2F8EA 100%);
   padding-top: 120px;
   padding-bottom: 120px;
 }

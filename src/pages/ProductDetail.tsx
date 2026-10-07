@@ -1,6 +1,7 @@
 import { useState, lazy, Suspense } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useProduct } from '@/hooks/useProducts'
+import { categoryHref } from '@/lib/categorySlug'
 import PageSeo from '@/components/seo/PageSeo'
 
 // Cada template de produto (com o respetivo CSS) só é pedido quando a
@@ -58,7 +59,7 @@ export default function ProductDetail() {
     return <Suspense fallback={<ProductSkeleton />}><CargaVerticalTemplate product={product} /></Suspense>
   }
 
-  if (product.category?.slug === 'papeleiras') {
+  if (product.category?.slug === 'limpeza-urbana') {
     return <Suspense fallback={<ProductSkeleton />}><PapeleirasTemplate product={product} /></Suspense>
   }
 
@@ -104,7 +105,7 @@ export default function ProductDetail() {
               itemListElement: [
                 { '@type': 'ListItem', position: 1, name: 'Início', item: 'https://www.ambiconcept.pt/' },
                 { '@type': 'ListItem', position: 2, name: 'Produtos', item: 'https://www.ambiconcept.pt/produtos' },
-                { '@type': 'ListItem', position: 3, name: product.category?.name, item: `https://www.ambiconcept.pt/produtos?categoria=${product.category?.slug}` },
+                { '@type': 'ListItem', position: 3, name: product.category?.name, item: `https://www.ambiconcept.pt${categoryHref(product.category?.slug ?? '')}` },
                 { '@type': 'ListItem', position: 4, name: product.name, item: `https://www.ambiconcept.pt/produtos/${product.category?.slug}/${product.slug}` },
               ],
             },
@@ -123,7 +124,7 @@ export default function ProductDetail() {
               <>
                 <span aria-hidden="true">/</span>
                 <Link
-                  to={`/produtos?categoria=${product.category.slug}`}
+                  to={categoryHref(product.category.slug)}
                   className="hover:text-[#7ab929] transition-colors"
                 >
                   {product.category.name}

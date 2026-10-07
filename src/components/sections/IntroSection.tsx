@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { storageUrl } from '@/data/local'
 import '@/styles/home-premium.css'
 
 export default function IntroSection() {
@@ -19,7 +20,9 @@ export default function IntroSection() {
   return (
     <section className="hp-intro" ref={sectionRef}>
       <div className="hp-intro-inner">
-        <div className="hp-intro-aside hp-reveal" />
+        <div className="hp-intro-aside hp-reveal">
+          <img src={storageUrl('produtos/ambi_2.7/fotos/digital/00_capa.png')} alt="Contentor AMBI 2.7" loading="lazy" />
+        </div>
         <div className="hp-reveal" style={{ transitionDelay: '.1s' }}>
           <p className="hp-label">Equipamento de Precisão</p>
           <h2 className="hp-intro-title">

@@ -30,7 +30,7 @@ export const categoriesContent: CategoryContent[] = [
     tagline: 'Infraestrutura de recolha seletiva para o espaço público urbano.',
     intro:
       'Os contentores de carga vertical Ambiconcept são desenvolvidos para a recolha seletiva em espaço público — ecopontos de superfície com capacidade entre 2.500 e 2.700 litros. Fabricados em PEAD de alta resistência, oferecem durabilidade urbana comprovada e compatibilidade universal com volteadores de carga vertical. Disponíveis para os principais fluxos de recolha seletiva: papel & cartão, vidro, embalagens e indiferenciados.',
-    image: '/assets/home-vidro.webp',
+    image: '/assets/home-vidro.jpg',
     imageAlt: 'Contentor AMBI 2.7 de carga vertical em espaço público urbano — Ambiconcept',
     highlights: [
       {
@@ -67,14 +67,14 @@ export const categoriesContent: CategoryContent[] = [
       'Ecopontos de carga vertical de 2.500 a 2.700 Litros para recolha seletiva em espaço público. AMBI 2.7 e AMBI 2.5 — soluções para municípios e operadores RSU em Portugal.',
   },
   {
-    slug: 'papeleiras',
+    slug: 'limpeza-urbana',
     eyebrow: 'Mobiliário Urbano',
-    headline: 'Papeleiras',
-    tagline: 'Papeleiras urbanas para espaço público e zonas balneares.',
+    headline: 'Limpeza Urbana',
+    tagline: 'Equipamento de limpeza urbana para espaço público e zonas balneares.',
     intro:
-      'As papeleiras Ambiconcept são desenvolvidas para uso intensivo em espaço público — estrutura robusta em aço, com opções de fixação a poste, mural ou solo. Disponíveis em versão urbana e em versão costeira com tratamento anticorrosão, para ambientes balneares exigentes.',
+      'Os equipamentos de limpeza urbana Ambiconcept são desenvolvidos para uso intensivo em espaço público — estrutura robusta em aço, com opções de fixação a poste, mural ou solo. Disponíveis em versão urbana e em versão costeira com tratamento anticorrosão, para ambientes balneares exigentes.',
     image: '/assets/home-papeleiras.png',
-    imageAlt: 'Papeleira urbana AMBI URBAN em espaço público — Ambiconcept',
+    imageAlt: 'Equipamento de limpeza urbana AMBI URBAN em espaço público — Ambiconcept',
     highlights: [
       {
         title: 'Limpeza Fácil',
@@ -104,7 +104,7 @@ export const categoriesContent: CategoryContent[] = [
       { label: 'Ambiente', value: 'Urbano · Costeiro / Balnear' },
       { label: 'Personalização', value: 'Cor RAL · Logótipo' },
     ],
-    seoTitle: 'Papeleiras Urbanas — Mobiliário Urbano',
+    seoTitle: 'Limpeza Urbana — Mobiliário Urbano',
     seoDescription:
       'Papeleiras urbanas de 80 Litros para espaço público e zonas balneares. AMBI URBAN e AMBI BEACH — soluções para municípios em Portugal.',
   },
@@ -157,7 +157,7 @@ export const categoriesContent: CategoryContent[] = [
     tagline: 'Contentores inteligentes de superfície para fluxos especiais de resíduos.',
     intro:
       'O AMBI 1.0 foi desenvolvido para fluxos especiais de resíduos, com capacidade de 1.000 Litros. \nCom abertura controlada e estrutura em aço e PEAD, garante segurança e durabilidade \nem instalação de superfície.',
-    image: '/assets/home-oleos-alimentares.png',
+    image: '/assets/fluxo-oleos-alimentares.png',
     imageAlt: 'Smart Box AMBI 1.0 para recolha de óleos alimentares usados — Ambiconcept',
     highlights: [
       {

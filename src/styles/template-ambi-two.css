@@ -939,3 +939,133 @@
     margin: 0 auto;
   }
 }
+
+/* ── Refresh visual — alinhado com a Home ────────────────────
+   Secções alternam branco / cinza esverdeado, cantos suaves e cartões com sombra.
+   As secções cinzentas sobrepõem 40px da anterior para os cantos mostrarem o fundo vizinho. */
+
+.at-showcase {
+  background:
+    radial-gradient(720px 520px at 50% 60%, rgba(122, 185, 41, 0.24), transparent 66%),
+    radial-gradient(520px 340px at 90% 0%, rgba(122, 185, 41, 0.12), transparent 70%),
+    #EEF3EC;
+  position: relative;
+  padding-bottom: 130px;
+}
+
+/* aresta de baixo em onda, com a cor da secção seguinte (branco) */
+.at-showcase::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 60px;
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60' preserveAspectRatio='none'%3E%3Cpath fill='%23fff' d='M0 60V28C240 -4 480 -4 720 22s480 30 720 4V60z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+/* opções + vídeo são dois blocos cinzentos seguidos: ficam em largura total */
+.at-options-section {
+  position: relative;
+  background: #E6ECE4;
+  border-radius: 40px 40px 0 0;
+  margin-top: -40px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+/* o bloco de cima (vídeo) é que arredonda os cantos sobre os relacionados */
+.at-video-section {
+  position: relative;
+  background: #E6ECE4;
+  border-radius: 0 0 40px 40px;
+  margin-bottom: -40px;
+  padding: 80px 20px 110px;
+}
+.at-video-wrap {
+  max-width: 1400px;
+  margin: 0 auto;
+  border-radius: 36px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px -36px rgba(14, 26, 16, 0.5);
+}
+
+/* FAQs: bloco solto sobre o branco (relacionados e sistema de recolha) */
+.at-faq-section {
+  position: relative;
+  z-index: 1;
+  background: #E6ECE4;
+  border-radius: 40px;
+  margin: -40px 56px;
+}
+.at-faq-list {
+  background: #fff;
+  border-top: none;
+  border-radius: 28px;
+  padding: 8px 28px;
+  box-shadow: 0 24px 50px -38px rgba(14, 26, 16, 0.4);
+}
+.at-faq-item:last-child { border-bottom: none; }
+
+/* sistema de recolha passa a branco para a onda do CTA encaixar */
+.at-flow-section { background: #fff; padding-top: 140px; }
+
+/* cartões */
+.at-custom-item,
+.at-sizes-item,
+.at-feature-grid-item {
+  border-radius: 28px;
+  padding: 18px 18px 24px;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s;
+}
+.at-custom-item,
+.at-sizes-item { background: #F2F6F1; }
+.at-feature-grid-item {
+  background: #fff;
+  box-shadow: 0 24px 50px -38px rgba(14, 26, 16, 0.4);
+}
+.at-custom-item:hover,
+.at-sizes-item:hover,
+.at-feature-grid-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 54px -32px rgba(14, 26, 16, 0.42);
+}
+.at-custom-img,
+.at-sizes-img,
+.at-feature-grid-img,
+.at-related-img { border-radius: 0; }
+.at-sizes-img-wrap { border-radius: 20px; }
+
+/* relacionados */
+.at-related-card {
+  background: #F2F6F1;
+  border-radius: 28px;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s;
+}
+.at-related-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 54px -32px rgba(14, 26, 16, 0.42);
+}
+
+@media (max-width: 680px) {
+  .at-options-section { border-radius: 32px 32px 0 0; }
+  .at-video-section { border-radius: 0 0 32px 32px; }
+  .at-video-wrap { border-radius: 28px; }
+  .at-faq-section { border-radius: 32px; margin-inline: 20px; }
+  .at-faq-list { padding: 4px 18px; }
+}
+
+/* aresta de cima do bloco verde em onda (branca) */
+.at-cta-section { position: relative; padding-top: 140px; }
+.at-cta-section::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 60px;
+  pointer-events: none;
+  transform: scaleY(-1);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60' preserveAspectRatio='none'%3E%3Cpath fill='%23fff' d='M0 60V28C240 -4 480 -4 720 22s480 30 720 4V60z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}

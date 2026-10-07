@@ -23,7 +23,7 @@ export const categories: ProductCategory[] = [
   { id: 'cat-3', slug: 'smart-box',         name: 'Smart Box',         description: 'Contentores de superfície e inteligentes para fluxos especiais.',                sort_order: 3 },
   { id: 'cat-4', slug: 'porta-a-porta',     name: 'Porta-a-porta',     description: 'Baldes e contentores para sistemas de recolha domiciliária.',                      sort_order: 4 },
   { id: 'cat-5', slug: 'baldes-domesticos', name: 'Baldes Domésticos', description: 'Baldes de cozinha e proximidade para biorresíduos e outros fluxos.',               sort_order: 5 },
-  { id: 'cat-6', slug: 'papeleiras',        name: 'Papeleiras',        description: 'Papeleiras urbanas para espaço público e zonas balneares.',                        sort_order: 6 },
+  { id: 'cat-6', slug: 'limpeza-urbana',     name: 'Limpeza Urbana',     description: 'Papeleiras urbanas para espaço público e zonas balneares.',                        sort_order: 6 },
 ]
 
 export const products: Product[] = [
@@ -146,7 +146,7 @@ export const products: Product[] = [
   {
     id: 'prod-7', slug: 'ambi-urban', name: 'AMBI URBAN', featured: true,
     sort_order: 13,
-    short_description: 'Papeleira urbana para espaço público de alta frequência. Design integrado que respeita o ambiente urbano.',
+    short_description: 'Equipamento de limpeza urbana para espaço público de alta frequência. Design integrado que respeita o ambiente urbano.',
     description: 'A AMBI URBAN foi concebida para se integrar harmoniosamente no mobiliário urbano de cidades exigentes. Com estrutura robusta em aço pintado e recipiente interior amovível, facilita a limpeza e a manutenção. Disponível com fixação a poste, mural ou ao solo.',
     category_id: 'cat-6', category: categories[5],
     specifications: { Capacidade: '80 Litros', Material: 'Aço pintado', Fixação: 'Poste / Mural / Solo', 'Interior amovível': 'Sim', Personalização: 'Cor RAL, logótipo' },
@@ -162,8 +162,8 @@ export const products: Product[] = [
   {
     id: 'prod-8', slug: 'ambi-beach', name: 'AMBI BEACH', featured: false,
     sort_order: 14,
-    short_description: 'Papeleira para zonas balneares — resistente à corrosão salina, projetada para ambientes costeiros exigentes.',
-    description: 'A AMBI BEACH é a versão costeira da papeleira urbana Ambiconcept. O tratamento anticorrosão especial e os materiais selecionados garantem durabilidade em ambientes salinos. O design permite fácil esvaziamento e limpeza pela equipa de limpeza urbana.',
+    short_description: 'Equipamento de limpeza urbana para zonas balneares — resistente à corrosão salina, projetada para ambientes costeiros exigentes.',
+    description: 'A AMBI BEACH é a versão costeira da AMBI URBAN, o equipamento de limpeza urbana da Ambiconcept. O tratamento anticorrosão especial e os materiais selecionados garantem durabilidade em ambientes salinos. O design permite fácil esvaziamento e limpeza pela equipa de limpeza urbana.',
     category_id: 'cat-6', category: categories[5],
     specifications: { Capacidade: '80 Litros', Material: 'Aço inox / PEAD', Ambiente: 'Costeiro / Balnear', Tratamento: 'Anticorrosão salino', Fixação: 'Solo' },
     cover_image: storageUrl('produtos/ambi_beach/fotos/digital/00_capa_embalagens.png'),

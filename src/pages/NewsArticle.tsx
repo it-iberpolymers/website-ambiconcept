@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom'
 import { useNewsArticle } from '@/hooks/useNews'
 import PageSeo from '@/components/seo/PageSeo'
+import '@/styles/page-shell.css'
 
 export default function NewsArticle() {
   const { slug } = useParams<{ slug: string }>()
@@ -8,10 +9,10 @@ export default function NewsArticle() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white">
-        <div className="max-w-[800px] mx-auto px-5 py-20 animate-pulse">
+      <div className="ps-page">
+        <div className="max-w-[800px] mx-auto px-5 py-32 animate-pulse">
           <div className="h-6 w-32 bg-[#eaeaea] mb-8" />
-          <div className="aspect-[1100/460] bg-[#eaeaea] mb-10" />
+          <div className="aspect-[1100/460] bg-white/70 rounded-[32px] mb-10" />
           <div className="h-10 w-3/4 bg-[#eaeaea] mb-4" />
           <div className="h-4 w-full bg-[#eaeaea] mb-2" />
           <div className="h-4 w-2/3 bg-[#eaeaea]" />
@@ -22,7 +23,7 @@ export default function NewsArticle() {
 
   if (!article) {
     return (
-      <div className="min-h-screen bg-white flex flex-col items-center justify-center text-center px-5">
+      <div className="ps-page flex flex-col items-center justify-center text-center px-5">
         <p className="text-6xl font-black text-[#eaeaea] mb-4">404</p>
         <h1 className="text-2xl font-semibold text-[#303f49] mb-2">Artigo não encontrado</h1>
         <p className="text-[#adadad] mb-8">O artigo que procura não existe ou foi removido.</p>
@@ -60,7 +61,7 @@ export default function NewsArticle() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="ps-page">
 
       <PageSeo
         title={article.title}
@@ -73,11 +74,11 @@ export default function NewsArticle() {
       />
 
       {/* Cabeçalho da página */}
-      <div className="bg-[#303f49] pt-[100px] pb-[50px]">
-        <div className="max-w-[800px] mx-auto px-5">
+      <div className="ps-hero">
+        <div className="max-w-[800px] mx-auto px-5 relative z-[1]">
           <Link
             to="/noticias"
-            className="inline-flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.08em] text-white/50 hover:text-[#7ab929] transition-colors mb-6"
+            className="inline-flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.08em] text-white/55 hover:text-[#95d855] transition-colors mb-6"
           >
             <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="15 18 9 12 15 6"/>
@@ -86,7 +87,7 @@ export default function NewsArticle() {
           </Link>
 
           <div className="flex items-center gap-3 mb-4">
-            <span className="bg-[#7ab929] text-white text-[11px] font-normal uppercase tracking-wide px-[1.2em] py-[0.5em]">
+            <span className="rounded-full bg-[#7ab929] text-white text-[11px] font-normal uppercase tracking-wide px-[1.2em] py-[0.5em]">
               {article.category}
             </span>
             <time dateTime={article.published_at} className="text-[12px] text-white/45">
@@ -96,27 +97,31 @@ export default function NewsArticle() {
             </time>
           </div>
 
-          <h1 className="text-[28px] md:text-[38px] font-semibold uppercase text-white leading-tight">
+          <h1 className="text-[28px] md:text-[40px] font-bold tracking-[-0.02em] text-white leading-tight">
             {article.title}
           </h1>
         </div>
+        <svg className="ps-hero-wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 60V28C240 -4 480 -4 720 22s480 30 720 4V60z" />
+        </svg>
       </div>
 
       {/* Imagem */}
       {article.image_url && (
-        <div className="max-w-[800px] mx-auto px-5 -mt-6">
-          <div className="aspect-[1100/460] overflow-hidden">
+        <div className="max-w-[800px] mx-auto px-5 -mt-12 relative z-[2]">
+          <div className="aspect-[1100/460] overflow-hidden rounded-[32px] shadow-[0_30px_60px_-34px_rgba(14,26,16,0.5)]">
             <img
               src={article.image_url}
               alt={article.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover rounded-none"
             />
           </div>
         </div>
       )}
 
       {/* Conteúdo */}
-      <div className="max-w-[800px] mx-auto px-5 py-[60px]">
+      <div className="max-w-[800px] mx-auto px-5 pt-8 pb-[100px]">
+       <div className="bg-white rounded-[32px] p-8 md:p-12 shadow-[0_24px_50px_-38px_rgba(14,26,16,0.4)]">
         <p className="text-[17px] text-[#303f49]/80 leading-relaxed mb-6 font-medium">
           {article.excerpt}
         </p>
@@ -132,6 +137,7 @@ export default function NewsArticle() {
             ← Ver todas as notícias
           </Link>
         </div>
+       </div>
       </div>
 
     </div>

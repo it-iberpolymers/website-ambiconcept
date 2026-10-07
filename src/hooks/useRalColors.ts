@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getDoc } from 'firebase/firestore'
 import { db, siteDoc } from '@/lib/firebase'
+import { slugVariants } from '@/lib/categorySlug'
 import { DEFAULT_RAL_COLORS, type RalColor } from '@/data/ral-colors'
 
 export function useRalColors(categorySlug: string): { colors: RalColor[]; loading: boolean } {
@@ -19,7 +20,10 @@ export function useRalColors(categorySlug: string): { colors: RalColor[]; loadin
 
     ;(async () => {
       try {
-        const snap = await getDoc(siteDoc('siteContent', `ral-${categorySlug}`))
+        // tenta o id atual e depois o antigo (antes da migração dos dados)
+        let snap = await getDoc(siteDoc('siteContent', `ral-${slugVariants(categorySlug)[0]}`))
+        const legacy = slugVariants(categorySlug)[1]
+        if (!snap.exists() && legacy) snap = await getDoc(siteDoc('siteContent', `ral-${legacy}`))
         if (!cancelled && snap.exists()) {
           const data = snap.data() as { colors?: RalColor[] }
           if (data.colors?.length) setColors(data.colors)

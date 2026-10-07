@@ -6,6 +6,7 @@ import {
 } from 'firebase/firestore'
 import { db, siteCollection, siteDoc } from '@/lib/firebase'
 import { categories as localCategories, products as localProducts } from '@/data/local'
+import { toPublicSlug, slugVariants } from '@/lib/categorySlug'
 import type { Product, ProductCategory } from '@/types'
 
 // When Firebase credentials are missing, db is null — fall back to local static data
@@ -13,8 +14,13 @@ const USE_LOCAL = !db
 
 function normalizeProduct(data: Record<string, unknown>): import('@/types').Product {
   const legacyImages = (data.images as string[]) ?? []
+  const category = data.category as { slug?: string; name?: string } | undefined
   return {
     ...data,
+    // slug antigo ('papeleiras') guardado na base de dados → slug atual
+    category: category?.slug && toPublicSlug(category.slug) !== category.slug
+      ? { ...category, slug: toPublicSlug(category.slug), name: 'Limpeza Urbana' }
+      : category,
     cover_image: (data.cover_image as string) ?? legacyImages[0] ?? '',
     hero_images: (data.hero_images as string[]) ?? legacyImages,
   } as import('@/types').Product
@@ -59,7 +65,7 @@ export function useProducts(opts: UseProductsOptions = {}): {
         // índices compostos quando combinada com os filtros abaixo
         const constraints: QueryConstraint[] = []
         if (featured) constraints.push(where('featured', '==', true))
-        if (categorySlug) constraints.push(where('category.slug', '==', categorySlug))
+        if (categorySlug) constraints.push(where('category.slug', 'in', slugVariants(categorySlug)))
         const snap = await getDocs(query(siteCollection('products'), ...constraints))
         if (!cancelled) {
           let result = snap.docs
@@ -153,7 +159,10 @@ export function useProductCategories(): {
           query(siteCollection('categories'), orderBy('sort_order'))
         )
         if (!cancelled) {
-          setCategories(snap.docs.map((d) => ({ id: d.id, ...d.data() } as ProductCategory)))
+          setCategories(snap.docs.map((d) => {
+            const cat = { id: d.id, ...d.data() } as ProductCategory
+            return toPublicSlug(cat.slug) !== cat.slug ? { ...cat, slug: toPublicSlug(cat.slug), name: 'Limpeza Urbana' } : cat
+          }))
         }
       } finally {
         if (!cancelled) setLoading(false)

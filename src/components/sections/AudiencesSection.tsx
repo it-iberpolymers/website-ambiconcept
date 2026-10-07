@@ -38,7 +38,7 @@ export default function AudiencesSection() {
             </p>
             <ul>
               <li>Contentores de carga vertical e traseira certificados</li>
-              <li>Papeleiras urbanas para espaços de alta densidade</li>
+              <li>Equipamento de limpeza urbana para espaços de alta densidade</li>
               <li>Equipamento personalizável em cor RAL</li>
               <li>Suporte técnico e pós-venda em Portugal</li>
             </ul>

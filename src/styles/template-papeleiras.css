@@ -750,3 +750,112 @@
     margin: 0 auto;
   }
 }
+
+/* ── Refresh visual — alinhado com a Home ────────────────────
+   Secções alternam branco / cinza esverdeado, cantos suaves e cartões com sombra.
+   As secções cinzentas sobrepõem 40px da anterior para os cantos mostrarem o fundo vizinho. */
+
+.pp-showcase {
+  background:
+    radial-gradient(720px 520px at 50% 60%, rgba(122, 185, 41, 0.24), transparent 66%),
+    radial-gradient(520px 340px at 90% 0%, rgba(122, 185, 41, 0.12), transparent 70%),
+    #EEF3EC;
+  position: relative;
+  padding-bottom: 130px;
+}
+
+/* aresta de baixo em onda, com a cor da secção seguinte (branco) */
+.pp-showcase::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 60px;
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60' preserveAspectRatio='none'%3E%3Cpath fill='%23fff' d='M0 60V28C240 -4 480 -4 720 22s480 30 720 4V60z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.pp-options-section,
+.pp-faq-section {
+  position: relative;
+  border-radius: 40px;
+  margin-block: -40px; /* cantos de cima e de baixo deixam ver as secções vizinhas */
+  background: #E6ECE4;
+}
+.pp-options-section { padding-top: 40px; padding-bottom: 40px; } /* colada ao vídeo (também cinzento): sem margem lateral */
+/* FAQs soltas das margens e acima da secção verde, que sobe 100px por baixo delas */
+.pp-faq-section { margin-inline: 56px; margin-bottom: -100px; z-index: 1; }
+/* o bloco de cima (vídeo) é que arredonda os cantos sobre os relacionados */
+.pp-video-section { position: relative; border-radius: 0 0 40px 40px; margin-bottom: -40px; }
+
+/* cartão de personalização */
+.pp-custom-item {
+  background: #F2F6F1;
+  border-radius: 28px;
+  padding: 18px 18px 24px;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s;
+}
+.pp-custom-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 54px -32px rgba(14, 26, 16, 0.42);
+}
+.pp-custom-img,
+.pp-related-img { border-radius: 0; }
+
+/* vídeo em bloco arredondado */
+.pp-video-section {
+  background: #E6ECE4;
+  padding: 80px 20px 110px;
+}
+.pp-video-wrap {
+  max-width: 1400px;
+  margin: 0 auto;
+  border-radius: 36px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px -36px rgba(14, 26, 16, 0.5);
+}
+
+/* relacionados */
+.pp-related-card {
+  background: #F2F6F1;
+  border-radius: 28px;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s;
+}
+.pp-related-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 54px -32px rgba(14, 26, 16, 0.42);
+}
+
+/* FAQs num cartão branco */
+.pp-faq-list {
+  background: #fff;
+  border-top: none;
+  border-radius: 28px;
+  padding: 8px 28px;
+  box-shadow: 0 24px 50px -38px rgba(14, 26, 16, 0.4);
+}
+.pp-faq-item:last-child { border-bottom: none; }
+
+@media (max-width: 680px) {
+  .pp-options-section,
+  .pp-faq-section { border-radius: 32px; }
+  .pp-faq-section { margin-inline: 20px; }
+  .pp-video-section { border-radius: 0 0 32px 32px; }
+  .pp-video-wrap { border-radius: 28px; }
+  .pp-faq-list { padding: 4px 18px; }
+}
+
+/* aresta de cima do bloco verde em onda — a onda é branca e fica atrás do cartão das FAQs */
+.pp-cta-section { position: relative; padding-top: 190px; } /* 100px ficam por baixo das FAQs */
+.pp-cta-section::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 60px;
+  pointer-events: none;
+  transform: scaleY(-1);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60' preserveAspectRatio='none'%3E%3Cpath fill='%23fff' d='M0 60V28C240 -4 480 -4 720 22s480 30 720 4V60z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}

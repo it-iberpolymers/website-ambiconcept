@@ -24,7 +24,7 @@ export default function ProductsPremiumSection() {
       {/* Vidro */}
       <div className="hp-product-panel hp-reveal">
         <div className="hp-product-vis hp-product-vis--photo">
-          <img src="/assets/home-vidro.webp" alt="Contentor de recolha seletiva de vidro AMBI 2.7 — contentor de carga vertical para municípios, Portugal" className="hp-product-photo" loading="lazy" />
+          <img src="/assets/home-vidro.jpg" alt="Contentor de recolha seletiva de vidro AMBI 2.7 — contentor de carga vertical para municípios, Portugal" className="hp-product-photo" loading="lazy" />
         </div>
         <div className="hp-product-copy">
           <p className="hp-product-index">01 — Ecopontos · Carga Vertical e Traseira</p>
@@ -47,7 +47,7 @@ export default function ProductsPremiumSection() {
               <span className="hp-spec-value">Verde / RAL personalizado</span>
             </div>
           </div>
-          <Link to="/produtos?categoria=carga-vertical" className="hp-product-cta">
+          <Link to="/fluxos/vidro" className="hp-product-cta">
             Ver contentores de vidro →
           </Link>
         </div>
@@ -79,20 +79,20 @@ export default function ProductsPremiumSection() {
               <span className="hp-spec-value">PEAD</span>
             </div>
           </div>
-          <Link to="/produtos?categoria=porta-a-porta" className="hp-product-cta">
+          <Link to="/fluxos/biorresiduos" className="hp-product-cta">
             Ver contentores de biorresíduos →
           </Link>
         </div>
       </div>
 
-      {/* Papeleiras */}
+      {/* Limpeza Urbana */}
       <div className="hp-product-panel hp-reveal">
         <div className="hp-product-vis hp-product-vis--photo">
-          <img src="/assets/home-papeleiras.png" alt="Papeleiras urbanas AMBI URBAN e AMBI BEACH — limpeza urbana para espaço público e zonas balneares, Portugal" className="hp-product-photo" loading="lazy" />
+          <img src="/assets/home-papeleiras.png" alt="Equipamento de limpeza urbana AMBI URBAN e AMBI BEACH para espaço público e zonas balneares, Portugal" className="hp-product-photo" loading="lazy" />
         </div>
         <div className="hp-product-copy">
           <p className="hp-product-index">03 — Limpeza Urbana</p>
-          <h3 className="hp-product-name">Papeleiras<br />Urbanas</h3>
+          <h3 className="hp-product-name">Limpeza<br />Urbana</h3>
           <p className="hp-product-models">AMBI URBAN · AMBI BEACH</p>
           <p className="hp-product-desc">
             Presença urbana integrada. Design que não compete com a cidade — serve-a. Para espaços públicos de alta frequência de uso.
@@ -111,8 +111,8 @@ export default function ProductsPremiumSection() {
               <span className="hp-spec-value">Urbano / Praia</span>
             </div>
           </div>
-          <Link to="/produtos?categoria=papeleiras" className="hp-product-cta">
-            Ver papeleiras urbanas →
+          <Link to="/fluxos/limpeza-urbana" className="hp-product-cta">
+            Ver limpeza urbana →
           </Link>
         </div>
       </div>
@@ -143,7 +143,7 @@ export default function ProductsPremiumSection() {
               <span className="hp-spec-value">Carga traseira</span>
             </div>
           </div>
-          <Link to="/produtos?categoria=porta-a-porta" className="hp-product-cta">
+          <Link to="/fluxos/porta-a-porta" className="hp-product-cta">
             Ver contentores porta-a-porta →
           </Link>
         </div>
@@ -152,7 +152,7 @@ export default function ProductsPremiumSection() {
       {/* Óleos Alimentares Usados */}
       <div className="hp-product-panel hp-reveal">
         <div className="hp-product-vis hp-product-vis--photo">
-          <img src="/assets/home-oleos-alimentares.png" alt="Contentor AMBI 1.0 para recolha de óleos alimentares usados — smart box de superfície para espaço público, Portugal" className="hp-product-photo" loading="lazy" />
+          <img src="/assets/fluxo-oleos-alimentares.png" alt="Contentor AMBI 1.0 para recolha de óleos alimentares usados — smart box de superfície para espaço público, Portugal" className="hp-product-photo" loading="lazy" />
         </div>
         <div className="hp-product-copy">
           <p className="hp-product-index">05 — Smart Box</p>
@@ -175,7 +175,7 @@ export default function ProductsPremiumSection() {
               <span className="hp-spec-value">Abertura controlada</span>
             </div>
           </div>
-          <Link to="/produtos?categoria=smart-box" className="hp-product-cta">
+          <Link to="/fluxos/oleos-alimentares-usados" className="hp-product-cta">
             Ver contentor de óleos alimentares →
           </Link>
         </div>

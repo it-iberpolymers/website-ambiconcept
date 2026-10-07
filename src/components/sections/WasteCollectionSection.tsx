@@ -2,11 +2,11 @@ import { Link, useNavigate } from 'react-router-dom'
 import './WasteCollectionSection.css'
 
 const solutions = [
-  { slug: 'vidro',             title: 'Vidro',                    image: '/assets/home-vidro.webp',             link: '/produtos?categoria=carga-vertical' },
-  { slug: 'biorresiduos',      title: 'Biorresíduos',             image: '/assets/home-biorresiduos.png',       link: '/produtos?categoria=porta-a-porta'  },
-  { slug: 'papeleiras',        title: 'Papeleiras',               image: '/assets/home-papeleiras.png',         link: '/produtos?categoria=papeleiras'     },
-  { slug: 'porta-a-porta',     title: 'Porta-a-porta',           image: '/assets/home-porta-a-porta.webp',     link: '/produtos?categoria=porta-a-porta'  },
-  { slug: 'oleos-alimentares', title: 'Óleos alimentares usados', image: '/assets/home-oleos-alimentares.png', link: '/produtos?categoria=smart-box'      },
+  { slug: 'vidro',             title: 'Vidro',                    image: '/assets/home-vidro.jpg',             link: '/produtos?categoria=carga-vertical' },
+  { slug: 'biorresiduos',      title: 'Biorresíduos',             image: '/assets/home-biorresiduos.png',       link: '/fluxos/porta-a-porta'  },
+  { slug: 'limpeza-urbana',     title: 'Limpeza Urbana',            image: '/assets/home-papeleiras.png',         link: '/produtos?categoria=limpeza-urbana'     },
+  { slug: 'porta-a-porta',     title: 'Porta-a-porta',           image: '/assets/home-porta-a-porta.webp',     link: '/fluxos/porta-a-porta'  },
+  { slug: 'oleos-alimentares', title: 'Óleos alimentares usados', image: '/assets/fluxo-oleos-alimentares.png', link: '/produtos?categoria=smart-box'      },
 ]
 
 export default function WasteCollectionSection() {

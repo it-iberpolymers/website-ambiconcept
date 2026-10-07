@@ -81,7 +81,7 @@ export const flowsContent: FlowContent[] = [
     tagline: 'Soluções de recolha seletiva de vidro para espaço público\ne recolha porta-a-porta.',
     intro:
       'A Ambiconcept disponibiliza equipamento para a recolha seletiva de vidro em qualquer contexto — desde ecopontos de carga vertical para espaço público (AMBI 2.5 e AMBI 2.7), compatíveis com volteador para descarga em altura, até contentores de carga traseira para recolha porta-a-porta (AMBI TWO 120L e 140L). Todas as soluções são fabricadas em PEAD de alta resistência, preparadas para uso intensivo e condições climáticas adversas.',
-    image: '/assets/home-vidro.webp',
+    image: '/assets/home-vidro.jpg',
     imageAlt: 'Recolha seletiva de vidro com equipamento Ambiconcept',
     highlights: [
       {
@@ -259,7 +259,7 @@ export const flowsContent: FlowContent[] = [
         description: 'Balde de bancada para recolha de resíduos alimentares orgânicos.\nCapacidades: 5 litros e 7 litros.',
         image: storageUrl('produtos/lockey_5l/fotos/digital/00_capa.png'),
         imageAlt: 'Balde Lockey para recolha de biorresíduos — Ambiconcept',
-        ctaHref: '/produtos?categoria=baldes-domesticos',
+        ctaHref: '/categorias/baldes-domesticos',
       },
       {
         name: 'AMBI TWO',
@@ -404,6 +404,97 @@ export const flowsContent: FlowContent[] = [
     seoTitle: 'Recolha de Biorresíduos — Equipamento Ambiconcept',
     seoDescription:
       'Lockey, AMBI 1.0, AMBI TWO e AMBI FOUR para recolha seletiva de biorresíduos. Soluções para municípios, condomínios e habitações em Portugal.',
+  },
+  {
+    slug: 'limpeza-urbana',
+    eyebrow: 'Fluxo de Resíduos',
+    headline: 'Limpeza Urbana',
+    tagline: 'Equipamento de limpeza urbana para o espaço público, da praça à praia.',
+    intro:
+      'A Ambiconcept disponibiliza equipamento de limpeza urbana para espaços públicos de elevada utilização, com a AMBI URBAN para o meio urbano e a AMBI BEACH para zonas balneares. Ambas têm 80 Litros de capacidade e foram desenhadas para se integrarem no mobiliário urbano e facilitarem o trabalho das equipas de limpeza.',
+    image: '/assets/home-papeleiras.png',
+    imageAlt: 'Equipamento de limpeza urbana AMBI URBAN e AMBI BEACH em espaço público — Ambiconcept',
+    productsHeading: 'Equipamento para Cada Ambiente',
+    productsBody:
+      'Dois equipamentos com a mesma capacidade e estruturas pensadas para contextos diferentes: a cidade e a zona costeira.',
+    productsHighlights: [
+      {
+        name: 'AMBI URBAN',
+        description:
+          'Equipamento de limpeza urbana em aço pintado, com recipiente interior amovível que facilita a limpeza e a manutenção.\nCapacidade: 80 litros. Fixação a poste, mural ou ao solo.',
+        image: storageUrl('produtos/ambi_urban/fotos/digital/00_capa_embalagens.png'),
+        imageAlt: 'AMBI URBAN — equipamento de limpeza urbana — Ambiconcept',
+        ctaHref: '/produtos/limpeza-urbana/ambi-urban',
+      },
+      {
+        name: 'AMBI BEACH',
+        description:
+          'Versão costeira do equipamento urbano, com tratamento anticorrosão para resistir ao ambiente salino.\nCapacidade: 80 litros. Fixação ao solo.',
+        image: storageUrl('produtos/ambi_beach/fotos/digital/00_capa_embalagens.png'),
+        imageAlt: 'AMBI BEACH — equipamento de limpeza urbana — Ambiconcept',
+        ctaHref: '/produtos/limpeza-urbana/ambi-beach',
+      },
+    ],
+    highlights: [
+      {
+        title: 'Interior Amovível',
+        description:
+          'O recipiente interior retira-se para esvaziar e limpar, o que facilita o trabalho das equipas de limpeza urbana.',
+      },
+      {
+        title: 'Fixação Flexível',
+        description:
+          'A AMBI URBAN fixa-se a poste, mural ou ao solo, conforme o local de instalação.',
+      },
+      {
+        title: 'Pensada para a Costa',
+        description:
+          'A AMBI BEACH tem tratamento anticorrosão para resistir ao ambiente salino das zonas balneares.',
+      },
+      {
+        title: 'Personalizável',
+        description:
+          'Cor RAL e logótipo à medida da identidade de cada município.',
+      },
+    ],
+    seoTitle: 'Limpeza Urbana — Equipamento Ambiconcept',
+    seoDescription:
+      'AMBI URBAN e AMBI BEACH para limpeza urbana em espaço público e zonas balneares. Equipamento para municípios em Portugal.',
+  },
+  {
+    slug: 'porta-a-porta',
+    eyebrow: 'Fluxo de Resíduos',
+    headline: 'Porta-a-porta',
+    tagline: 'Recolha domiciliária com contentores compatíveis com viatura de carga traseira.',
+    intro:
+      'A gama AMBI TWO foi concebida para programas de recolha seletiva domiciliária. Está disponível em 120, 140, 240 e 340 Litros, em PEAD, e adapta-se a qualquer tipologia de habitação e de viatura de carga traseira. A cor, o logótipo e a identificação RFID podem ser personalizados para cada programa municipal.',
+    image: '/assets/home-porta-a-porta.webp',
+    imageAlt: 'Contentores AMBI TWO para recolha porta-a-porta — Ambiconcept',
+    highlights: [
+      {
+        title: 'Carga Traseira',
+        description:
+          'Compatíveis com as viaturas de carga traseira usadas na recolha domiciliária.',
+      },
+      {
+        title: 'Quatro Capacidades',
+        description:
+          '120, 140, 240 e 340 Litros, para responder a diferentes tipologias de habitação.',
+      },
+      {
+        title: 'Identificação RFID',
+        description:
+          'Personalização com cor, logótipo e RFID, para identificar o contentor de cada utilizador.',
+      },
+      {
+        title: 'Resistência no Uso Diário',
+        description:
+          'Corpo em PEAD, com vida útil longa mesmo em condições de uso intensivo.',
+      },
+    ],
+    seoTitle: 'Recolha Porta-a-porta — Contentores AMBI TWO',
+    seoDescription:
+      'Contentores AMBI TWO de 120 a 340 Litros para recolha porta-a-porta, compatíveis com viatura de carga traseira. Soluções para municípios em Portugal.',
   },
 ]
 

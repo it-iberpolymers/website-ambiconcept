@@ -515,7 +515,7 @@ export default function FlowPage() {
       />
 
       {/* Banner */}
-      <section aria-label={content.headline} className="relative w-full h-screen min-h-[400px] overflow-hidden bg-[#303f49]">
+      <section aria-label={content.headline} className="fl-banner relative w-full h-screen min-h-[400px] overflow-hidden bg-[#303f49]">
         <img src={content.image} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/10 pointer-events-none" />
         <div className="relative h-full flex flex-col">
@@ -559,11 +559,11 @@ export default function FlowPage() {
                   <div className="fl-products-highlight-text">
                     <h3 className="fl-products-highlight-name">{product.name}</h3>
                     <p className="fl-products-highlight-desc">{product.description}</p>
-                    <Link to={product.ctaHref} className="btn-outline">Ver Produto</Link>
                   </div>
                   <div className="fl-products-highlight-img-wrap">
                     <img src={product.image} alt={product.imageAlt} className="fl-products-highlight-img" loading="lazy" />
                   </div>
+                  <Link to={product.ctaHref} className="btn-outline fl-products-highlight-cta">Ver Produto</Link>
                 </div>
               ))}
             </div>

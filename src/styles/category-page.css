@@ -729,3 +729,165 @@
     gap: 48px;
   }
 }
+
+/* ── Refresh visual — alinhado com a Home ────────────────────
+   Categorias: cabeçalho escuro (page-shell). Fluxos: o banner de imagem mantém-se. */
+
+.fl-banner {
+  border-radius: 0 0 44px 44px;
+  position: relative;
+  z-index: 1;
+}
+/* a secção seguinte estende-se 44px por trás do banner, para os cantos arredondados mostrarem a cor dela (e não o branco da página).
+   A borda transparente mantém o fundo da secção por baixo sem mexer no seu padding. */
+.fl-banner + * {
+  margin-top: -44px;
+  border-top: 44px solid transparent;
+}
+
+/* Categorias: intro sobre o fundo cinza esverdeado da página */
+.cp-page { background: #E6ECE4; }
+.cp-page .cp-intro {
+  max-width: none;
+  background: #fff;
+  border-radius: 40px;
+  margin: 0 56px;
+  padding: 80px max(40px, calc((100% - 1140px) / 2));
+  box-shadow: 0 24px 50px -38px rgba(14, 26, 16, 0.4);
+  position: relative;
+  z-index: 1;
+}
+.cp-page .cp-products-section { background: transparent; }
+
+/* imagens de apoio com cantos suaves */
+.cp-intro-img-wrap,
+.fl-products-highlight-img-wrap { border-radius: 32px; overflow: hidden; }
+.cp-intro-img,
+.fl-products-highlight-img { border-radius: 0; }
+/* nestes dois o contentor tem padding, por isso o raio vai na própria imagem */
+.fl-intro-image,
+.fl-secondary-image { border-radius: 32px; }
+.fl-products-highlight-img { transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.fl-products-highlight-item:hover .fl-products-highlight-img { transform: scale(1.04); }
+
+/* vantagens: bloco solto cinza esverdeado com cartões */
+.cp-highlights-section {
+  position: relative;
+  z-index: 1; /* à frente da secção seguinte, para os cantos de baixo não serem cortados */
+  background: #E6ECE4;
+  border-radius: 40px;
+  margin: -40px 56px;
+}
+.cp-page .cp-highlights-section { margin-block: 40px; }
+/* quando o bloco verde vem logo a seguir, sobe 100px por trás das vantagens */
+.cp-highlights-section:has(+ .cp-cta-section--green) { margin-bottom: -100px; }
+.cp-highlights-grid { gap: 16px; }
+.cp-highlight-card {
+  border-radius: 28px;
+  box-shadow: 0 24px 50px -38px rgba(14, 26, 16, 0.4);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s;
+}
+.cp-highlight-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 54px -32px rgba(14, 26, 16, 0.42);
+}
+
+/* impacto (só fluxos): bloco de imagem arredondado e solto */
+.fl-impact-section {
+  margin-inline: 56px;
+  border-radius: 40px;
+  overflow: hidden;
+}
+.fl-impact-stat {
+  border-radius: 28px;
+  box-shadow: 0 24px 50px -38px rgba(14, 26, 16, 0.4);
+}
+
+/* especificações (só categorias): bloco escuro solto, à frente da secção verde */
+.cp-specs-section {
+  position: relative;
+  z-index: 1;
+  margin: 0 56px -100px;
+  border-radius: 40px;
+  background:
+    radial-gradient(700px 360px at 90% 0%, rgba(90, 173, 30, 0.22), transparent 65%),
+    #16221b;
+}
+
+/* produtos em destaque: cada produto num bloco, botão por baixo da imagem */
+.fl-products-highlight-section {
+  position: relative;
+  background: #EEF3EC;
+  padding-bottom: 150px;
+}
+/* aresta de baixo em onda, com a cor da secção seguinte (branco) */
+.fl-products-highlight-section::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 60px;
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60' preserveAspectRatio='none'%3E%3Cpath fill='%23fff' d='M0 60V28C240 -4 480 -4 720 22s480 30 720 4V60z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+.fl-products-highlight-grid { gap: 28px; align-items: stretch; }
+.fl-products-highlight-item {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 32px;
+  padding: 36px 36px 32px;
+  box-shadow: 0 24px 50px -38px rgba(14, 26, 16, 0.4);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s;
+}
+.fl-products-highlight-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 54px -32px rgba(14, 26, 16, 0.42);
+}
+.fl-products-highlight-desc { margin-bottom: 0; }
+.fl-products-highlight-img-wrap {
+  margin-top: auto;
+  background: radial-gradient(circle at 50% 55%, rgba(122, 185, 41, 0.22) 0%, transparent 62%), #F2F6F1;
+}
+/* renders do Storage (quadrados, fundo transparente) mostram-se inteiros; as fotos de cena continuam a preencher */
+.fl-products-highlight-img[src*="firebasestorage"] { object-fit: contain; }
+.fl-products-highlight-text { margin-bottom: 28px; }
+.fl-products-highlight-cta { align-self: flex-start; margin-top: 24px; }
+@media (max-width: 700px) {
+  .fl-products-highlight-item { padding: 26px 22px 24px; border-radius: 28px; }
+}
+
+/* ODS: azulejos arredondados */
+.fl-sdg-tile { border-radius: 20px; overflow: hidden; }
+
+/* bloco verde final com onda branca no topo */
+.cp-cta-section--green { position: relative; padding-top: 130px; }
+.cp-specs-section + .cp-cta-section--green,
+.cp-highlights-section + .cp-cta-section--green { padding-top: 190px; } /* 100px ficam por baixo do bloco de especificações */
+.cp-cta-section--green::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 60px;
+  pointer-events: none;
+  transform: scaleY(-1);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60' preserveAspectRatio='none'%3E%3Cpath fill='%23fff' d='M0 60V28C240 -4 480 -4 720 22s480 30 720 4V60z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+/* nas categorias a página é cinza esverdeada, por isso a onda também */
+.cp-page .cp-cta-section--green::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60' preserveAspectRatio='none'%3E%3Cpath fill='%23E6ECE4' d='M0 60V28C240 -4 480 -4 720 22s480 30 720 4V60z'/%3E%3C/svg%3E");
+}
+
+@media (max-width: 680px) {
+  .fl-banner { border-radius: 0 0 32px 32px; }
+  .fl-banner + * { margin-top: -32px; border-top-width: 32px; }
+  .cp-page .cp-intro,
+  .cp-highlights-section,
+  .fl-impact-section,
+  .cp-specs-section { margin-inline: 12px; border-radius: 32px; }
+  .cp-page .cp-intro { padding: 48px 22px; }
+}

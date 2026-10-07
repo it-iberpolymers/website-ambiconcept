@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { useScrollSequence } from '@/hooks/useScrollSequence'
 import { Link } from 'react-router-dom'
 import type { Product } from '@/types'
 import { getCategoryContent } from '@/data/categories-content'
@@ -274,36 +275,12 @@ export default function CargaVerticalTemplate({ product }: Props) {
   }, [])
 
   const scrollAnimRef = useRef<HTMLElement>(null)
-  const [scrollFrame, setScrollFrame] = useState(0)
-
-  useEffect(() => {
-    new Set(SCROLL_FRAMES).forEach((src) => {
-      const img = new Image()
-      img.src = src
-    })
-  }, [])
-
-  useEffect(() => {
-    let ticking = false
-    function updateFrame() {
-      const el = scrollAnimRef.current
-      ticking = false
-      if (!el) return
-      const rect = el.getBoundingClientRect()
-      const total = rect.height - window.innerHeight
-      const progress = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0
-      setScrollFrame(Math.min(SCROLL_FRAME_COUNT - 1, Math.floor(progress * SCROLL_FRAME_COUNT)))
-    }
-    function onScroll() {
-      if (!ticking) {
-        ticking = true
-        window.requestAnimationFrame(updateFrame)
-      }
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    updateFrame()
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  // só re-renderiza quando muda a visibilidade dos callouts (string igual = sem render)
+  const [calloutKey, setCalloutKey] = useState('')
+  useScrollSequence(scrollAnimRef, canvasRef, SCROLL_FRAMES, (frame) =>
+    setCalloutKey(CV_SCROLL_CALLOUTS.map((c) => (frame < c.firstFrame || frame > c.lastFrame ? 0 : 1)).join('')),
+  )
 
   return (
     <div className="min-h-screen bg-white">
@@ -330,7 +307,7 @@ export default function CargaVerticalTemplate({ product }: Props) {
               itemListElement: [
                 { '@type': 'ListItem', position: 1, name: 'Início', item: 'https://www.ambiconcept.pt/' },
                 { '@type': 'ListItem', position: 2, name: 'Produtos', item: 'https://www.ambiconcept.pt/produtos' },
-                { '@type': 'ListItem', position: 3, name: 'Carga Vertical', item: 'https://www.ambiconcept.pt/produtos?categoria=carga-vertical' },
+                { '@type': 'ListItem', position: 3, name: 'Carga Vertical', item: 'https://www.ambiconcept.pt/categorias/carga-vertical' },
                 { '@type': 'ListItem', position: 4, name: product.name, item: `https://www.ambiconcept.pt/produtos/carga-vertical/${product.slug}` },
               ],
             },
@@ -357,7 +334,7 @@ export default function CargaVerticalTemplate({ product }: Props) {
               <span aria-hidden="true">/</span>
               <Link to="/produtos">Produtos</Link>
               <span aria-hidden="true">/</span>
-              <Link to="/produtos?categoria=carga-vertical">Carga Vertical</Link>
+              <Link to="/categorias/carga-vertical">Carga Vertical</Link>
               <span aria-hidden="true">/</span>
               <span>{product.name}</span>
             </nav>
@@ -437,9 +414,10 @@ export default function CargaVerticalTemplate({ product }: Props) {
       <section ref={scrollAnimRef} className="cv-scroll-anim" aria-label={`${product.name} — vista em detalhe`}>
         <div className="cv-scroll-anim-sticky">
           <div className="cv-scroll-anim-media">
-            <img
-              src={SCROLL_FRAMES[scrollFrame]}
-              alt={`${product.name} — vista em detalhe`}
+            <canvas
+              ref={canvasRef}
+              role="img"
+              aria-label={`${product.name} — vista em detalhe`}
               className="cv-scroll-anim-img"
             />
             <div className="cv-scroll-callouts">
@@ -455,7 +433,7 @@ export default function CargaVerticalTemplate({ product }: Props) {
                   : { left: `${labelNearEdge}%` }
                 const lineLeft = isLeft ? labelNearEdge : c.left
                 const lineWidth = isLeft ? c.left - labelNearEdge : labelNearEdge - c.left
-                const isHidden = scrollFrame < c.firstFrame || scrollFrame > c.lastFrame
+                const isHidden = calloutKey[CV_SCROLL_CALLOUTS.indexOf(c)] !== '1'
                 return (
                   <div
                     key={c.title}
