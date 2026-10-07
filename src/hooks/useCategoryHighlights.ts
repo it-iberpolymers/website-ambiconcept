@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getDoc } from 'firebase/firestore'
 import { db, siteDoc } from '@/lib/firebase'
+import { slugVariants } from '@/lib/categorySlug'
 import { getCategoryContent, type CategoryHighlight } from '@/data/categories-content'
 
 interface CategoryHighlightsData {
@@ -29,7 +30,10 @@ export function useCategoryHighlights(categorySlug: string): CategoryHighlightsD
 
     ;(async () => {
       try {
-        const snap = await getDoc(siteDoc('siteContent', `highlights-${categorySlug}`))
+        // tenta o id atual e depois o antigo (antes da migração dos dados)
+        let snap = await getDoc(siteDoc('siteContent', `highlights-${slugVariants(categorySlug)[0]}`))
+        const legacy = slugVariants(categorySlug)[1]
+        if (!snap.exists() && legacy) snap = await getDoc(siteDoc('siteContent', `highlights-${legacy}`))
         if (!cancelled && snap.exists()) {
           const d = snap.data() as Partial<CategoryHighlightsData>
           if (d.intro && d.highlights?.length) {

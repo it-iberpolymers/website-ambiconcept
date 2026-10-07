@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
+import { categoryHref, toPublicSlug } from '@/lib/categorySlug'
 import { useProducts, useProductCategories } from '@/hooks/useProducts'
 
 const navLinks = [
@@ -10,7 +11,9 @@ const navLinks = [
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const { pathname } = useLocation()
+  // submenu de Produtos: fecha ao clicar numa ligação e volta ao normal quando o rato sai
+  const [menuClosed, setMenuClosed] = useState(false)
+  const { pathname, search } = useLocation()
   const { categories: allCategories } = useProductCategories()
   const { products } = useProducts()
   const categories = allCategories.filter((cat) => products.some((p) => p.category?.slug === cat.slug))
@@ -25,14 +28,18 @@ export default function Header() {
   // O header transparente/texto branco só faz sentido sobre o hero escuro da homepage.
   // Nas restantes páginas (templates de produto, etc.) o topo é claro, por isso o header
   // nasce já no estado "sólido" para se manter legível antes do primeiro scroll.
+  // categoria atual (página de categoria, de produto ou catálogo filtrado) e secção de produtos
+  const currentSeg = pathname.match(/^\/(?:categorias|produtos)\/([^/]+)/)?.[1]
+  const activeCat = toPublicSlug(currentSeg ?? new URLSearchParams(search).get('categoria') ?? '')
+  const productsActive = pathname.startsWith('/produtos') || pathname.startsWith('/categorias')
   const isHome = pathname === '/'
   const solid = scrolled || !isHome
 
   const navText = solid
     ? 'text-[#303f49] hover:text-[#303f49]/60'
-    : 'text-white/90 hover:text-white/60'
+    : 'text-white/90 hover:text-white/75'
 
-  const navSep = solid ? 'text-[#303f49]/25' : 'text-white/30'
+  const navSep = solid ? 'text-[#303f49]/25' : 'text-white/75'
 
   return (
     <>
@@ -43,18 +50,27 @@ export default function Header() {
         onClick={() => setMobileOpen(false)}
       />
     )}
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-400 ${solid ? 'bg-white/75 backdrop-blur-[28px] shadow-[0_8px_32px_rgba(0,0,0,0.07),0_1px_0_rgba(255,255,255,0.6)] rounded-b-[20px]' : 'bg-transparent'}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-400 ${solid ? 'bg-white/92 backdrop-blur-[28px] shadow-[0_8px_32px_rgba(0,0,0,0.07),0_1px_0_rgba(255,255,255,0.6)] rounded-b-[20px]' : 'bg-transparent'}`}>
       <div className="max-w-[1140px] mx-auto px-5">
         <div className="flex items-center justify-between min-h-[90px]">
 
           {/* Nav desktop — esquerda */}
           <nav aria-label="Navegação principal" className="hidden md:flex items-center self-stretch">
-            <span className="relative flex items-center self-stretch group">
+            <span
+              className="relative flex items-center self-stretch group"
+              onMouseLeave={() => setMenuClosed(false)}
+              onClickCapture={(e) => {
+                if ((e.target as HTMLElement).closest('a')) {
+                  setMenuClosed(true)
+                  ;(document.activeElement as HTMLElement | null)?.blur()
+                }
+              }}
+            >
               <NavLink
                 to="/produtos"
                 className={({ isActive }) =>
                   `flex items-center gap-1 text-[13px] font-medium uppercase tracking-[0.08em] transition-colors ${
-                    isActive ? 'text-[#7ab929]' : navText
+                    isActive || productsActive ? `text-[color:var(--green-text)]` : navText
                   }`
                 }
               >
@@ -64,35 +80,48 @@ export default function Header() {
                 </svg>
               </NavLink>
               <div
-                className="fixed left-0 right-0 top-[90px] opacity-0 pointer-events-none transition-opacity duration-300 ease-out group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto"
+                style={menuClosed ? { display: 'none' } : undefined}
+                className="fixed left-0 right-0 top-[90px] px-5 pt-3 opacity-0 translate-y-1 pointer-events-none transition-all duration-300 ease-out group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto"
               >
-                <div className="border-t border-[#303f49]/10 bg-white shadow-[0_20px_40px_rgba(0,0,0,0.1)]">
-                  <div className="max-w-[1140px] mx-auto px-5 py-10 grid grid-cols-3 gap-x-10 gap-y-8">
+                <div className="max-w-[1140px] mx-auto overflow-hidden rounded-[28px] bg-white shadow-[0_30px_70px_-20px_rgba(14,26,16,0.35)] ring-1 ring-black/5">
+                  <div className="p-4 grid grid-cols-3 gap-2">
                     {categories.map((cat) => (
                       <Link
                         key={cat.id}
-                        to={`/produtos?categoria=${cat.slug}`}
-                        className="group/item block border-l-2 border-transparent pl-4 transition-colors hover:border-[#7ab929]"
+                        to={categoryHref(cat.slug)}
+                        aria-current={activeCat === cat.slug ? 'page' : undefined}
+                        className={`group/item block rounded-2xl p-5 transition-colors hover:bg-[#f1fae8] ${
+                          activeCat === cat.slug ? 'bg-[#f1fae8] ring-2 ring-inset ring-[#7ab929]' : ''
+                        }`}
                       >
-                        <p className="text-[13px] font-semibold uppercase tracking-[0.06em] text-[#303f49] transition-colors group-hover/item:text-[#7ab929]">
+                        <p className={`flex items-center justify-between text-[13px] font-semibold uppercase tracking-[0.06em] transition-colors group-hover/item:text-[color:var(--green-text)] ${
+                          activeCat === cat.slug ? 'text-[color:var(--green-text)]' : 'text-[#303f49]'
+                        }`}>
                           {cat.name}
+                          <span aria-hidden="true" className={`transition-all duration-200 group-hover/item:opacity-100 group-hover/item:translate-x-0 ${
+                            activeCat === cat.slug ? 'opacity-100' : 'opacity-0 -translate-x-1'
+                          }`}>→</span>
                         </p>
                         {cat.description && (
-                          <p className="mt-1 text-[13px] leading-snug text-[#303f49]/55">
+                          <p className="mt-1.5 text-[13px] leading-snug text-[#303f49]/55">
                             {cat.description}
                           </p>
                         )}
                       </Link>
                     ))}
                   </div>
-                  <div className="max-w-[1140px] mx-auto px-5 pb-6">
-                    <Link
-                      to="/produtos"
-                      className="text-[12px] font-semibold uppercase tracking-[0.08em] text-[#7ab929] hover:text-[#5e9420] transition-colors"
-                    >
-                      Ver todos os produtos →
-                    </Link>
-                  </div>
+                  {/* na própria página de produtos o botão levaria ao mesmo sítio */}
+                  {pathname !== '/produtos' && (
+                    <div className="flex items-center justify-between bg-[#f5f8f5] px-8 py-4">
+                      <span className="text-[12px] text-[#303f49]/50">Veja também por fluxo de resíduos no catálogo.</span>
+                      <Link
+                        to="/produtos"
+                        className="rounded-full bg-[#5aad1e] px-5 py-2.5 text-[12px] font-semibold uppercase tracking-[0.1em] text-[#0e1a10] transition-colors hover:bg-[#448a15]"
+                      >
+                        Ver todos os produtos
+                      </Link>
+                    </div>
+                  )}
                 </div>
               </div>
             </span>
@@ -103,7 +132,7 @@ export default function Header() {
                   to={link.to}
                   className={({ isActive }) =>
                     `text-[13px] font-medium uppercase tracking-[0.08em] transition-colors ${
-                      isActive ? 'text-[#7ab929]' : navText
+                      isActive ? `text-[color:var(--green-text)]` : navText
                     }`
                   }
                 >
@@ -176,7 +205,7 @@ export default function Header() {
             aria-label={mobileOpen ? 'Fechar menu' : 'Abrir menu'}
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
-            className={`md:hidden p-2 ml-4 transition-colors ${solid ? 'text-[#303f49]' : 'text-white'} hover:text-[#7ab929]`}
+            className={`md:hidden p-2 ml-4 transition-colors ${solid ? 'text-[#303f49]' : 'text-white'} hover:text-[color:var(--green-text)]`}
             onClick={() => setMobileOpen((v) => !v)}
           >
             {mobileOpen ? (
@@ -206,7 +235,7 @@ export default function Header() {
               onClick={() => setMobileOpen(false)}
               className={({ isActive }) =>
                 `block px-3 py-2 text-sm font-medium uppercase tracking-[0.06em] transition-colors ${
-                  isActive ? 'text-[#7ab929]' : 'text-[#303f49] hover:text-[#7ab929]'
+                  isActive || productsActive ? 'text-[color:var(--green-text)] border-l-4 border-[#7ab929] bg-[#f1fae8] font-semibold' : 'text-[#303f49] hover:text-[color:var(--green-text)]'
                 }`
               }
             >
@@ -216,9 +245,14 @@ export default function Header() {
               {categories.map((cat) => (
                 <Link
                   key={cat.id}
-                  to={`/produtos?categoria=${cat.slug}`}
+                  to={categoryHref(cat.slug)}
                   onClick={() => setMobileOpen(false)}
-                  className="block px-3 py-1.5 text-sm text-[#303f49]/70 transition-colors hover:text-[#7ab929]"
+                  aria-current={activeCat === cat.slug ? 'page' : undefined}
+                  className={`block px-3 py-1.5 text-sm transition-colors hover:text-[color:var(--green-text)] ${
+                    activeCat === cat.slug
+                      ? 'text-[color:var(--green-text)] border-l-4 border-[#7ab929] bg-[#f1fae8] font-semibold'
+                      : 'text-[#303f49]/70'
+                  }`}
                 >
                   {cat.name}
                 </Link>
@@ -231,7 +265,7 @@ export default function Header() {
                 onClick={() => setMobileOpen(false)}
                 className={({ isActive }) =>
                   `block px-3 py-2 text-sm font-medium uppercase tracking-[0.06em] transition-colors ${
-                    isActive ? 'text-[#7ab929]' : 'text-[#303f49] hover:text-[#7ab929]'
+                    isActive ? 'text-[color:var(--green-text)] border-l-4 border-[#7ab929] bg-[#f1fae8] font-semibold' : 'text-[#303f49] hover:text-[color:var(--green-text)]'
                   }`
                 }
               >
@@ -242,7 +276,7 @@ export default function Header() {
               href="https://www.iberpolymers.pt"
               target="_blank"
               rel="noopener noreferrer"
-              className="block px-3 py-2 text-sm font-medium uppercase tracking-[0.06em] text-[#303f49] hover:text-[#7ab929] transition-colors"
+              className="block px-3 py-2 text-sm font-medium uppercase tracking-[0.06em] text-[#303f49] hover:text-[color:var(--green-text)] transition-colors"
               onClick={() => setMobileOpen(false)}
             >
               Iberpolymers Group

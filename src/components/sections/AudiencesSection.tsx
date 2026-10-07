@@ -20,7 +20,7 @@ export default function AudiencesSection() {
     <section className="hp-audiences" ref={sectionRef}>
       <div className="hp-aud-inner">
         <div className="hp-aud-head hp-reveal">
-          <p className="hp-label" style={{ color: 'rgba(122,185,41,.8)' }}>Para quem serve</p>
+          <p className="hp-label" style={{ color: '#95d855' }}>Para quem serve</p>
           <h2 className="hp-aud-title">Duas realidades. Uma solução.</h2>
           <p className="hp-aud-body">
             A Ambiconcept serve decisores públicos e operadores privados de resíduos — com produtos e serviço adaptados a cada contexto.
@@ -38,7 +38,7 @@ export default function AudiencesSection() {
             </p>
             <ul>
               <li>Contentores de carga vertical e traseira certificados</li>
-              <li>Papeleiras urbanas para espaços de alta densidade</li>
+              <li>Equipamento de limpeza urbana para espaços de alta densidade</li>
               <li>Equipamento personalizável em cor RAL</li>
               <li>Suporte técnico e pós-venda em Portugal</li>
             </ul>

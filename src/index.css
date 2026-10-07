@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./styles/buttons.css";
+@import "./styles/legibility.css";
 
 @theme {
   /* Brand — Pantone 368C aproximado */
@@ -37,6 +38,14 @@
   --radius-xl: 16px;
 }
 
+/* Verde da marca para TEXTO: o verde claro (#7ab929) só tem 2,4:1 sobre branco,
+   por isso o texto usa um verde mais escuro (≥4,5:1) e, em fundos escuros, um verde claro. */
+:root { --green-text: #3a7714; }
+.hp-hero, .hp-audiences, .hp-stats, .ft-root, .ps-hero, .cp-specs-section, .hp-intro-aside,
+.cv-video-section, .pp-video-section, .sb-video-section, .at-video-section, .ct-video-section, .bd-video-section {
+  --green-text: #95d855;
+}
+
 /* Base resets */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -51,6 +60,14 @@ body {
   color: var(--color-ink-900);
   background: #ffffff;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Imagens com cantos suaves em todo o site — na layer base e com :where() para
+   as classes utilitárias (rounded-full, rounded-none…) continuarem a mandar */
+@layer base {
+  :where(main img:not([src$=".svg"])) {
+    border-radius: 20px;
+  }
 }
 
 /* Skip link de acessibilidade */

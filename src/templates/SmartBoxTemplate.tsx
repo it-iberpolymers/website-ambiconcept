@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { useScrollSequence } from '@/hooks/useScrollSequence'
 import { Link } from 'react-router-dom'
 import type { Product } from '@/types'
 import { getCategoryContent } from '@/data/categories-content'
@@ -102,36 +103,8 @@ export default function SmartBoxTemplate({ product }: Props) {
   const [activeTab, setActiveTab] = useState('materiais')
 
   const scrollAnimRef = useRef<HTMLElement>(null)
-  const [scrollFrame, setScrollFrame] = useState(0)
-
-  useEffect(() => {
-    SCROLL_FRAMES.forEach((src) => {
-      const img = new Image()
-      img.src = src
-    })
-  }, [])
-
-  useEffect(() => {
-    let ticking = false
-    function updateFrame() {
-      const el = scrollAnimRef.current
-      ticking = false
-      if (!el) return
-      const rect = el.getBoundingClientRect()
-      const total = rect.height - window.innerHeight
-      const progress = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0
-      setScrollFrame(Math.min(SCROLL_FRAME_COUNT - 1, Math.floor(progress * SCROLL_FRAME_COUNT)))
-    }
-    function onScroll() {
-      if (!ticking) {
-        ticking = true
-        window.requestAnimationFrame(updateFrame)
-      }
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    updateFrame()
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  useScrollSequence(scrollAnimRef, canvasRef, SCROLL_FRAMES)
 
   return (
     <div className="min-h-screen bg-white">
@@ -158,7 +131,7 @@ export default function SmartBoxTemplate({ product }: Props) {
               itemListElement: [
                 { '@type': 'ListItem', position: 1, name: 'Início', item: 'https://www.ambiconcept.pt/' },
                 { '@type': 'ListItem', position: 2, name: 'Produtos', item: 'https://www.ambiconcept.pt/produtos' },
-                { '@type': 'ListItem', position: 3, name: 'Smart Box', item: 'https://www.ambiconcept.pt/produtos?categoria=smart-box' },
+                { '@type': 'ListItem', position: 3, name: 'Smart Box', item: 'https://www.ambiconcept.pt/categorias/smart-box' },
                 { '@type': 'ListItem', position: 4, name: product.name, item: `https://www.ambiconcept.pt/produtos/smart-box/${product.slug}` },
               ],
             },
@@ -184,7 +157,7 @@ export default function SmartBoxTemplate({ product }: Props) {
               <span aria-hidden="true">/</span>
               <Link to="/produtos">Produtos</Link>
               <span aria-hidden="true">/</span>
-              <Link to="/produtos?categoria=smart-box">Smart Box</Link>
+              <Link to="/categorias/smart-box">Smart Box</Link>
               <span aria-hidden="true">/</span>
               <span>{product.name}</span>
             </nav>
@@ -259,9 +232,10 @@ export default function SmartBoxTemplate({ product }: Props) {
       {/* ── Animação de scroll ────────────────────────────── */}
       <section ref={scrollAnimRef} className="sb-scroll-anim" aria-label={`${product.name} — vista em detalhe`}>
         <div className="sb-scroll-anim-sticky">
-          <img
-            src={SCROLL_FRAMES[scrollFrame]}
-            alt={`${product.name} — vista em detalhe`}
+          <canvas
+            ref={canvasRef}
+            role="img"
+            aria-label={`${product.name} — vista em detalhe`}
             className="sb-scroll-anim-img"
           />
         </div>
@@ -479,7 +453,7 @@ export default function SmartBoxTemplate({ product }: Props) {
                 <span className="sb-flow-sub-line">Um sistema completo para a separação e recolha dos resíduos orgânicos,</span><br />
                 <span className="sb-flow-sub-line">da sua cozinha até ao contentor.</span>
               </p>
-              <Link to="/produtos?categoria=porta-a-porta" className="sb-flow-badge">
+              <Link to="/fluxos/porta-a-porta" className="sb-flow-badge">
                 Solução de Recolha Seletiva de Biorresíduos
               </Link>
             </div>
@@ -489,7 +463,7 @@ export default function SmartBoxTemplate({ product }: Props) {
                 <span className="sb-flow-sub-line">Um sistema completo para a recolha segura de óleos alimentares usados,</span><br />
                 <span className="sb-flow-sub-line">do ponto de descarte doméstico até à reciclagem.</span>
               </p>
-              <Link to="/produtos?categoria=smart-box" className="sb-flow-badge">
+              <Link to="/categorias/smart-box" className="sb-flow-badge">
                 Solução de Recolha de Óleos Alimentares Usados
               </Link>
             </div>

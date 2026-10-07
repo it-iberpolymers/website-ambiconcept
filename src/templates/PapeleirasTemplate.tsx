@@ -58,10 +58,10 @@ const SINAL_ITEMS_DEFAULT = [
 
 export default function PapeleirasTemplate({ product }: Props) {
   const [slideIndex, setSlideIndex] = useState(0)
-  const content = getCategoryContent('papeleiras')!
-  const { colors: ralColors } = useRalColors('papeleiras')
-  const { intro: categoryIntro, highlights: categoryHighlights } = useCategoryHighlights('papeleiras')
-  const { products: relatedRaw } = useProducts({ categorySlug: 'papeleiras' })
+  const content = getCategoryContent('limpeza-urbana')!
+  const { colors: ralColors } = useRalColors('limpeza-urbana')
+  const { intro: categoryIntro, highlights: categoryHighlights } = useCategoryHighlights('limpeza-urbana')
+  const { products: relatedRaw } = useProducts({ categorySlug: 'limpeza-urbana' })
   const related = relatedRaw.filter((p) => p.id !== product.id)
   const relatedDisplay: { id: string; slug: string; name: string; cover_image: string; capacity?: string }[] =
     related.map((p) => ({ id: p.id, slug: p.slug, name: p.name, cover_image: p.cover_image, capacity: p.specifications?.capacity ?? (p.specifications?.['Capacidade'] as string | undefined) }))
@@ -126,9 +126,9 @@ export default function PapeleirasTemplate({ product }: Props) {
   return (
     <div className="min-h-screen bg-white">
       <PageSeo
-        title={`${product.name} — Papeleiras`}
+        title={`${product.name} — Limpeza Urbana`}
         description={product.short_description ?? product.description}
-        path={`/produtos/papeleiras/${product.slug}`}
+        path={`/produtos/limpeza-urbana/${product.slug}`}
         ogImage={product.cover_image}
         schema={{
           '@context': 'https://schema.org',
@@ -140,7 +140,7 @@ export default function PapeleirasTemplate({ product }: Props) {
               image: product.hero_images.map((img) => `https://www.ambiconcept.pt${img}`),
               manufacturer: { '@type': 'Organization', name: 'Ambiconcept' },
               brand: { '@type': 'Brand', name: 'Ambiconcept' },
-              category: 'Papeleira Urbana',
+              category: 'Limpeza Urbana',
               ...(specProperties.length > 0 && { additionalProperty: specProperties }),
             },
             {
@@ -148,8 +148,8 @@ export default function PapeleirasTemplate({ product }: Props) {
               itemListElement: [
                 { '@type': 'ListItem', position: 1, name: 'Início', item: 'https://www.ambiconcept.pt/' },
                 { '@type': 'ListItem', position: 2, name: 'Produtos', item: 'https://www.ambiconcept.pt/produtos' },
-                { '@type': 'ListItem', position: 3, name: 'Papeleiras', item: 'https://www.ambiconcept.pt/produtos?categoria=papeleiras' },
-                { '@type': 'ListItem', position: 4, name: product.name, item: `https://www.ambiconcept.pt/produtos/papeleiras/${product.slug}` },
+                { '@type': 'ListItem', position: 3, name: 'Limpeza Urbana', item: 'https://www.ambiconcept.pt/categorias/limpeza-urbana' },
+                { '@type': 'ListItem', position: 4, name: product.name, item: `https://www.ambiconcept.pt/produtos/limpeza-urbana/${product.slug}` },
               ],
             },
             {
@@ -174,7 +174,7 @@ export default function PapeleirasTemplate({ product }: Props) {
               <span aria-hidden="true">/</span>
               <Link to="/produtos">Produtos</Link>
               <span aria-hidden="true">/</span>
-              <Link to="/produtos?categoria=papeleiras">Papeleiras</Link>
+              <Link to="/categorias/limpeza-urbana">Limpeza Urbana</Link>
               <span aria-hidden="true">/</span>
               <span>{product.name}</span>
             </nav>
@@ -290,7 +290,7 @@ export default function PapeleirasTemplate({ product }: Props) {
             </div>
 
             <div id="pp-panel-cores" role="tabpanel" className={`pp-tab-panel${activeTab === 'cores' ? ' pp-tab-panel--active' : ''}`}>
-              <p className="pp-tab-desc">Cores standard disponíveis para a tampa da papeleira.</p>
+              <p className="pp-tab-desc">Cores standard disponíveis para a tampa do equipamento.</p>
               <div className="pp-colors-grid">
                 {ralColors.map((c) => (
                   <div key={c.code} className="pp-color-item">
@@ -359,7 +359,7 @@ export default function PapeleirasTemplate({ product }: Props) {
         <section className="pp-related-section" aria-labelledby="pp-related-heading">
           <div className="pp-related-inner">
             <div className="pp-related-head">
-              <span className="pp-section-eyebrow">Papeleiras</span>
+              <span className="pp-section-eyebrow">Limpeza Urbana</span>
               <h2 id="pp-related-heading" className="pp-related-title">
                 Produtos Semelhantes
               </h2>
@@ -370,7 +370,7 @@ export default function PapeleirasTemplate({ product }: Props) {
             <ul className="pp-related-grid" role="list">
               {relatedDisplay.map((p) => (
                 <li key={p.id}>
-                  <Link to={`/produtos/papeleiras/${p.slug}`} className="pp-related-card">
+                  <Link to={`/produtos/limpeza-urbana/${p.slug}`} className="pp-related-card">
                     <div className="pp-related-img-wrap">
                       {p.cover_image ? (
                         <img

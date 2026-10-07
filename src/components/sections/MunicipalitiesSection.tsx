@@ -23,7 +23,7 @@ export default function MunicipalitiesSection() {
             className="text-[15px] font-normal text-white/80 tracking-[0.05em] lowercase flex-shrink-0"
           >
             {m.name}
-            <span className="ml-16 text-white/30">·</span>
+            <span className="ml-16 text-white/75">·</span>
           </span>
         ))}
       </div>

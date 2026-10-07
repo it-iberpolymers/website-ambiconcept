@@ -65,7 +65,7 @@ export default function AdminContactos() {
                         {contact.company && <p className="text-xs text-gray-400 mt-0.5">{contact.company}</p>}
                         {contact.message && (
                           <details className="mt-1.5">
-                            <summary className="text-xs text-[#7ab929] cursor-pointer select-none">Ver mensagem</summary>
+                            <summary className="text-xs text-[color:var(--green-text)] cursor-pointer select-none">Ver mensagem</summary>
                             <p className="text-xs text-gray-500 mt-1 max-w-xs whitespace-pre-wrap">{contact.message}</p>
                           </details>
                         )}
@@ -83,7 +83,7 @@ export default function AdminContactos() {
                   <td className="px-5 py-4 text-right whitespace-nowrap">
                     <button
                       onClick={() => toggleRead(contact)}
-                      className="text-xs font-medium text-[#7ab929] hover:text-[#5d9519] transition-colors mr-4"
+                      className="text-xs font-medium text-[color:var(--green-text)] hover:text-[#5d9519] transition-colors mr-4"
                     >
                       {contact.read ? 'Marcar não lido' : 'Marcar como lido'}
                     </button>

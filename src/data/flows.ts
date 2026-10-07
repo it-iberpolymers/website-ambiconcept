@@ -9,7 +9,7 @@ export interface Flow {
 }
 
 // Fluxos — mistura frações de resíduo (texto livre em Frações/Fluxo) com linhas de
-// negócio que não têm campo próprio (Limpeza Urbana = categoria Papeleiras,
+// negócio que não têm campo próprio (Limpeza Urbana = categoria de slug limpeza-urbana,
 // Porta-a-porta = só a gama AMBI TWO, não o AMBI FOUR).
 function fracoesText(product: Product): string {
   const spec = product.specifications ?? {}
@@ -31,7 +31,7 @@ export const FLOWS: Flow[] = [
     // ordem pedida para este fluxo, em vez da ordem por defeito do catálogo
     order: ['lockey-5l', 'lockey-7l', 'ambi-two', 'ambi-four', 'ambi-1-0'],
   },
-  { slug: 'limpeza-urbana', label: 'Limpeza Urbana', match: (p) => p.category?.slug === 'papeleiras' },
+  { slug: 'limpeza-urbana', label: 'Limpeza Urbana', match: (p) => p.category?.slug === 'limpeza-urbana' },
   { slug: 'porta-a-porta', label: 'Porta-a-porta', match: (p) => p.slug.startsWith('ambi-two') },
   { slug: 'oleos-alimentares-usados', label: 'Óleos Alimentares Usados', match: (p) => fracoesText(p).includes('Óleos Alimentares Usados') },
 ]

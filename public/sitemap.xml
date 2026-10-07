@@ -25,32 +25,54 @@
 
   <!-- Categorias -->
   <url>
-    <loc>https://www.ambiconcept.pt/produtos?categoria=carga-traseira</loc>
+    <loc>https://www.ambiconcept.pt/categorias/carga-traseira</loc>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://www.ambiconcept.pt/produtos?categoria=carga-vertical</loc>
+    <loc>https://www.ambiconcept.pt/categorias/carga-vertical</loc>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://www.ambiconcept.pt/produtos?categoria=smart-box</loc>
+    <loc>https://www.ambiconcept.pt/categorias/smart-box</loc>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://www.ambiconcept.pt/produtos?categoria=porta-a-porta</loc>
+    <loc>https://www.ambiconcept.pt/categorias/baldes-domesticos</loc>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://www.ambiconcept.pt/produtos?categoria=baldes-domesticos</loc>
+    <loc>https://www.ambiconcept.pt/categorias/limpeza-urbana</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <!-- Fluxos de resíduos -->
+  <url>
+    <loc>https://www.ambiconcept.pt/fluxos/vidro</loc>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
   <url>
-    <loc>https://www.ambiconcept.pt/produtos?categoria=papeleiras</loc>
+    <loc>https://www.ambiconcept.pt/fluxos/biorresiduos</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.ambiconcept.pt/fluxos/limpeza-urbana</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.ambiconcept.pt/fluxos/porta-a-porta</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://www.ambiconcept.pt/fluxos/oleos-alimentares-usados</loc>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
@@ -102,12 +124,12 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.ambiconcept.pt/produtos/papeleiras/ambi-urban</loc>
+    <loc>https://www.ambiconcept.pt/produtos/limpeza-urbana/ambi-urban</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.ambiconcept.pt/produtos/papeleiras/ambi-beach</loc>
+    <loc>https://www.ambiconcept.pt/produtos/limpeza-urbana/ambi-beach</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

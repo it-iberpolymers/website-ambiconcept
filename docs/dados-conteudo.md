@@ -53,7 +53,7 @@ Todos os hooks expõem `{ data, loading, error }`.
 | `smart-box` | Smart Box |
 | `porta-a-porta` | Porta-a-porta |
 | `baldes-domesticos` | Baldes Domésticos |
-| `papeleiras` | Papeleiras |
+| `limpeza-urbana` | Limpeza Urbana (antes `papeleiras`) |
 
 ---
 

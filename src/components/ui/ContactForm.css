@@ -30,11 +30,10 @@
 
 .cf-field {
   width: 100%;
-  background-color: transparent;
-  border-radius: 0;
-  border: none;
-  border-bottom: 1px solid rgba(48, 63, 73, 0.35);
-  padding: 8px 0;
+  background-color: #f5f8f5;
+  border-radius: 16px;
+  border: 1.5px solid transparent;
+  padding: 13px 18px;
   font-size: 15px;
   font-weight: 400;
   color: #303f49;
@@ -42,8 +41,14 @@
   outline: none;
 }
 
+.cf-field {
+  transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
 .cf-field:focus {
-  border-bottom-color: #7ab929;
+  background-color: #fff;
+  border-color: #7ab929;
+  box-shadow: 0 0 0 4px rgba(122, 185, 41, 0.15);
 }
 
 .cf-privacy-label-top {
@@ -77,19 +82,19 @@
 
 .cf-privacy-link {
   font-weight: 600;
-  color: #7ab929;
+  color: var(--green-text);
   text-decoration: none;
 }
 
 .cf-submit {
   align-self: center;
-  padding: 12.5px 30.5px;
-  background: transparent;
-  color: #1C2B1F;
-  border: 1.5px solid #1C2B1F;
-  border-radius: 10px;
+  padding: 16px 40px;
+  background: #7ab929;
+  color: #0e1a10;
+  border: 1.5px solid #7ab929;
+  border-radius: 999px;
   font-family: 'Poppins', sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: .14em;
   text-transform: uppercase;
@@ -100,9 +105,9 @@
 }
 
 .cf-submit:hover {
-  background: #7AB929;
-  border-color: #7AB929;
-  color: #fff;
+  background: #95d855;
+  border-color: #95d855;
+  color: #0e1a10;
 }
 
 .cf-submit:focus-visible {
@@ -116,7 +121,8 @@
 }
 
 .cf-error {
-  padding: 12px 16px;
+  padding: 14px 18px;
+  border-radius: 16px;
   background: #fff0f0;
   border: 1px solid #f5c6cb;
   font-size: 14px;
@@ -137,7 +143,7 @@
 
 .cf-success-text {
   font-size: 14px;
-  color: #7ab929;
+  color: var(--green-text);
   margin: 0;
 }
 

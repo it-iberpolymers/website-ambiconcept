@@ -1,0 +1,25 @@
+/* Estrutura comum das páginas interiores: cabeçalho escuro com onda + corpo cinza-esverdeado */
+.ps-page { background: #E6ECE4; min-height: 100vh; }
+
+.ps-hero {
+  position: relative;
+  padding: 150px 0 120px;
+  background:
+    radial-gradient(900px 420px at 80% 30%, rgba(90, 173, 30, 0.3), transparent 62%),
+    radial-gradient(600px 360px at 6% 100%, rgba(90, 173, 30, 0.14), transparent 70%),
+    #16221b;
+}
+.ps-hero-wave { position: absolute; left: 0; right: 0; bottom: -1px; width: 100%; height: 60px; display: block; }
+.ps-hero-wave path { fill: #E6ECE4; }
+
+/* Formulário de contactos como cartão branco sobre o fundo da página */
+.ps-page .cl-section { background: none; padding: 0 20px 100px; }
+.ps-page .cl-section > div {
+  background: #fff;
+  border-radius: 32px;
+  padding: 56px 48px 48px;
+  box-shadow: 0 24px 50px -38px rgba(14, 26, 16, 0.4);
+}
+@media (max-width: 640px) {
+  .ps-page .cl-section > div { padding: 36px 22px; border-radius: 28px; }
+}

@@ -1,15 +1,17 @@
 .cl-section {
-  background-color: #ffffff;
+  background:
+    radial-gradient(700px 420px at 92% 35%, rgba(122, 185, 41, 0.14), transparent 70%),
+    linear-gradient(180deg, #ffffff 0%, #F2F8EA 100%);
   padding-top: 120px;
   padding-bottom: 120px;
 }
 
 .cl-eyebrow {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: #7AB929;
+  color: var(--green-text);
   display: block;
   margin: 0 0 16px;
 }
@@ -29,6 +31,6 @@
   font-size: 15px;
   font-weight: 400;
   line-height: 1.7;
-  color: rgba(48, 63, 73, 0.7);
+  color: rgba(48, 63, 73, 0.84);
   margin: 0;
 }

@@ -2,12 +2,14 @@ import { useSearchParams, Link } from 'react-router-dom'
 import { useProducts, useProductCategories } from '@/hooks/useProducts'
 import { cardImgStyle } from '@/lib/cardImgStyle'
 import { FLOWS, sortByFlowOrder, cardCoverImage } from '@/data/flows'
+import { toPublicSlug } from '@/lib/categorySlug'
 import PageSeo from '@/components/seo/PageSeo'
+import '@/styles/page-shell.css'
 import '@/styles/products-catalog.css'
 
 export default function Products() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const activeCategory = searchParams.get('categoria') ?? ''
+  const activeCategory = toPublicSlug(searchParams.get('categoria') ?? '')
   const activeFlow = searchParams.get('fluxo') ?? ''
 
   const { categories: hookCategories } = useProductCategories()
@@ -54,7 +56,7 @@ export default function Products() {
     : 'Catálogo completo de contentores e ecopontos Ambiconcept para municípios e operadores RSU. Carga vertical, carga traseira, porta-a-porta, Smart Box e mais.'
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="ps-page">
 
       <PageSeo
         title={seoTitle}
@@ -63,29 +65,32 @@ export default function Products() {
       />
 
       {/* Header */}
-      <div className="bg-white pt-[110px] pb-[48px] text-center">
-        <div className="max-w-[1140px] mx-auto px-5">
-          <nav aria-label="Localização" className="flex items-center justify-center gap-1.5 text-[11px] text-[#303f49]/35 mb-8">
-            <Link to="/" className="hover:text-[#7ab929] transition-colors">Início</Link>
+      <div className="ps-hero">
+        <div className="max-w-[1140px] mx-auto px-5 text-center relative z-[1]">
+          <nav aria-label="Localização" className="flex items-center justify-center gap-1.5 text-[12px] text-white/75 mb-8">
+            <Link to="/" className="hover:text-[#95d855] transition-colors">Início</Link>
             <span aria-hidden="true">/</span>
-            <span className="text-[#303f49]/60">Produtos</span>
+            <span className="text-white/75">Produtos</span>
           </nav>
-          <p className="text-[11px] font-semibold tracking-[0.14em] uppercase text-[#7ab929] mb-3">Catálogo</p>
-          <h1 className="text-[42px] md:text-[52px] font-semibold uppercase text-[#303f49] leading-none font-['Poppins',sans-serif]">
+          <p className="text-[12px] font-semibold tracking-[0.14em] uppercase text-[#95d855] mb-3">Catálogo</p>
+          <h1 className="text-[42px] md:text-[56px] font-bold tracking-[-0.03em] text-white leading-none font-['Poppins',sans-serif]">
             Produtos
           </h1>
-          <p className="mt-4 text-[#303f49]/55 max-w-xl mx-auto text-[15px]">
+          <p className="mt-5 text-[#b4c7b8] max-w-xl mx-auto text-[15px] leading-relaxed">
             Mais variedade, mais personalização, mais soluções<br />para a gestão de resíduos urbanos.
           </p>
         </div>
+        <svg className="ps-hero-wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 60V28C240 -4 480 -4 720 22s480 30 720 4V60z" />
+        </svg>
       </div>
 
       {/* Main layout */}
-      <div className="max-w-[1140px] mx-auto px-5 py-[60px]">
-        <div className="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-12">
+      <div className="max-w-[1320px] mx-auto px-5 md:px-6 pt-[30px] pb-[100px]">
+        <div className="grid grid-cols-1 md:grid-cols-[250px_1fr] gap-8">
 
           {/* Sidebar */}
-          <aside>
+          <aside className="pc-aside">
             <span className="pc-sidebar-label">Categorias</span>
             <nav className="pc-sidebar flex flex-col gap-1" aria-label="Filtrar por categoria">
               <button
@@ -134,7 +139,7 @@ export default function Products() {
             {loading ? (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="rounded-xl overflow-hidden border border-black/[0.08] animate-pulse">
+                  <div key={i} className="rounded-[28px] overflow-hidden bg-white animate-pulse">
                     <div className="aspect-[4/3] bg-[#eaeaea]" />
                     <div className="p-5 space-y-3">
                       <div className="h-3 w-1/3 bg-[#eaeaea] rounded" />
@@ -146,7 +151,7 @@ export default function Products() {
                 ))}
               </div>
             ) : products.length === 0 ? (
-              <p className="text-[#8a9a88] text-sm py-16 text-center">
+              <p className="text-[#4d5d53] text-sm py-16 text-center">
                 Nenhum produto encontrado para estes filtros.
               </p>
             ) : (

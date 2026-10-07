@@ -6,7 +6,7 @@
 .btn-ghost {
   display: inline-block;
   font-family: inherit;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: .14em;
   text-transform: uppercase;
@@ -22,7 +22,7 @@
 .btn-primary {
   padding: 14px 32px;
   background: #7AB929;
-  color: #fff;
+  color: #0e1a10;
   border-radius: 10px;
 }
 .btn-primary:hover { opacity: .85; }

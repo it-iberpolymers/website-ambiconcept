@@ -29,7 +29,7 @@ export default function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <StatCard label="Artigos" value={articles.length} color="text-[#7ab929]" />
+        <StatCard label="Artigos" value={articles.length} color="text-[color:var(--green-text)]" />
         <StatCard label="Produtos" value={products.length} color="text-blue-600" />
         <StatCard label="Submissões" value={contacts.length} color="text-purple-600" />
         <StatCard label="Municípios" value={municipalities} color="text-orange-500" />
@@ -58,11 +58,11 @@ export default function AdminDashboard() {
           <div className="space-y-4">
             <div className="flex items-center justify-between py-3 border-b border-gray-50">
               <span className="text-sm text-gray-600">Contentores Instalados</span>
-              <span className="text-sm font-bold text-[#7ab929]">+{containers.toLocaleString('pt-PT')}</span>
+              <span className="text-sm font-bold text-[color:var(--green-text)]">+{containers.toLocaleString('pt-PT')}</span>
             </div>
             <div className="flex items-center justify-between py-3">
               <span className="text-sm text-gray-600">Municípios Aderentes</span>
-              <span className="text-sm font-bold text-[#7ab929]">+{municipalities.toLocaleString('pt-PT')}</span>
+              <span className="text-sm font-bold text-[color:var(--green-text)]">+{municipalities.toLocaleString('pt-PT')}</span>
             </div>
           </div>
         </div>

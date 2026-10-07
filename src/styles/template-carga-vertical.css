@@ -40,23 +40,23 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 6px;
-  font-size: 11px;
-  color: rgba(48, 63, 73, 0.35);
+  font-size: 12px;
+  color: rgba(48, 63, 73, 0.84);
   margin-bottom: 32px;
 }
 
 .cv-breadcrumb a {
-  color: rgba(48, 63, 73, 0.35);
+  color: rgba(48, 63, 73, 0.84);
   text-decoration: none;
   transition: color 0.2s;
 }
 
 .cv-breadcrumb a:hover {
-  color: #7ab929;
+  color: var(--green-text);
 }
 
 .cv-breadcrumb span:last-child {
-  color: rgba(48, 63, 73, 0.6);
+  color: rgba(48, 63, 73, 0.84);
 }
 
 .cv-showcase-title {
@@ -71,7 +71,7 @@
 
 .cv-showcase-desc {
   font-size: 16px;
-  color: rgba(48, 63, 73, 0.55);
+  color: rgba(48, 63, 73, 0.84);
   line-height: 1.7;
   max-width: 680px;
   margin: 0 auto;
@@ -124,7 +124,7 @@
 .cv-feature-desc {
   font-size: 13.5px;
   line-height: 1.65;
-  color: rgba(48, 63, 73, 0.5);
+  color: rgba(48, 63, 73, 0.84);
   margin: 0;
 }
 
@@ -294,9 +294,9 @@
 }
 
 .cv-callout-desc {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 400;
-  color: rgba(48, 63, 73, 0.6);
+  color: rgba(48, 63, 73, 0.84);
   line-height: 1.4;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -310,10 +310,10 @@
     padding: 6px 10px;
   }
   .cv-callout-title {
-    font-size: 10.5px;
+    font-size: 12px;
   }
   .cv-callout-desc {
-    font-size: 10px;
+    font-size: 12px;
   }
 }
 
@@ -344,7 +344,7 @@
 
 .cv-lifting-sub {
   font-size: 15px;
-  color: rgba(48, 63, 73, 0.55);
+  color: rgba(48, 63, 73, 0.84);
   line-height: 1.7;
   max-width: 600px;
   margin: 0 auto;
@@ -462,7 +462,7 @@
 
 .cv-custom-sub {
   font-size: 15px;
-  color: rgba(48, 63, 73, 0.55);
+  color: rgba(48, 63, 73, 0.84);
   line-height: 1.7;
   margin: 0 auto;
 }
@@ -567,7 +567,7 @@
 
 .cv-sinal-sub {
   font-size: 14px;
-  color: rgba(48, 63, 73, 0.55);
+  color: rgba(48, 63, 73, 0.84);
   margin: 0;
   text-align: center;
 }
@@ -599,11 +599,11 @@
 }
 
 .cv-tab-btn {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: rgba(48, 63, 73, 0.4);
+  color: rgba(48, 63, 73, 0.84);
   background: none;
   border: none;
   border-bottom: 2px solid transparent;
@@ -618,7 +618,7 @@
 }
 
 .cv-tab-btn--active {
-  color: #7ab929;
+  color: var(--green-text);
   border-bottom-color: #7ab929;
 }
 
@@ -643,7 +643,7 @@
 .cv-tab-desc {
   text-align: center;
   font-size: 15px;
-  color: rgba(48, 63, 73, 0.55);
+  color: rgba(48, 63, 73, 0.84);
   max-width: 600px;
   margin: 0 auto 52px;
   line-height: 1.7;
@@ -687,7 +687,7 @@
 
 .cv-mat-list li {
   font-size: 15px;
-  color: rgba(48, 63, 73, 0.7);
+  color: rgba(48, 63, 73, 0.84);
   line-height: 1.6;
   padding-left: 20px;
   position: relative;
@@ -721,7 +721,7 @@
   height: 90px;
   border-radius: 50%;
   border: 1.5px dashed rgba(48, 63, 73, 0.3);
-  color: rgba(48, 63, 73, 0.6);
+  color: rgba(48, 63, 73, 0.84);
 }
 
 .cv-badge-value {
@@ -731,21 +731,21 @@
 }
 
 .cv-badge-label {
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.02em;
 }
 
 .cv-color-label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.06em;
-  color: rgba(48, 63, 73, 0.55);
+  color: rgba(48, 63, 73, 0.84);
 }
 
 @media (max-width: 680px) {
-  .cv-tab-btn { padding: 16px 14px; font-size: 10px; }
+  .cv-tab-btn { padding: 16px 14px; font-size: 12px; }
   .cv-colors-grid { gap: 24px; }
   .cv-color-swatch { width: 64px; height: 64px; }
 }
@@ -809,11 +809,11 @@
 }
 
 .cv-section-eyebrow {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #7ab929;
+  color: var(--green-text);
   display: block;
   margin-bottom: 12px;
 }
@@ -843,7 +843,7 @@
 
 .cv-related-sub {
   font-size: 15px;
-  color: rgba(48, 63, 73, 0.6);
+  color: rgba(48, 63, 73, 0.84);
   max-width: 620px;
   margin: 0 auto;
   line-height: 1.6;
@@ -922,7 +922,7 @@
 
 .cv-related-capacity {
   font-size: 13px;
-  color: rgba(48, 63, 73, 0.55);
+  color: rgba(48, 63, 73, 0.84);
   margin: 0;
   white-space: nowrap;
 }
@@ -941,7 +941,7 @@
 
 .cv-intro-text {
   font-size: 15px;
-  color: rgba(48, 63, 73, 0.65);
+  color: rgba(48, 63, 73, 0.84);
   line-height: 1.8;
   margin: 0;
 }
@@ -993,7 +993,7 @@
   font-size: 20px;
   font-weight: 400;
   line-height: 1;
-  color: #7ab929;
+  color: var(--green-text);
   text-align: center;
 }
 
@@ -1016,7 +1016,7 @@
   padding: 0 4px 22px;
   font-size: 14px;
   line-height: 1.7;
-  color: rgba(48, 63, 73, 0.65);
+  color: rgba(48, 63, 73, 0.84);
 }
 
 /* ── CTA ────────────────────────────────────────────────── */
@@ -1042,7 +1042,7 @@
 
 .cv-cta-sub {
   font-size: 15px;
-  color: rgba(10, 26, 12, 0.65);
+  color: rgba(10, 26, 12, 0.9);
   line-height: 1.7;
   margin: 0 0 40px;
 }
@@ -1091,4 +1091,130 @@
     max-width: 400px;
     margin: 0 auto;
   }
+}
+
+/* ── Refresh visual — alinhado com a Home ────────────────────
+   Secções alternam branco / cinza esverdeado, cantos suaves e cartões com sombra.
+   As secções cinzentas sobrepõem 40px da anterior para os cantos mostrarem o fundo vizinho. */
+
+.cv-showcase {
+  background:
+    radial-gradient(720px 520px at 50% 60%, rgba(122, 185, 41, 0.24), transparent 66%),
+    radial-gradient(520px 340px at 90% 0%, rgba(122, 185, 41, 0.12), transparent 70%),
+    #EEF3EC;
+  position: relative;
+  padding-bottom: 130px;
+}
+
+/* aresta de baixo em onda, com a cor da secção seguinte (branco) */
+.cv-showcase::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 60px;
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60' preserveAspectRatio='none'%3E%3Cpath fill='%23fff' d='M0 60V28C240 -4 480 -4 720 22s480 30 720 4V60z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.cv-lifting-section,
+.cv-options-section,
+.cv-faq-section {
+  position: relative;
+  border-radius: 40px;
+  margin-block: -40px; /* cantos de cima e de baixo deixam ver as secções vizinhas */
+}
+
+.cv-lifting-section { background: #E6ECE4; }
+/* blocos soltos, afastados das margens laterais da página */
+.cv-lifting-section,
+.cv-faq-section { margin-inline: 56px; }
+/* FAQs ficam acima da secção verde, que sobe 100px por baixo delas */
+.cv-faq-section { margin-bottom: -100px; z-index: 1; }
+.cv-options-section { background: #E6ECE4; padding-top: 40px; padding-bottom: 40px; }
+.cv-related-section { background: #fff; }
+/* o bloco de cima (vídeo) é que arredonda os cantos sobre os relacionados */
+.cv-video-section { position: relative; border-radius: 0 0 40px 40px; margin-bottom: -40px; }
+.cv-faq-section { background: #E6ECE4; }
+
+/* cartões de estrutura e de personalização */
+.cv-lifting-item,
+.cv-custom-item {
+  border-radius: 28px;
+  padding: 18px 18px 24px;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s;
+}
+.cv-lifting-item {
+  background: #fff;
+  box-shadow: 0 24px 50px -38px rgba(14, 26, 16, 0.4);
+}
+.cv-custom-item { background: #F2F6F1; }
+.cv-lifting-item:hover,
+.cv-custom-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 54px -32px rgba(14, 26, 16, 0.42);
+}
+.cv-lifting-img,
+.cv-lifting-slide,
+.cv-custom-img,
+.cv-related-img { border-radius: 0; }
+
+/* vídeo em bloco arredondado */
+.cv-video-section {
+  background: #E6ECE4;
+  padding: 80px 20px 110px;
+}
+.cv-video-wrap {
+  max-width: 1400px;
+  margin: 0 auto;
+  border-radius: 36px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px -36px rgba(14, 26, 16, 0.5);
+}
+
+/* relacionados */
+.cv-related-card {
+  background: #F2F6F1;
+  border-radius: 28px;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s;
+}
+.cv-related-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 54px -32px rgba(14, 26, 16, 0.42);
+}
+
+/* FAQs num cartão branco */
+.cv-faq-list {
+  background: #fff;
+  border-top: none;
+  border-radius: 28px;
+  padding: 8px 28px;
+  box-shadow: 0 24px 50px -38px rgba(14, 26, 16, 0.4);
+}
+.cv-faq-item:last-child { border-bottom: none; }
+
+@media (max-width: 680px) {
+  .cv-lifting-section,
+  .cv-options-section,
+  .cv-faq-section { border-radius: 32px; }
+  .cv-lifting-section,
+  .cv-faq-section { margin-inline: 20px; }
+  .cv-video-section { border-radius: 0 0 32px 32px; }
+  .cv-video-wrap { border-radius: 28px; }
+  .cv-faq-list { padding: 4px 18px; }
+}
+
+/* aresta de cima do bloco verde em onda — a onda é branca e fica atrás do cartão das FAQs */
+.cv-cta-section { position: relative; padding-top: 190px; } /* 100px ficam por baixo das FAQs */
+.cv-cta-section::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 60px;
+  pointer-events: none;
+  transform: scaleY(-1);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60' preserveAspectRatio='none'%3E%3Cpath fill='%23fff' d='M0 60V28C240 -4 480 -4 720 22s480 30 720 4V60z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
 }

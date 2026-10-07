@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { useScrollSequence } from '@/hooks/useScrollSequence'
 import { Link } from 'react-router-dom'
 import type { Product } from '@/types'
 import { getCategoryContent } from '@/data/categories-content'
@@ -100,36 +101,8 @@ export default function CargaTraseiraTemplate({ product }: Props) {
   const [activeTab, setActiveTab] = useState('materiais')
 
   const scrollAnimRef = useRef<HTMLElement>(null)
-  const [scrollFrame, setScrollFrame] = useState(0)
-
-  useEffect(() => {
-    SCROLL_FRAMES.forEach((src) => {
-      const img = new Image()
-      img.src = src
-    })
-  }, [])
-
-  useEffect(() => {
-    let ticking = false
-    function updateFrame() {
-      const el = scrollAnimRef.current
-      ticking = false
-      if (!el) return
-      const rect = el.getBoundingClientRect()
-      const total = rect.height - window.innerHeight
-      const progress = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 0
-      setScrollFrame(Math.min(SCROLL_FRAME_COUNT - 1, Math.floor(progress * SCROLL_FRAME_COUNT)))
-    }
-    function onScroll() {
-      if (!ticking) {
-        ticking = true
-        window.requestAnimationFrame(updateFrame)
-      }
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    updateFrame()
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  useScrollSequence(scrollAnimRef, canvasRef, SCROLL_FRAMES)
 
   return (
     <div className="min-h-screen bg-white">
@@ -156,7 +129,7 @@ export default function CargaTraseiraTemplate({ product }: Props) {
               itemListElement: [
                 { '@type': 'ListItem', position: 1, name: 'Início', item: 'https://www.ambiconcept.pt/' },
                 { '@type': 'ListItem', position: 2, name: 'Produtos', item: 'https://www.ambiconcept.pt/produtos' },
-                { '@type': 'ListItem', position: 3, name: 'Carga Traseira', item: 'https://www.ambiconcept.pt/produtos?categoria=carga-traseira' },
+                { '@type': 'ListItem', position: 3, name: 'Carga Traseira', item: 'https://www.ambiconcept.pt/categorias/carga-traseira' },
                 { '@type': 'ListItem', position: 4, name: product.name, item: `https://www.ambiconcept.pt/produtos/carga-traseira/${product.slug}` },
               ],
             },
@@ -182,7 +155,7 @@ export default function CargaTraseiraTemplate({ product }: Props) {
               <span aria-hidden="true">/</span>
               <Link to="/produtos">Produtos</Link>
               <span aria-hidden="true">/</span>
-              <Link to="/produtos?categoria=carga-traseira">Carga Traseira</Link>
+              <Link to="/categorias/carga-traseira">Carga Traseira</Link>
               <span aria-hidden="true">/</span>
               <span>{product.name}</span>
             </nav>
@@ -257,9 +230,10 @@ export default function CargaTraseiraTemplate({ product }: Props) {
       {/* ── Animação de scroll ────────────────────────────── */}
       <section ref={scrollAnimRef} className="ct-scroll-anim" aria-label={`${product.name} — vista em detalhe`}>
         <div className="ct-scroll-anim-sticky">
-          <img
-            src={SCROLL_FRAMES[scrollFrame]}
-            alt={`${product.name} — vista em detalhe`}
+          <canvas
+            ref={canvasRef}
+            role="img"
+            aria-label={`${product.name} — vista em detalhe`}
             className="ct-scroll-anim-img"
           />
         </div>

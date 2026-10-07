@@ -1,6 +1,7 @@
 import Hero from '@/components/sections/Hero'
 import AudiencesSection from '@/components/sections/AudiencesSection'
 import IntroSection from '@/components/sections/IntroSection'
+import FlowsSection from '@/components/sections/FlowsSection'
 import ProductsPremiumSection from '@/components/sections/ProductsPremiumSection'
 import StatsSection from '@/components/sections/StatsSection'
 import NewsSection from '@/components/sections/NewsSection'
@@ -19,6 +20,7 @@ export default function Home() {
       <Hero />
       <AudiencesSection />
       <IntroSection />
+      <FlowsSection />
       <ProductsPremiumSection />
       <StatsSection />
       <NewsSection />
