@@ -517,29 +517,33 @@ export default function FlowPage() {
       {/* Banner */}
       <section aria-label={content.headline} className="fl-banner relative w-full h-screen min-h-[400px] overflow-hidden bg-[#303f49]">
         <img src={content.image} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-black/10 pointer-events-none" />
+        {/* gradiente escuro, mais forte no topo onde está o texto, para os textos pequenos se lerem sobre fotos claras */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: 'linear-gradient(180deg, rgba(0,0,0,.62) 0%, rgba(0,0,0,.5) 35%, rgba(0,0,0,.14) 65%, rgba(0,0,0,.08) 100%)' }}
+        />
         <div className="relative h-full flex flex-col">
-          <nav aria-label="Localização" className="flex items-center justify-center gap-1.5 text-[12px] text-white/75 pt-[100px] px-5">
+          <nav aria-label="Localização" className="flex items-center justify-center gap-1.5 text-[12px] font-medium text-white pt-[100px] px-5" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.5)' }}>
             <Link to="/" className="hover:text-white transition-colors">Início</Link>
             <span aria-hidden="true">/</span>
             <span>Fluxos</span>
             <span aria-hidden="true">/</span>
-            <span className="text-white/80">{content.headline}</span>
+            <span>{content.headline}</span>
           </nav>
 
           <div className="pt-10 px-5 text-center">
-            <p className="text-[12px] font-semibold tracking-[0.14em] uppercase text-white/75 mb-4">
+            <p className="text-[12px] font-semibold tracking-[0.14em] uppercase text-white mb-4" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.5)' }}>
               {content.eyebrow}
             </p>
             <h1
               className="text-[42px] md:text-[64px] font-semibold uppercase text-white leading-none mb-4"
-              style={{ textShadow: '0 2px 16px rgba(0,0,0,0.4)' }}
+              style={{ textShadow: '0 2px 20px rgba(0,0,0,0.55)' }}
             >
               {content.headline}
             </h1>
             <p
-              className="text-white/90 text-[15px] md:text-[18px] max-w-none mx-auto leading-relaxed whitespace-pre-line"
-              style={{ textShadow: '0 1px 10px rgba(0,0,0,0.35)' }}
+              className="text-white font-medium text-[15px] md:text-[18px] max-w-none mx-auto leading-relaxed whitespace-pre-line"
+              style={{ textShadow: '0 1px 10px rgba(0,0,0,0.55)' }}
             >
               {content.tagline}
             </p>
