@@ -46,7 +46,7 @@ export default function Header() {
     {mobileOpen && (
       <div
         aria-hidden="true"
-        className="fixed inset-0 z-40 bg-black/20 md:hidden"
+        className="fixed inset-0 z-40 bg-black/20 lg:hidden"
         onClick={() => setMobileOpen(false)}
       />
     )}
@@ -55,7 +55,7 @@ export default function Header() {
         <div className="flex items-center justify-between min-h-[90px]">
 
           {/* Nav desktop — esquerda */}
-          <nav aria-label="Navegação principal" className="hidden md:flex items-center self-stretch">
+          <nav aria-label="Navegação principal" className="hidden lg:flex items-center self-stretch">
             <span
               className="relative flex items-center self-stretch group"
               onMouseLeave={() => setMenuClosed(false)}
@@ -152,7 +152,7 @@ export default function Header() {
           </nav>
 
           {/* Logo + redes sociais — direita */}
-          <div className="ml-auto md:ml-0 flex items-center gap-3">
+          <div className="ml-auto lg:ml-0 flex items-center gap-3">
 
             <Link
               to="/"
@@ -172,7 +172,7 @@ export default function Header() {
               />
             </Link>
 
-            <div className="hidden md:flex items-center gap-2">
+            <div className="hidden lg:flex items-center gap-2">
               <a
                 href="https://www.linkedin.com/company/ambiconcept-tecnologias-ambientais/"
                 target="_blank"
@@ -205,7 +205,7 @@ export default function Header() {
             aria-label={mobileOpen ? 'Fechar menu' : 'Abrir menu'}
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
-            className={`md:hidden p-2 ml-4 transition-colors ${solid ? 'text-[#303f49]' : 'text-white'} hover:text-[color:var(--green-text)]`}
+            className={`lg:hidden p-2 ml-4 transition-colors ${solid ? 'text-[#303f49]' : 'text-white'} hover:text-[color:var(--green-text)]`}
             onClick={() => setMobileOpen((v) => !v)}
           >
             {mobileOpen ? (
@@ -227,7 +227,7 @@ export default function Header() {
         <nav
           id="mobile-menu"
           aria-label="Menu móvel"
-          className="md:hidden border-t border-[#303f49]/10 bg-white"
+          className="lg:hidden border-t border-[#303f49]/10 bg-white"
         >
           <div className="max-w-[1140px] mx-auto px-5 py-4 flex flex-col gap-1">
             <NavLink

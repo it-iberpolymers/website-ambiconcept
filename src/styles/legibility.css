@@ -35,7 +35,8 @@ body .at-sizes-sub, body .bd-sizes-sub, body .ct-sizes-sub {
   }
   body .ft-social-btn { min-width: 44px; min-height: 44px; }
   body .pc-filter-btn { min-height: 44px; }
-  body header button, body header nav a { min-height: 44px; min-width: 44px; display: inline-flex; align-items: center; }
+  body header button { min-height: 44px; min-width: 44px; }
+  body header nav a { min-height: 44px; display: inline-flex; align-items: center; }
   /* migalhas de pão e ligação "voltar" */
   body nav[aria-label="Localização"] a,
   body .cv-breadcrumb a, body .at-breadcrumb a, body .sb-breadcrumb a, body .pp-breadcrumb a, body .bd-breadcrumb a, body .ct-breadcrumb a,
@@ -61,8 +62,8 @@ body .cv-dot::after, body .sb-dot::after, body .pp-dot::after, body .at-dot::aft
   body .ct-flow-sub-line, body .pp-flow-sub-line, body .cv-flow-sub-line { white-space: normal; }
 }
 
-/* Abas das opções: em mobile deslizam na horizontal em vez de alargarem a página */
-@media (max-width: 680px) {
+/* Abas das opções: em ecrãs pequenos deslizam na horizontal em vez de alargarem a página */
+@media (max-width: 820px) {
   body [class$="-tabs-nav"] { overflow-x: auto; justify-content: flex-start; scrollbar-width: none; }
   body [class$="-tabs-nav"]::-webkit-scrollbar { display: none; }
   body [class$="-tab-btn"] { flex: none; white-space: nowrap; }
@@ -84,3 +85,54 @@ body header a[aria-label^="LinkedIn"]::after, body header a[aria-label^="Instagr
 
 /* Respostas das FAQs */
 body [class*="-faq-answer-inner"] p { max-width: 70ch; }
+
+/* ── Mobile e tablet ─────────────────────────────────────────── */
+
+/* Home: cartão de fluxo sozinho na última linha ocupa a largura toda */
+@media (max-width: 900px) {
+  body .hp-flows-grid .hp-flow:last-child:nth-child(odd) { grid-column: 1 / -1; min-height: 150px; }
+  /* painéis de produto: a foto tem a proporção dela, sem faixa escura por baixo */
+  body .hp-product-vis { min-height: 0; }
+  body .hp-product-photo { height: auto; aspect-ratio: 4 / 3; }
+}
+
+/* Animação de scroll do AMBI 2.7: produto maior e legendas por baixo da imagem (não saem do ecrã) */
+@media (max-width: 680px) {
+  body .cv-scroll-anim-media { width: min(96vw, calc(100vh * 0.7)); }
+  body .cv-callout-line { display: none; }
+  body .cv-callout-label {
+    top: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: auto;
+    max-width: none;
+    margin: 14px 8px 0;
+    transform: none;
+    text-align: left;
+    border-right: 0;
+    border-left: 7px solid #7ab929;
+  }
+  body .cv-callout-desc { -webkit-line-clamp: 3; }
+}
+
+/* Cabeçalho mais baixo em telemóvel e em ecrãs de pouca altura (telemóvel deitado) */
+@media (max-width: 640px), (max-height: 500px) {
+  body header [class*="min-h-[90px]"] { min-height: 64px; }
+  body header a.relative img { width: 190px; }
+}
+
+/* Filtros do catálogo em mobile: quebram em várias linhas, para todas as opções ficarem visíveis (sem scroll escondido) */
+@media (max-width: 720px) {
+  body .pc-sidebar { flex-wrap: wrap; overflow-x: visible; gap: 6px; }
+  body .pc-filter-btn { width: auto; }
+}
+
+/* Carrossel de imagens do topo dos templates: em mobile o contentor encolhia ao conteúdo e a imagem ficava minúscula */
+@media (max-width: 860px) {
+  body [class$="-carousel"] { width: 100%; }
+}
+
+/* Botão "voltar ao topo" mais pequeno em ecrãs pequenos, para tapar menos texto */
+@media (max-width: 640px) {
+  body .ft-scroll-btn { width: 40px; height: 40px; right: 12px; bottom: 12px; }
+}
