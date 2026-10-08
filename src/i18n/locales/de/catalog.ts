@@ -1,0 +1,23 @@
+// Produktkatalog (/produtos)
+export default {
+  'catalog.seo.categoryTitle': '{{name}} — Produkte | Ambiconcept',
+  'catalog.seo.categoryDescription': '{{description}} Sehen Sie alle verfügbaren Modelle.',
+  'catalog.seo.title': 'Produkte — Vollständiger Katalog | Ambiconcept',
+  'catalog.seo.description': 'Vollständiger Katalog der Container und Wertstoffsammelstellen von Ambiconcept für Gemeinden und Betreiber der Abfallentsorgung. Vertikalbefüllung, Heckbeladung, Haus-zu-Haus-Sammlung, Smart Box und mehr.',
+  'catalog.breadcrumb': 'Navigationspfad',
+  'catalog.eyebrow': 'Katalog',
+  'catalog.hero.line1': 'Mehr Vielfalt, mehr Individualisierung, mehr Lösungen',
+  'catalog.hero.line2': 'für die Bewirtschaftung von Siedlungsabfällen.',
+  'catalog.categories': 'Kategorien',
+  'catalog.filterByCategory': 'Nach Kategorie filtern',
+  'catalog.filterByFlow': 'Nach Abfallstrom filtern',
+  'catalog.all': 'Alle',
+  'catalog.count.one': '{{n}} Produkt',
+  'catalog.count.other': '{{n}} Produkte',
+  'catalog.empty': 'Für diese Filter wurde kein Produkt gefunden.',
+  'catalog.flow.vidro': 'Glas',
+  'catalog.flow.biorresiduos': 'Bioabfälle',
+  'catalog.flow.limpeza-urbana': 'Stadtreinigung',
+  'catalog.flow.porta-a-porta': 'Haus-zu-Haus-Sammlung',
+  'catalog.flow.oleos-alimentares-usados': 'Altspeiseöle',
+} as Record<string, string>

@@ -1,10 +1,10 @@
 // Endereços por língua: o português vive na raiz (/produtos) e as outras com prefixo (/en/produtos).
 // Funções puras, usadas pelo router, pelo SEO e pelo gerador do sitemap.
 
-export type Lang = 'pt' | 'en' | 'fr' | 'es'
+export type Lang = 'pt' | 'en' | 'fr' | 'es' | 'it' | 'de'
 
 export const DEFAULT_LANG: Lang = 'pt'
-export const PREFIXED_LANGS: Lang[] = ['en', 'fr', 'es']
+export const PREFIXED_LANGS: Lang[] = ['en', 'fr', 'es', 'it', 'de']
 
 const ADMIN = /^\/admin(\/|$)/
 

@@ -1,0 +1,21 @@
+// Kontaktformular
+export default {
+  'form.success.title': 'Nachricht gesendet!',
+  'form.success.text': 'Wir melden uns in Kürze bei Ihnen.',
+  'form.error': 'Beim Senden der Nachricht ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.',
+  'form.name': 'Name',
+  'form.company': 'Unternehmen',
+  'form.email': 'E-Mail',
+  'form.phone': 'Telefon',
+  'form.subject': 'Betreff',
+  'form.subject.placeholder': 'Betreff auswählen...',
+  'form.subject.briefing': 'Briefing teilen',
+  'form.subject.other': 'Sonstige Anliegen',
+  'form.message': 'Nachricht',
+  'form.privacy.label': 'Datenschutzerklärung',
+  'form.privacy.before': 'Ich habe die',
+  'form.privacy.link': 'Datenschutzerklärung',
+  'form.privacy.after': 'von Ambiconcept – Waste Solutions gelesen und bin damit einverstanden.',
+  'form.submit': 'Senden',
+  'form.sending': 'Wird gesendet…',
+} as Record<string, string>

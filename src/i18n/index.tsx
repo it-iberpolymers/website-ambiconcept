@@ -15,6 +15,8 @@ export const LANGS: { code: Lang; name: string; locale: string }[] = [
   { code: 'en', name: 'English', locale: 'en-GB' },
   { code: 'fr', name: 'Français', locale: 'fr-FR' },
   { code: 'es', name: 'Español', locale: 'es-ES' },
+  { code: 'it', name: 'Italiano', locale: 'it-IT' },
+  { code: 'de', name: 'Deutsch', locale: 'de-DE' },
 ]
 
 type Dict = Record<string, string>
@@ -31,6 +33,8 @@ const loaders: Record<Exclude<Lang, 'pt'>, Record<string, () => Promise<unknown>
   en: import.meta.glob('./locales/en/*.ts', { import: 'default' }),
   fr: import.meta.glob('./locales/fr/*.ts', { import: 'default' }),
   es: import.meta.glob('./locales/es/*.ts', { import: 'default' }),
+  it: import.meta.glob('./locales/it/*.ts', { import: 'default' }),
+  de: import.meta.glob('./locales/de/*.ts', { import: 'default' }),
 }
 
 const cache: Partial<Record<Lang, Dict>> = { pt: ptDict }
@@ -50,7 +54,7 @@ function interpolate(text: string, vars?: Vars): string {
 function readSaved(): Lang {
   try {
     const saved = localStorage.getItem(STORAGE_KEY)
-    if (saved === 'pt' || saved === 'en' || saved === 'fr' || saved === 'es') return saved
+    if (saved === 'pt' || saved === 'en' || saved === 'fr' || saved === 'es' || saved === 'it' || saved === 'de') return saved
   } catch { /* sem armazenamento: português */ }
   return 'pt'
 }

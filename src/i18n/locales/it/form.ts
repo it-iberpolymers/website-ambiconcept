@@ -1,0 +1,21 @@
+// Modulo di contatto
+export default {
+  'form.success.title': 'Messaggio inviato!',
+  'form.success.text': 'La contatteremo a breve.',
+  'form.error': 'Si è verificato un errore durante l’invio del messaggio. La preghiamo di riprovare.',
+  'form.name': 'Nome',
+  'form.company': 'Azienda',
+  'form.email': 'E-mail',
+  'form.phone': 'Telefono',
+  'form.subject': 'Oggetto',
+  'form.subject.placeholder': 'Selezionare l’oggetto...',
+  'form.subject.briefing': 'Condividere il briefing',
+  'form.subject.other': 'Altri argomenti',
+  'form.message': 'Messaggio',
+  'form.privacy.label': 'Privacy Policy',
+  'form.privacy.before': 'Dichiaro di aver letto e accettato la',
+  'form.privacy.link': 'Privacy Policy',
+  'form.privacy.after': 'di Ambiconcept – Waste Solutions.',
+  'form.submit': 'Invia',
+  'form.sending': 'Invio in corso…',
+} as Record<string, string>

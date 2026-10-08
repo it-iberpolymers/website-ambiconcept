@@ -136,3 +136,32 @@ body [class*="-faq-answer-inner"] p { max-width: 70ch; }
 @media (max-width: 640px) {
   body .ft-scroll-btn { width: 40px; height: 40px; right: 12px; bottom: 12px; }
 }
+
+/* Línguas com palavras compridas (alemão, italiano…): hifenização automática e quebra de palavras
+   que não cabem, para nada alargar a página. Só fora do português, que mantém o aspeto atual. */
+html:not([lang="pt"]) body {
+  hyphens: auto;
+  overflow-wrap: break-word;
+}
+html:not([lang="pt"]) body [class$="-custom-item"],
+html:not([lang="pt"]) body [class$="-lifting-item"],
+html:not([lang="pt"]) body [class$="-sizes-item"] { min-width: 0; }
+html:not([lang="pt"]) body [class$="-custom-label"],
+html:not([lang="pt"]) body [class$="-lifting-label"] { overflow-wrap: anywhere; }
+
+/* Botões com texto longo (alemão, italiano…) quebram linha em ecrãs estreitos em vez de saírem do ecrã */
+@media (max-width: 480px) {
+  body .btn-primary, body .btn-ghost, body .btn-outline, body .btn-dark {
+    white-space: normal;
+    text-align: center;
+    max-width: 100%;
+  }
+}
+
+/* Cabeçalho em ecrãs de 360 px ou menos: logótipo e seletor mais compactos para caberem com o botão ☰ */
+@media (max-width: 360px) {
+  body header a.relative { width: 150px; }
+  body header a.relative img { width: 150px; }
+  body header button[aria-haspopup="listbox"] { padding-inline: 6px; gap: 4px; }
+  body header button[aria-expanded][aria-controls="mobile-menu"] { padding: 4px; min-width: 40px; }
+}

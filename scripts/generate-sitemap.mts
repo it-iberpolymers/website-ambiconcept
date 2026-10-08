@@ -14,7 +14,7 @@ import { localizePath, PREFIXED_LANGS, type Lang } from '../src/i18n/routing.ts'
 
 const BASE = 'https://www.ambiconcept.pt'
 const LANGS: Lang[] = ['pt', ...PREFIXED_LANGS]
-const HREFLANG: Record<Lang, string> = { pt: 'pt-PT', en: 'en', fr: 'fr', es: 'es' }
+const HREFLANG: Record<Lang, string> = { pt: 'pt-PT', en: 'en', fr: 'fr', es: 'es', it: 'it', de: 'de' }
 
 interface Page { path: string; changefreq: string; priority: string; lastmod?: string }
 

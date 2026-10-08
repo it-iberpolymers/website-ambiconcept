@@ -6,7 +6,7 @@ const SITE_NAME = 'Ambiconcept'
 const BASE_URL = 'https://www.ambiconcept.pt'
 const DEFAULT_IMAGE = `${BASE_URL}/assets/hero-ecoponto-ambi-27.webp`
 const META_DESCRIPTION_LIMIT = 155
-const OG_LOCALE = { pt: 'pt_PT', en: 'en_GB', fr: 'fr_FR', es: 'es_ES' } as const
+const OG_LOCALE = { pt: 'pt_PT', en: 'en_GB', fr: 'fr_FR', es: 'es_ES', it: 'it_IT', de: 'de_DE' } as const
 
 interface PageSeoProps {
   title: string

@@ -1,4 +1,4 @@
-# Internacionalização (pt / en / fr / es)
+# Internacionalização (pt / en / fr / es / it / de)
 
 O site muda de língua ao escolher Português, English, Français ou Español no globo do cabeçalho.
 Cada língua tem os seus endereços: português na raiz (`/produtos`) e as outras com prefixo (`/en/produtos`, `/fr/produtos`, `/es/produtos`).
@@ -11,7 +11,7 @@ O painel de administração (`/admin`) fica sempre em português.
 - `src/App.tsx` regista as páginas públicas uma vez sem prefixo e uma vez por língua (`PREFIXED_LANGS`). O admin não tem prefixo e é sempre português.
 - `PageSeo` gera o `canonical` da língua atual, as ligações `hreflang` para todas as línguas (mais `x-default` = português) e `og:locale`.
 - `npm run sitemap` (corre também no `build`) gera `public/sitemap.xml` com todas as páginas × línguas e as alternativas `hreflang`. Usa os dados locais: conteúdo criado só no admin (Firestore) não entra.
-- Para acrescentar uma língua: adicionar em `LANGS` (index.tsx), em `routing.ts` (`Lang`, `PREFIXED_LANGS`), em `OG_LOCALE` (PageSeo), em `loaders` (index.tsx), em `HREFLANG` (generate-sitemap.mts) e criar `locales/<língua>/` com os mesmos ficheiros.
+- Para acrescentar uma língua (já feito para es, it e de): adicionar em `LANGS` (index.tsx), em `routing.ts` (`Lang`, `PREFIXED_LANGS`), em `OG_LOCALE` (PageSeo), em `loaders` (index.tsx), em `HREFLANG` (generate-sitemap.mts) e criar `locales/<língua>/` com os mesmos ficheiros.
 
 ## Como funciona
 - `src/i18n/index.tsx`: `I18nProvider` e o hook `useI18n()` → `{ lang, locale, setLang, t, tf }`.
@@ -49,28 +49,28 @@ pelas chaves abaixo (ver `src/i18n/localize.ts`). Quem consome esses hooks **nã
 Conteúdo de ficheiros como `categories-content.ts` e `flows-content.ts` (estruturas grandes): ver as instruções de cada tarefa.
 
 ## Glossário (usar sempre estes termos)
-| Português | English | Français | Español |
-|---|---|---|---|
-| recolha seletiva | separate collection | collecte sélective | recogida selectiva |
-| contentor | container | conteneur | contenedor |
-| ecoponto | recycling point | point d'apport volontaire | punto de recogida selectiva (ecopunto) |
-| município | municipality | commune / municipalité | municipio |
-| operador RSU | MSW operator | opérateur de collecte des déchets | operador de RSU |
-| resíduos urbanos | municipal waste | déchets municipaux | residuos urbanos |
-| biorresíduos | biowaste | biodéchets | biorresiduos |
-| óleos alimentares usados (OAU) | used cooking oil (UCO) | huiles alimentaires usagées (HAU) | aceites de cocina usados (ACU) |
-| limpeza urbana | urban cleaning | propreté urbaine | limpieza urbana |
-| papeleira | litter bin | corbeille de rue | papelera |
-| porta-a-porta | door-to-door | porte-à-porte | puerta a puerta |
-| carga vertical | vertical (top) loading | chargement vertical | carga vertical |
-| carga traseira | rear loading | chargement arrière | carga trasera |
-| volteador | tipping lift (bottle-bank tipper) | basculeur | volteador (elevador basculante) |
-| fluxo (de resíduos) | (waste) stream | flux (de déchets) | flujo (de residuos) |
-| PEAD | HDPE | PEHD | PEAD (polietileno de alta densidad) |
-| briefing / partilhar o briefing | brief / share your brief | cahier des charges / partager votre brief | briefing / compartir su briefing |
-| Ver produto | View product | Voir le produit | Ver producto |
-| Saber mais | Learn more | En savoir plus | Saber más |
-| Falar com um especialista | Talk to a specialist | Parler à un spécialiste | Hablar con un especialista |
+| Português | English | Français | Español | Italiano | Deutsch |
+|---|---|---|---|---|---|
+| recolha seletiva | separate collection | collecte sélective | recogida selectiva | raccolta differenziata | Getrenntsammlung |
+| contentor | container | conteneur | contenedor | contenitore | Container (Behälter) |
+| ecoponto | recycling point | point d'apport volontaire | punto de recogida selectiva (ecopunto) | punto di raccolta differenziata (ecopunto) | Wertstoffsammelstelle |
+| município | municipality | commune / municipalité | municipio | comune | Gemeinde (Kommune) |
+| operador RSU | MSW operator | opérateur de collecte des déchets | operador de RSU | operatore RSU | Betreiber der Abfallentsorgung |
+| resíduos urbanos | municipal waste | déchets municipaux | residuos urbanos | rifiuti urbani | Siedlungsabfälle |
+| biorresíduos | biowaste | biodéchets | biorresiduos | biorifiuti (rifiuti organici) | Bioabfälle |
+| óleos alimentares usados (OAU) | used cooking oil (UCO) | huiles alimentaires usagées (HAU) | aceites de cocina usados (ACU) | oli alimentari usati (OAU) | Altspeiseöle |
+| limpeza urbana | urban cleaning | propreté urbaine | limpieza urbana | igiene urbana | Stadtreinigung |
+| papeleira | litter bin | corbeille de rue | papelera | cestino portarifiuti | Abfalleimer |
+| porta-a-porta | door-to-door | porte-à-porte | puerta a puerta | porta a porta | Haus-zu-Haus-Sammlung |
+| carga vertical | vertical (top) loading | chargement vertical | carga vertical | carico verticale | Vertikalbefüllung |
+| carga traseira | rear loading | chargement arrière | carga trasera | carico posteriore | Heckbeladung (Hecklader) |
+| volteador | tipping lift (bottle-bank tipper) | basculeur | volteador (elevador basculante) | ribaltatore | Kippvorrichtung |
+| fluxo (de resíduos) | (waste) stream | flux (de déchets) | flujo (de residuos) | flusso (di rifiuti) | Abfallstrom |
+| PEAD | HDPE | PEHD | PEAD (polietileno de alta densidad) | PEAD (polietilene ad alta densità) | PE-HD (HDPE) |
+| briefing / partilhar o briefing | brief / share your brief | cahier des charges / partager votre brief | briefing / compartir su briefing | briefing / condividere il briefing | Briefing / Briefing teilen |
+| Ver produto | View product | Voir le produit | Ver producto | Vedi prodotto | Produkt ansehen |
+| Saber mais | Learn more | En savoir plus | Saber más | Scopri di più | Mehr erfahren |
+| Falar com um especialista | Talk to a specialist | Parler à un spécialiste | Hablar con un especialista | Parla con uno specialista | Mit einem Spezialisten sprechen |
 
 Termos técnicos incertos: traduzir com o melhor equivalente e acrescentar o comentário `// REVER` na linha da chave.
 Tom: profissional, direto, frases curtas, como o texto original em português.

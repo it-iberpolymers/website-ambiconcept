@@ -1,0 +1,23 @@
+// Catalogo prodotti (/produtos)
+export default {
+  'catalog.seo.categoryTitle': '{{name}} — Prodotti | Ambiconcept',
+  'catalog.seo.categoryDescription': '{{description}} Scopra tutti i modelli disponibili.',
+  'catalog.seo.title': 'Prodotti — Catalogo completo | Ambiconcept',
+  'catalog.seo.description': 'Catalogo completo di contenitori ed ecopunti Ambiconcept per comuni e operatori RSU. Carico verticale, carico posteriore, porta a porta, Smart Box e altro ancora.',
+  'catalog.breadcrumb': 'Percorso di navigazione',
+  'catalog.eyebrow': 'Catalogo',
+  'catalog.hero.line1': 'Più varietà, più personalizzazione, più soluzioni',
+  'catalog.hero.line2': 'per la gestione dei rifiuti urbani.',
+  'catalog.categories': 'Categorie',
+  'catalog.filterByCategory': 'Filtra per categoria',
+  'catalog.filterByFlow': 'Filtra per flusso di rifiuti',
+  'catalog.all': 'Tutte',
+  'catalog.count.one': '{{n}} prodotto',
+  'catalog.count.other': '{{n}} prodotti',
+  'catalog.empty': 'Nessun prodotto trovato per questi filtri.',
+  'catalog.flow.vidro': 'Vetro',
+  'catalog.flow.biorresiduos': 'Biorifiuti',
+  'catalog.flow.limpeza-urbana': 'Igiene urbana',
+  'catalog.flow.porta-a-porta': 'Porta a porta',
+  'catalog.flow.oleos-alimentares-usados': 'Oli alimentari usati',
+} as Record<string, string>
