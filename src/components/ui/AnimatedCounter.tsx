@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useI18n } from '@/i18n'
 
 interface AnimatedCounterProps {
   target: number
@@ -23,6 +24,7 @@ export default function AnimatedCounter({
   counterClassName = 'text-brand-500',
   labelClassName = 'text-ink-600',
 }: AnimatedCounterProps) {
+  const { locale } = useI18n()
   const [count, setCount] = useState(0)
   const [started, setStarted] = useState(false)
   const finalRef = useRef<HTMLSpanElement>(null)
@@ -49,18 +51,18 @@ export default function AnimatedCounter({
       if (progress < 1) {
         requestAnimationFrame(tick)
       } else if (finalRef.current) {
-        finalRef.current.textContent = `${prefix}${target.toLocaleString('pt-PT')}${suffix}`
+        finalRef.current.textContent = `${prefix}${target.toLocaleString(locale)}${suffix}`
       }
     }
     const raf = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(raf)
-  }, [started, target, duration, prefix, suffix])
+  }, [started, target, duration, prefix, suffix, locale])
 
   return (
     <div ref={containerRef} className="text-center">
       {/* Número visual — aria-hidden para não anunciar cada frame */}
       <p className={`text-5xl font-black tabular-nums ${counterClassName}`} aria-hidden="true">
-        {prefix}{count.toLocaleString('pt-PT')}{suffix}
+        {prefix}{count.toLocaleString(locale)}{suffix}
       </p>
       {/* Valor final anunciado apenas uma vez ao terminar a animação */}
       <span ref={finalRef} className="sr-only" aria-live="polite" aria-atomic="true" />

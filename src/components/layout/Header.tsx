@@ -1,19 +1,24 @@
 import { useEffect, useState } from 'react'
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
+import { Link, NavLink, usePathname } from '@/i18n/router'
 import { categoryHref, toPublicSlug } from '@/lib/categorySlug'
 import { useProducts, useProductCategories } from '@/hooks/useProducts'
+import { useI18n } from '@/i18n'
+import LanguageSwitcher from '@/components/ui/LanguageSwitcher'
 
 const navLinks = [
-  { label: 'Notícias', to: '/noticias' },
-  { label: 'Contactos', to: '/contactos' },
+  { labelKey: 'common.news', to: '/noticias' },
+  { labelKey: 'common.contacts', to: '/contactos' },
 ]
 
 export default function Header() {
+  const { t } = useI18n()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   // submenu de Produtos: fecha ao clicar numa ligação e volta ao normal quando o rato sai
   const [menuClosed, setMenuClosed] = useState(false)
-  const { pathname, search } = useLocation()
+  const pathname = usePathname() // sem o prefixo de língua
+  const { search } = useLocation()
   const { categories: allCategories } = useProductCategories()
   const { products } = useProducts()
   const categories = allCategories.filter((cat) => products.some((p) => p.category?.slug === cat.slug))
@@ -39,7 +44,6 @@ export default function Header() {
     ? 'text-[#303f49] hover:text-[#303f49]/60'
     : 'text-white/90 hover:text-white/75'
 
-  const navSep = solid ? 'text-[#303f49]/25' : 'text-white/75'
 
   return (
     <>
@@ -54,8 +58,28 @@ export default function Header() {
       <div className="max-w-[1140px] mx-auto px-5">
         <div className="flex items-center justify-between min-h-[90px]">
 
-          {/* Nav desktop — esquerda */}
-          <nav aria-label="Navegação principal" className="hidden lg:flex items-center self-stretch">
+          {/* Logótipo — esquerda */}
+            <Link
+              to="/"
+              aria-label={t('layout.header.homeLink')}
+              className="relative block shrink-0 w-[260px] max-sm:w-[190px]"
+            >
+              <img
+                src="/assets/Logo-Ambiconcept-Principal-1.svg"
+                alt={t('layout.header.logoAlt')}
+                className={`w-[260px] h-auto block transition-opacity duration-300 ${solid ? 'opacity-100' : 'opacity-0'}`}
+              />
+              <img
+                src="/assets/Logo-Ambiconcept-Principal-3.svg"
+                alt=""
+                aria-hidden="true"
+                className={`w-[260px] h-auto block absolute inset-0 transition-opacity duration-300 ${solid ? 'opacity-0' : 'opacity-100'}`}
+              />
+            </Link>
+
+
+          {/* Menu — à direita do logótipo */}
+          <nav aria-label={t('layout.header.mainNav')} className="hidden lg:flex items-center self-stretch ml-auto gap-8">
             <span
               className="relative flex items-center self-stretch group"
               onMouseLeave={() => setMenuClosed(false)}
@@ -69,12 +93,12 @@ export default function Header() {
               <NavLink
                 to="/produtos"
                 className={({ isActive }) =>
-                  `flex items-center gap-1 text-[13px] font-medium uppercase tracking-[0.08em] transition-colors ${
+                  `flex items-center gap-1 text-[15px] font-medium transition-colors ${
                     isActive || productsActive ? `text-[color:var(--green-text)]` : navText
                   }`
                 }
               >
-                Produtos
+                {t('common.products')}
                 <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="h-3 w-3 transition-transform duration-200 group-hover:rotate-180">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
                 </svg>
@@ -113,12 +137,12 @@ export default function Header() {
                   {/* na própria página de produtos o botão levaria ao mesmo sítio */}
                   {pathname !== '/produtos' && (
                     <div className="flex items-center justify-between bg-[#f5f8f5] px-8 py-4">
-                      <span className="text-[12px] text-[#303f49]/50">Veja também por fluxo de resíduos no catálogo.</span>
+                      <span className="text-[12px] text-[#303f49]/50">{t('layout.header.byFlowHint')}</span>
                       <Link
                         to="/produtos"
                         className="rounded-full bg-[#5aad1e] px-5 py-2.5 text-[12px] font-semibold uppercase tracking-[0.1em] text-[#0e1a10] transition-colors hover:bg-[#448a15]"
                       >
-                        Ver todos os produtos
+                        {t('layout.header.viewAllProducts')}
                       </Link>
                     </div>
                   )}
@@ -127,57 +151,40 @@ export default function Header() {
             </span>
             {navLinks.map((link) => (
               <span key={link.to} className="flex items-center">
-                <span aria-hidden="true" className={`mx-4 select-none font-light ${navSep}`}>|</span>
                 <NavLink
                   to={link.to}
                   className={({ isActive }) =>
-                    `text-[13px] font-medium uppercase tracking-[0.08em] transition-colors ${
+                    `text-[15px] font-medium transition-colors ${
                       isActive ? `text-[color:var(--green-text)]` : navText
                     }`
                   }
                 >
-                  {link.label}
+                  {t(link.labelKey)}
                 </NavLink>
               </span>
             ))}
-            <span aria-hidden="true" className={`mx-4 select-none font-light ${navSep}`}>|</span>
             <a
               href="https://www.iberpolymers.pt"
               target="_blank"
               rel="noopener noreferrer"
-              className={`text-[13px] font-medium uppercase tracking-[0.08em] transition-colors ${navText}`}
+              className={`text-[15px] font-medium transition-colors ${navText}`}
             >
-              Iberpolymers Group
+              {t('layout.header.group')}
             </a>
           </nav>
 
-          {/* Logo + redes sociais — direita */}
-          <div className="ml-auto lg:ml-0 flex items-center gap-3">
+          {/* Língua (computador) */}
+          <div className="hidden lg:block ml-4">
+            <LanguageSwitcher dark={solid} />
+          </div>
 
-            <Link
-              to="/"
-              aria-label="Ambiconcept – Waste Solutions, página inicial"
-              className="relative block"
-            >
-              <img
-                src="/assets/Logo-Ambiconcept-Principal-1.svg"
-                alt="Logotipo Ambiconcept – Waste Solutions"
-                className={`w-[260px] h-auto block transition-opacity duration-300 ${solid ? 'opacity-100' : 'opacity-0'}`}
-              />
-              <img
-                src="/assets/Logo-Ambiconcept-Principal-3.svg"
-                alt=""
-                aria-hidden="true"
-                className={`w-[260px] h-auto block absolute inset-0 transition-opacity duration-300 ${solid ? 'opacity-0' : 'opacity-100'}`}
-              />
-            </Link>
-
-            <div className="hidden lg:flex items-center gap-2">
+          {/* Redes sociais */}
+            <div className="hidden lg:flex items-center gap-2 ml-3">
               <a
                 href="https://www.linkedin.com/company/ambiconcept-tecnologias-ambientais/"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="LinkedIn da Ambiconcept"
+                aria-label={t('layout.header.linkedin')}
                 className="flex items-center justify-center w-7 h-7 rounded-full bg-[#7ab929] transition-opacity hover:opacity-80"
               >
                 <svg aria-hidden="true" fill="white" viewBox="0 0 448 512" className="h-3" xmlns="http://www.w3.org/2000/svg">
@@ -188,7 +195,7 @@ export default function Header() {
                 href="https://www.instagram.com/ambiconcept.waste.solutions/"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Instagram da Ambiconcept"
+                aria-label={t('layout.header.instagram')}
                 className="flex items-center justify-center w-7 h-7 rounded-full bg-[#7ab929] transition-opacity hover:opacity-80"
               >
                 <svg aria-hidden="true" fill="white" viewBox="0 0 448 512" className="h-3" xmlns="http://www.w3.org/2000/svg">
@@ -197,15 +204,18 @@ export default function Header() {
               </a>
             </div>
 
+          {/* Língua (mobile e tablet) */}
+          <div className="ml-auto lg:hidden">
+            <LanguageSwitcher dark={solid} />
           </div>
 
           {/* Toggle mobile */}
           <button
             type="button"
-            aria-label={mobileOpen ? 'Fechar menu' : 'Abrir menu'}
+            aria-label={mobileOpen ? t('layout.header.closeMenu') : t('layout.header.openMenu')}
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
-            className={`lg:hidden p-2 ml-4 transition-colors ${solid ? 'text-[#303f49]' : 'text-white'} hover:text-[color:var(--green-text)]`}
+            className={`lg:hidden p-2 ml-1 transition-colors ${solid ? 'text-[#303f49]' : 'text-white'} hover:text-[color:var(--green-text)]`}
             onClick={() => setMobileOpen((v) => !v)}
           >
             {mobileOpen ? (
@@ -226,7 +236,7 @@ export default function Header() {
       {mobileOpen && (
         <nav
           id="mobile-menu"
-          aria-label="Menu móvel"
+          aria-label={t('layout.header.mobileNav')}
           className="lg:hidden border-t border-[#303f49]/10 bg-white"
         >
           <div className="max-w-[1140px] mx-auto px-5 py-4 flex flex-col gap-1">
@@ -239,7 +249,7 @@ export default function Header() {
                 }`
               }
             >
-              Produtos
+              {t('common.products')}
             </NavLink>
             <div className="flex flex-col gap-1 pl-6 pb-2">
               {categories.map((cat) => (
@@ -269,7 +279,7 @@ export default function Header() {
                   }`
                 }
               >
-                {link.label}
+                {t(link.labelKey)}
               </NavLink>
             ))}
             <a
@@ -279,7 +289,7 @@ export default function Header() {
               className="block px-3 py-2 text-sm font-medium uppercase tracking-[0.06em] text-[#303f49] hover:text-[color:var(--green-text)] transition-colors"
               onClick={() => setMobileOpen(false)}
             >
-              Iberpolymers Group
+              {t('layout.header.group')}
             </a>
           </div>
         </nav>

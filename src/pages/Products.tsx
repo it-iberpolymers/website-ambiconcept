@@ -1,6 +1,8 @@
-import { useSearchParams, Link } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
+import { Link } from '@/i18n/router'
 import { useProducts, useProductCategories } from '@/hooks/useProducts'
 import { cardImgStyle } from '@/lib/cardImgStyle'
+import { useI18n } from '@/i18n'
 import { FLOWS, sortByFlowOrder, cardCoverImage } from '@/data/flows'
 import { toPublicSlug } from '@/lib/categorySlug'
 import PageSeo from '@/components/seo/PageSeo'
@@ -8,6 +10,7 @@ import '@/styles/page-shell.css'
 import '@/styles/products-catalog.css'
 
 export default function Products() {
+  const { lang, t } = useI18n()
   const [searchParams, setSearchParams] = useSearchParams()
   const activeCategory = toPublicSlug(searchParams.get('categoria') ?? '')
   const activeFlow = searchParams.get('fluxo') ?? ''
@@ -42,6 +45,8 @@ export default function Products() {
   const products = activeFlowObj?.order ? sortByFlowOrder(filteredProducts, activeFlowObj.order) : filteredProducts
 
   const totalCount = allProducts.length
+  // singular: 1 em pt/en; 0 e 1 em francês
+  const isOne = lang === 'fr' ? products.length < 2 : products.length === 1
 
   // Uma passagem por categoria/fluxo (em vez de recalcular no filter e outra vez no render).
   const categoryCounts = new Map(hookCategories.map((c) => [c.slug, allProducts.filter((p) => p.category?.slug === c.slug).length]))
@@ -49,11 +54,11 @@ export default function Products() {
 
   const activeCategoryObj = hookCategories.find((c) => c.slug === activeCategory)
   const seoTitle = activeCategoryObj
-    ? `${activeCategoryObj.name} — Produtos | Ambiconcept`
-    : 'Produtos — Catálogo Completo | Ambiconcept'
+    ? t('catalog.seo.categoryTitle', { name: activeCategoryObj.name })
+    : t('catalog.seo.title')
   const seoDescription = activeCategoryObj
-    ? `${activeCategoryObj.description} Veja todos os modelos disponíveis.`
-    : 'Catálogo completo de contentores e ecopontos Ambiconcept para municípios e operadores RSU. Carga vertical, carga traseira, porta-a-porta, Smart Box e mais.'
+    ? t('catalog.seo.categoryDescription', { description: activeCategoryObj.description ?? '' })
+    : t('catalog.seo.description')
 
   return (
     <div className="ps-page">
@@ -67,17 +72,17 @@ export default function Products() {
       {/* Header */}
       <div className="ps-hero">
         <div className="max-w-[1140px] mx-auto px-5 text-center relative z-[1]">
-          <nav aria-label="Localização" className="flex items-center justify-center gap-1.5 text-[12px] text-white/75 mb-8">
-            <Link to="/" className="hover:text-[#95d855] transition-colors">Início</Link>
+          <nav aria-label={t('catalog.breadcrumb')} className="flex items-center justify-center gap-1.5 text-[12px] text-white/75 mb-8">
+            <Link to="/" className="hover:text-[#95d855] transition-colors">{t('common.home')}</Link>
             <span aria-hidden="true">/</span>
-            <span className="text-white/75">Produtos</span>
+            <span className="text-white/75">{t('common.products')}</span>
           </nav>
-          <p className="text-[12px] font-semibold tracking-[0.14em] uppercase text-[#95d855] mb-3">Catálogo</p>
+          <p className="text-[12px] font-semibold tracking-[0.14em] uppercase text-[#95d855] mb-3">{t('catalog.eyebrow')}</p>
           <h1 className="text-[42px] md:text-[56px] font-bold tracking-[-0.03em] text-white leading-none font-['Poppins',sans-serif]">
-            Produtos
+            {t('common.products')}
           </h1>
           <p className="mt-5 text-[#b4c7b8] max-w-xl mx-auto text-[15px] leading-relaxed">
-            Mais variedade, mais personalização, mais soluções<br />para a gestão de resíduos urbanos.
+            {t('catalog.hero.line1')}<br />{t('catalog.hero.line2')}
           </p>
         </div>
         <svg className="ps-hero-wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
@@ -91,14 +96,14 @@ export default function Products() {
 
           {/* Sidebar */}
           <aside className="pc-aside">
-            <span className="pc-sidebar-label">Categorias</span>
-            <nav className="pc-sidebar flex flex-col gap-1" aria-label="Filtrar por categoria">
+            <span className="pc-sidebar-label">{t('catalog.categories')}</span>
+            <nav className="pc-sidebar flex flex-col gap-1" aria-label={t('catalog.filterByCategory')}>
               <button
                 type="button"
                 onClick={() => selectCategory('')}
                 className={`pc-filter-btn${!activeCategory && !activeFlow ? ' pc-filter-btn--active' : ''}`}
               >
-                Todas
+                {t('catalog.all')}
                 <span className="pc-filter-count">({totalCount})</span>
               </button>
               {hookCategories.filter((cat) => (categoryCounts.get(cat.slug) ?? 0) > 0).map((cat) => (
@@ -114,8 +119,8 @@ export default function Products() {
               ))}
             </nav>
 
-            <span className="pc-sidebar-label pc-sidebar-label--spaced">Fluxos</span>
-            <nav className="pc-sidebar flex flex-col gap-1" aria-label="Filtrar por fluxo de resíduo">
+            <span className="pc-sidebar-label pc-sidebar-label--spaced">{t('common.flows')}</span>
+            <nav className="pc-sidebar flex flex-col gap-1" aria-label={t('catalog.filterByFlow')}>
               {FLOWS.filter((flow) => (flowCounts.get(flow.label) ?? 0) > 0).map((flow) => (
                 <button
                   key={flow.label}
@@ -123,7 +128,7 @@ export default function Products() {
                   onClick={() => selectFlow(activeFlow === flow.label ? '' : flow.label)}
                   className={`pc-filter-btn${activeFlow === flow.label ? ' pc-filter-btn--active' : ''}`}
                 >
-                  {flow.label}
+                  {t(`catalog.flow.${flow.slug}`)}
                   <span className="pc-filter-count">({flowCounts.get(flow.label) ?? 0})</span>
                 </button>
               ))}
@@ -133,7 +138,7 @@ export default function Products() {
           {/* Product grid */}
           <div>
             <span className="pc-results-count">
-              {loading ? 'A carregar…' : `${products.length} produto${products.length !== 1 ? 's' : ''}`}
+              {loading ? t('common.loading') : t(isOne ? 'catalog.count.one' : 'catalog.count.other', { n: products.length })}
             </span>
 
             {loading ? (
@@ -152,7 +157,7 @@ export default function Products() {
               </div>
             ) : products.length === 0 ? (
               <p className="text-[#4d5d53] text-sm py-16 text-center">
-                Nenhum produto encontrado para estes filtros.
+                {t('catalog.empty')}
               </p>
             ) : (
               <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" role="list">

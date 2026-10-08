@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { useScrollSequence } from '@/hooks/useScrollSequence'
-import { Link } from 'react-router-dom'
+import { Link } from '@/i18n/router'
 import type { Product } from '@/types'
-import { getCategoryContent } from '@/data/categories-content'
+import { useI18n } from '@/i18n'
+import { useCategoryContent } from '@/hooks/useCategoryContent'
 import { useProducts } from '@/hooks/useProducts'
 import { useRalColors } from '@/hooks/useRalColors'
 import { useCategoryHighlights } from '@/hooks/useCategoryHighlights'
@@ -15,9 +16,9 @@ interface Props {
 }
 
 const CT_TABS = [
-  { key: 'materiais', label: 'Materiais' },
-  { key: 'cores',     label: 'Cores' },
-  { key: 'rodas',     label: 'Rodas' },
+  { key: 'materiais', labelKey: 'ct.tab.materiais' },
+  { key: 'cores',     labelKey: 'ct.tab.cores' },
+  { key: 'rodas',     labelKey: 'ct.tab.rodas' },
 ]
 
 const SCROLL_FRAME_COUNT = 60
@@ -28,14 +29,16 @@ const SCROLL_FRAMES = Array.from(
 
 export default function CargaTraseiraTemplate({ product }: Props) {
   const [slideIndex, setSlideIndex] = useState(0)
-  const content = getCategoryContent('carga-traseira')!
+  const { t, tf } = useI18n()
+  const content = useCategoryContent('carga-traseira')!
   const { colors: ralColors } = useRalColors('carga-traseira')
   const { intro: categoryIntro, highlights: sharedHighlights } = useCategoryHighlights('carga-traseira')
   // AMBI FOUR não é de fácil manuseamento (é de grande capacidade) — substitui esse
   // destaque, partilhado com o AMBI TWO, só neste template.
+  const easyTitle = tf('cat.carga-traseira.highlights.1.title', 'Fácil Manuseamento')
   const categoryHighlights = sharedHighlights.map((h) =>
-    h.title === 'Fácil Manuseamento'
-      ? { title: 'Personalização', description: 'Frente e tampa preparadas para personalizar o contentor com logótipo do município.' }
+    h.title === 'Fácil Manuseamento' || h.title === easyTitle
+      ? { title: t('ct.highlight.custom.title'), description: t('ct.highlight.custom.desc') }
       : h
   )
   const { products: relatedRaw } = useProducts({ categorySlug: 'carga-traseira' })
@@ -50,41 +53,40 @@ export default function CargaTraseiraTemplate({ product }: Props) {
   const rodas = (spec['Rodas'] as string | undefined)
   const fracoes = (spec['Frações'] as string | undefined)
 
+  const name = product.name
   const CT_FAQS = [
     {
-      q: `Qual a capacidade do ${product.name}?`,
-      a: capacity
-        ? `O ${product.name} tem capacidade de ${capacity}, adaptando-se a qualquer tipologia de habitação.`
-        : `O ${product.name} está disponível em diferentes capacidades, adequadas à recolha porta-a-porta.`,
+      q: t('ct.faq.capacity.q', { name }),
+      a: capacity ? t('ct.faq.capacity.a.with', { name, capacity }) : t('ct.faq.capacity.a.without', { name }),
     },
     rodas && {
-      q: `Quantas rodas tem o ${product.name}?`,
-      a: `O ${product.name} está disponível com ${rodas.toLowerCase()} rodas, facilitando a movimentação e a recolha.`,
+      q: t('ct.faq.wheels.q', { name }),
+      a: t('ct.faq.wheels.a', { name, wheels: rodas.toLowerCase() }),
     },
     fracoes && {
-      q: `Que frações de resíduos posso recolher com o ${product.name}?`,
-      a: `O ${product.name} está preparado para as seguintes frações: ${fracoes.toLowerCase()}.`,
+      q: t('ct.faq.fractions.q', { name }),
+      a: t('ct.faq.fractions.a', { name, fractions: fracoes.toLowerCase() }),
     },
     {
-      q: `O ${product.name} é compatível com identificação RFID?`,
-      a: `Sim. O ${product.name} pode ser equipado com sistema de identificação por RFID, para controlo e monitorização da recolha.`,
+      q: t('ct.faq.rfid.q', { name }),
+      a: t('ct.faq.rfid.a', { name }),
     },
     {
-      q: `Que materiais compõem o ${product.name}?`,
-      a: `O corpo do ${product.name} é fabricado em PEAD, resistente a uso intensivo e às condições climáticas.`,
+      q: t('ct.faq.materials.q', { name }),
+      a: t('ct.faq.materials.a', { name }),
     },
     {
-      q: `Como posso pedir um orçamento ou ficha técnica do ${product.name}?`,
-      a: 'Contacte a nossa equipa através da página de contactos, indicando a quantidade pretendida e o contexto de instalação — preparamos uma proposta e ficha técnica adaptadas ao seu projeto.',
+      q: t('ct.faq.quote.q', { name }),
+      a: t('ct.faq.quote.a', { name }),
     },
   ].filter(Boolean) as { q: string; a: string }[]
 
   const specProperties = [
-    capacity && { '@type': 'PropertyValue', name: 'Capacidade', value: capacity },
-    rodas && { '@type': 'PropertyValue', name: 'Rodas', value: rodas },
-    fracoes && { '@type': 'PropertyValue', name: 'Frações', value: fracoes },
-    spec.materials?.length && { '@type': 'PropertyValue', name: 'Materiais', value: spec.materials.join(', ') },
-    spec.colors?.length && { '@type': 'PropertyValue', name: 'Cores', value: spec.colors.join(', ') },
+    capacity && { '@type': 'PropertyValue', name: tf('spec.label.Capacidade', 'Capacidade'), value: capacity },
+    rodas && { '@type': 'PropertyValue', name: tf('spec.label.Rodas', 'Rodas'), value: rodas },
+    fracoes && { '@type': 'PropertyValue', name: tf('spec.label.Frações', 'Frações'), value: fracoes },
+    spec.materials?.length && { '@type': 'PropertyValue', name: t('ct.tab.materiais'), value: spec.materials.join(', ') },
+    spec.colors?.length && { '@type': 'PropertyValue', name: t('ct.tab.cores'), value: spec.colors.join(', ') },
   ].filter(Boolean)
 
   useEffect(() => {
@@ -107,7 +109,7 @@ export default function CargaTraseiraTemplate({ product }: Props) {
   return (
     <div className="min-h-screen bg-white">
       <PageSeo
-        title={`${product.name} — Carga Traseira`}
+        title={t('ct.seo.title', { name: product.name })}
         description={product.short_description ?? product.description}
         path={`/produtos/carga-traseira/${product.slug}`}
         ogImage={product.cover_image}
@@ -121,15 +123,15 @@ export default function CargaTraseiraTemplate({ product }: Props) {
               image: product.hero_images.map((img) => `https://www.ambiconcept.pt${img}`),
               manufacturer: { '@type': 'Organization', name: 'Ambiconcept' },
               brand: { '@type': 'Brand', name: 'Ambiconcept' },
-              category: 'Carga Traseira',
+              category: t('ct.category'),
               ...(specProperties.length > 0 && { additionalProperty: specProperties }),
             },
             {
               '@type': 'BreadcrumbList',
               itemListElement: [
-                { '@type': 'ListItem', position: 1, name: 'Início', item: 'https://www.ambiconcept.pt/' },
-                { '@type': 'ListItem', position: 2, name: 'Produtos', item: 'https://www.ambiconcept.pt/produtos' },
-                { '@type': 'ListItem', position: 3, name: 'Carga Traseira', item: 'https://www.ambiconcept.pt/categorias/carga-traseira' },
+                { '@type': 'ListItem', position: 1, name: t('common.home'), item: 'https://www.ambiconcept.pt/' },
+                { '@type': 'ListItem', position: 2, name: t('common.products'), item: 'https://www.ambiconcept.pt/produtos' },
+                { '@type': 'ListItem', position: 3, name: t('ct.category'), item: 'https://www.ambiconcept.pt/categorias/carga-traseira' },
                 { '@type': 'ListItem', position: 4, name: product.name, item: `https://www.ambiconcept.pt/produtos/carga-traseira/${product.slug}` },
               ],
             },
@@ -150,12 +152,12 @@ export default function CargaTraseiraTemplate({ product }: Props) {
         <div className="ct-showcase-inner">
 
           <div className="ct-showcase-head">
-            <nav aria-label="Localização" className="ct-breadcrumb">
-              <Link to="/">Início</Link>
+            <nav aria-label={t('ct.breadcrumb.aria')} className="ct-breadcrumb">
+              <Link to="/">{t('common.home')}</Link>
               <span aria-hidden="true">/</span>
-              <Link to="/produtos">Produtos</Link>
+              <Link to="/produtos">{t('common.products')}</Link>
               <span aria-hidden="true">/</span>
-              <Link to="/categorias/carga-traseira">Carga Traseira</Link>
+              <Link to="/categorias/carga-traseira">{t('ct.category')}</Link>
               <span aria-hidden="true">/</span>
               <span>{product.name}</span>
             </nav>
@@ -183,21 +185,21 @@ export default function CargaTraseiraTemplate({ product }: Props) {
                   <img
                     key={img}
                     src={img}
-                    alt={`${product.name} — variante ${i + 1}`}
+                    alt={t('ct.slide.alt', { name: product.name, n: i + 1 })}
                     className={`ct-slide${slideIndex === i ? ' ct-slide--active' : ''}`}
                     loading={i === 0 ? 'eager' : 'lazy'}
                   />
                 ))}
               </div>
               {product.hero_images.length > 1 && (
-                <div className="ct-carousel-dots" aria-label="Selecionar variante">
+                <div className="ct-carousel-dots" aria-label={t('ct.dots.aria')}>
                   {product.hero_images.map((_, i) => (
                     <button
                       key={i}
                       type="button"
                       onClick={() => setSlideIndex(i)}
                       className={`ct-dot${slideIndex === i ? ' ct-dot--active' : ''}`}
-                      aria-label={`Variante ${i + 1}`}
+                      aria-label={t('ct.dot.aria', { n: i + 1 })}
                     />
                   ))}
                 </div>
@@ -228,21 +230,21 @@ export default function CargaTraseiraTemplate({ product }: Props) {
       </section>
 
       {/* ── Animação de scroll ────────────────────────────── */}
-      <section ref={scrollAnimRef} className="ct-scroll-anim" aria-label={`${product.name} — vista em detalhe`}>
+      <section ref={scrollAnimRef} className="ct-scroll-anim" aria-label={t('ct.scroll.aria', { name: product.name })}>
         <div className="ct-scroll-anim-sticky">
           <canvas
             ref={canvasRef}
             role="img"
-            aria-label={`${product.name} — vista em detalhe`}
+            aria-label={t('ct.scroll.aria', { name: product.name })}
             className="ct-scroll-anim-img"
           />
         </div>
       </section>
 
       {/* ── Opções ────────────────────────────────────────── */}
-      <section className="ct-options-section" aria-label="Opções de personalização">
+      <section className="ct-options-section" aria-label={t('ct.options.aria')}>
         <div className="ct-options-inner">
-          <nav className="ct-tabs-nav" role="tablist" aria-label="Categorias de personalização">
+          <nav className="ct-tabs-nav" role="tablist" aria-label={t('ct.tabs.aria')}>
             {CT_TABS.map((tab) => (
               <button
                 key={tab.key}
@@ -252,7 +254,7 @@ export default function CargaTraseiraTemplate({ product }: Props) {
                 className={`ct-tab-btn${activeTab === tab.key ? ' ct-tab-btn--active' : ''}`}
                 onClick={() => setActiveTab(tab.key)}
               >
-                {tab.label}
+                {t(tab.labelKey)}
               </button>
             ))}
           </nav>
@@ -260,14 +262,14 @@ export default function CargaTraseiraTemplate({ product }: Props) {
           <div className="ct-tabs-body">
             <div id="ct-panel-materiais" role="tabpanel" className={`ct-tab-panel${activeTab === 'materiais' ? ' ct-tab-panel--active' : ''}`}>
               <ul className="ct-mat-list">
-                <li>Corpo em polietileno de alta densidade (PEAD), resistente a uso intensivo</li>
-                <li>Rodas reforçadas para movimentação diária</li>
-                <li>Compatível com sistemas de identificação RFID</li>
+                <li>{t('ct.materials.0')}</li>
+                <li>{t('ct.materials.1')}</li>
+                <li>{t('ct.materials.2')}</li>
               </ul>
             </div>
 
             <div id="ct-panel-cores" role="tabpanel" className={`ct-tab-panel${activeTab === 'cores' ? ' ct-tab-panel--active' : ''}`}>
-              <p className="ct-tab-desc">Cores standard disponíveis para o corpo do contentor.</p>
+              <p className="ct-tab-desc">{t('ct.colors.desc')}</p>
               <div className="ct-colors-grid">
                 {ralColors.map((c) => (
                   <div key={c.code} className="ct-color-item">
@@ -281,8 +283,8 @@ export default function CargaTraseiraTemplate({ product }: Props) {
             <div id="ct-panel-rodas" role="tabpanel" className={`ct-tab-panel${activeTab === 'rodas' ? ' ct-tab-panel--active' : ''}`}>
               <p className="ct-tab-desc">
                 {rodas
-                  ? `Disponível com ${rodas.toLowerCase()} rodas, para facilitar a movimentação e a recolha em qualquer contexto.`
-                  : 'Disponível com 2 ou 4 rodas, para facilitar a movimentação e a recolha em qualquer contexto.'}
+                  ? t('ct.wheels.desc.with', { wheels: rodas.toLowerCase() })
+                  : t('ct.wheels.desc.without')}
               </p>
             </div>
           </div>
@@ -290,7 +292,7 @@ export default function CargaTraseiraTemplate({ product }: Props) {
       </section>
 
       {/* ── Vídeo ─────────────────────────────────────────── */}
-      <section className="ct-video-section" aria-label={`Vídeo — ${product.name}`}>
+      <section className="ct-video-section" aria-label={t('ct.video.aria', { name: product.name })}>
         <div className="ct-video-wrap">
           <video
             className="ct-video"
@@ -304,8 +306,8 @@ export default function CargaTraseiraTemplate({ product }: Props) {
             <source src="/assets/video-carga-traseira.mp4" type="video/mp4" />
           </video>
           <div className="ct-video-overlay">
-            <span className="ct-section-eyebrow">Vídeo</span>
-            <h2 className="ct-video-title">Veja o {product.name} em ação</h2>
+            <span className="ct-section-eyebrow">{t('ct.video.eyebrow')}</span>
+            <h2 className="ct-video-title">{t('ct.video.title', { name: product.name })}</h2>
           </div>
         </div>
       </section>
@@ -315,12 +317,12 @@ export default function CargaTraseiraTemplate({ product }: Props) {
         <section className="ct-related-section" aria-labelledby="ct-related-heading">
           <div className="ct-related-inner">
             <div className="ct-related-head">
-              <span className="ct-section-eyebrow">Carga Traseira</span>
+              <span className="ct-section-eyebrow">{t('ct.category')}</span>
               <h2 id="ct-related-heading" className="ct-related-title">
-                Produtos Semelhantes
+                {t('ct.related.title')}
               </h2>
               <p className="ct-related-sub">
-                Outras soluções para recolha seletiva domiciliária adaptadas <br />às necessidades de cada contexto.
+                {t('ct.related.sub.0')}{' '}<br />{t('ct.related.sub.1')}
               </p>
             </div>
             <ul className="ct-related-grid" role="list">
@@ -359,9 +361,9 @@ export default function CargaTraseiraTemplate({ product }: Props) {
       <section className="ct-faq-section" aria-labelledby="ct-faq-heading">
         <div className="ct-faq-inner">
           <div className="ct-faq-head">
-            <span className="ct-section-eyebrow">Perguntas Frequentes</span>
+            <span className="ct-section-eyebrow">{t('ct.faq.eyebrow')}</span>
             <h2 id="ct-faq-heading" className="ct-related-title">
-              Dúvidas sobre o {product.name}
+              {t('ct.faq.title', { name: product.name })}
             </h2>
           </div>
           <div className="ct-faq-list">
@@ -396,13 +398,13 @@ export default function CargaTraseiraTemplate({ product }: Props) {
       <section className="ct-cta-section" aria-labelledby="ct-cta-heading">
         <div className="ct-cta-inner">
           <h2 id="ct-cta-heading" className="ct-cta-title">
-            Apresente o seu projeto. <br />Os nossos especialistas <br />encontram a solução certa.
+            {t('ct.cta.title.0')}{' '}<br />{t('ct.cta.title.1')}{' '}<br />{t('ct.cta.title.2')}
           </h2>
           <p className="ct-cta-sub">
-            Partilhe os requisitos do seu município ou condomínio. Desenvolvemos a solução de recolha porta-a-porta mais adequada ao seu contexto.
+            {t('ct.cta.sub')}
           </p>
           <Link to="/contactos" className="btn-dark">
-            Falar com um Especialista
+            {t('ct.cta.button')}
           </Link>
         </div>
       </section>

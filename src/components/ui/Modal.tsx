@@ -1,4 +1,5 @@
 import { useEffect, type ReactNode } from 'react'
+import { useI18n } from '@/i18n'
 
 interface ModalProps {
   open: boolean
@@ -9,6 +10,7 @@ interface ModalProps {
 }
 
 export default function Modal({ open, onClose, title, children, maxWidthClassName = 'max-w-lg' }: ModalProps) {
+  const { t } = useI18n()
   useEffect(() => {
     if (!open) return
     function onKeyDown(e: KeyboardEvent) {
@@ -37,7 +39,7 @@ export default function Modal({ open, onClose, title, children, maxWidthClassNam
           <button
             type="button"
             onClick={onClose}
-            aria-label="Fechar"
+            aria-label={t('home.modal.close')}
             className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">

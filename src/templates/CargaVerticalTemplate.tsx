@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { useScrollSequence } from '@/hooks/useScrollSequence'
-import { Link } from 'react-router-dom'
+import { Link } from '@/i18n/router'
 import type { Product } from '@/types'
-import { getCategoryContent } from '@/data/categories-content'
+import { useI18n } from '@/i18n'
+import { useCategoryContent } from '@/hooks/useCategoryContent'
 import { storageUrl } from '@/data/local'
 import { useProducts } from '@/hooks/useProducts'
 import { useRalColors } from '@/hooks/useRalColors'
@@ -16,12 +17,12 @@ interface Props {
 }
 
 const CV_TABS = [
-  { key: 'materiais',        label: 'Materiais' },
-  { key: 'cores',            label: 'Cores' },
-  { key: 'decoracao',        label: 'Decoração' },
-  { key: 'sinaletica',       label: 'Sinalética' },
-  { key: 'controlo-acesso',  label: 'Controlo de Acesso' },
-  { key: 'sensorizacao',     label: 'Sensorização' },
+  { key: 'materiais',        labelKey: 'cv.tab.materiais' },
+  { key: 'cores',            labelKey: 'cv.tab.cores' },
+  { key: 'decoracao',        labelKey: 'cv.tab.decoracao' },
+  { key: 'sinaletica',       labelKey: 'cv.tab.sinaletica' },
+  { key: 'controlo-acesso',  labelKey: 'cv.tab.controlo-acesso' },
+  { key: 'sensorizacao',     labelKey: 'cv.tab.sensorizacao' },
 ]
 
 const CV_BASE_FRAME_COUNT = 142
@@ -86,71 +87,71 @@ const CV_DESCARGA_CALLOUT_LAST_FRAME = CV_DESCARGA_CALLOUT_FRAME + CV_HOLD_STEPS
 
 const CV_SCROLL_CALLOUTS = [
   {
-    title: 'Boca de Depósito',
-    description: 'Dimensão ajustada ao tipo de resíduo.',
+    titleKey: 'cv.callout.boca.title',
+    descKey: 'cv.callout.boca.desc',
     left: 35, top: 31, align: 'left' as const,
     firstFrame: CV_CALLOUTS_FIRST_FRAME, lastFrame: CV_CALLOUTS_LAST_FRAME,
   },
   {
-    title: 'Placa de Resíduo',
-    description: 'Identifica o resíduo a depositar.',
+    titleKey: 'cv.callout.residuo.title',
+    descKey: 'cv.callout.residuo.desc',
     left: 34, top: 41, align: 'left' as const,
     firstFrame: CV_CALLOUTS_FIRST_FRAME, lastFrame: CV_CALLOUTS_LAST_FRAME,
   },
   {
-    title: 'Placa de Entidade',
-    description: 'Identifica o operador ou município.',
+    titleKey: 'cv.callout.entidade.title',
+    descKey: 'cv.callout.entidade.desc',
     left: 65, top: 38, align: 'right' as const,
     firstFrame: CV_CALLOUTS_FIRST_FRAME, lastFrame: CV_CALLOUTS_LAST_FRAME,
   },
   {
-    title: 'Sistema de Elevação',
-    description: 'Compatível com sistemas universais.',
+    titleKey: 'cv.callout.elevacao.title',
+    descKey: 'cv.callout.elevacao.desc',
     left: 50, top: 13, align: 'right' as const,
     firstFrame: CV_ELEVACAO_CALLOUT_FRAME, lastFrame: CV_ELEVACAO_CALLOUT_LAST_FRAME,
   },
   {
-    title: 'Sistema de Descarga',
-    description: 'Alçapão para descarga por gravidade.',
+    titleKey: 'cv.callout.descarga.title',
+    descKey: 'cv.callout.descarga.desc',
     left: 66, top: 83, align: 'right' as const,
     firstFrame: CV_DESCARGA_CALLOUT_FRAME, lastFrame: CV_DESCARGA_CALLOUT_LAST_FRAME,
   },
 ]
 
 // TODO: substituir por imagens próprias da Argola Simples quando disponíveis (usa Argola Dupla como placeholder)
-const LIFTING_STRUCTURES: Record<string, { label: string; closed: string; open: string }[]> = {
+const LIFTING_STRUCTURES: Record<string, { labelKey: string; closed: string; open: string }[]> = {
   'ambi-2-7': [
-    { label: 'Argola Dupla', closed: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-AD-Fechado.png'), open: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-AD-Aberto.png') },
-    { label: 'Meio Cogumelo', closed: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-KS-Fechado.png'), open: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-KS-Aberto.png') },
-    { label: 'F90', closed: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-KS-Fechado.png'), open: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-KS-Aberto.png') },
+    { labelKey: 'cv.lifting.dupla', closed: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-AD-Fechado.png'), open: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-AD-Aberto.png') },
+    { labelKey: 'cv.lifting.cogumelo', closed: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-KS-Fechado.png'), open: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-KS-Aberto.png') },
+    { labelKey: 'cv.lifting.f90', closed: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-KS-Fechado.png'), open: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-KS-Aberto.png') },
   ],
   'ambi-2-5': [
-    { label: 'Argola Simples', closed: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-AD-Fechado.png'), open: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-AD-Aberto.png') },
-    { label: 'Argola Dupla', closed: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-AD-Fechado.png'), open: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-AD-Aberto.png') },
-    { label: 'Meio Cogumelo', closed: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-KS-Fechado.png'), open: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-KS-Aberto.png') },
+    { labelKey: 'cv.lifting.simples', closed: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-AD-Fechado.png'), open: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-AD-Aberto.png') },
+    { labelKey: 'cv.lifting.dupla', closed: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-AD-Fechado.png'), open: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-AD-Aberto.png') },
+    { labelKey: 'cv.lifting.cogumelo', closed: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-KS-Fechado.png'), open: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-KS-Aberto.png') },
   ],
   'ambi-3-7': [
-    { label: 'Argola Dupla', closed: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-AD-Fechado.png'), open: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-AD-Aberto.png') },
+    { labelKey: 'cv.lifting.dupla', closed: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-AD-Fechado.png'), open: storageUrl('produtos/_shared/estruturas-elevacao/AMBI2.7-AD-Aberto.png') },
   ],
 }
 
 // TODO: placeholders — substituir por imagens próprias de "Controlo de Acesso" e "Empilhável" quando disponíveis
-const CUSTOM_ITEMS: Record<string, { label: string; img: string }[]> = {
+const CUSTOM_ITEMS: Record<string, { labelKey: string; img: string }[]> = {
   'ambi-2-7': [
-    { label: 'Decoração', img: '/assets/AMBI2.7_Decoracao.png' },
-    { label: 'Pilhão', img: '/assets/AMBI2.7_Pilhao.png' },
-    { label: 'Volteador', img: '/assets/AMBI2.7_Volteador.png' },
-    { label: 'Controlo de Acesso', img: '/assets/AMBI2.7_Decoracao.png' },
-    { label: 'Empilhável', img: '/assets/AMBI2.7_Decoracao.png' },
+    { labelKey: 'cv.custom.item.decoracao', img: '/assets/AMBI2.7_Decoracao.png' },
+    { labelKey: 'cv.custom.item.pilhao', img: '/assets/AMBI2.7_Pilhao.png' },
+    { labelKey: 'cv.custom.item.volteador', img: '/assets/AMBI2.7_Volteador.png' },
+    { labelKey: 'cv.custom.item.controlo', img: '/assets/AMBI2.7_Decoracao.png' },
+    { labelKey: 'cv.custom.item.empilhavel', img: '/assets/AMBI2.7_Decoracao.png' },
   ],
   'ambi-2-5': [
-    { label: 'Decoração', img: storageUrl('produtos/ambi_2.5/fotos/digital/12_ambi2_5_decor.png') },
-    { label: 'Pilhão', img: storageUrl('produtos/ambi_2.5/fotos/digital/07_ambi2_5_vidro_pilhao.png') },
-    { label: 'Volteador', img: storageUrl('produtos/ambi_2.5/fotos/digital/09_ambi2_5_volteador.png') },
+    { labelKey: 'cv.custom.item.decoracao', img: storageUrl('produtos/ambi_2.5/fotos/digital/12_ambi2_5_decor.png') },
+    { labelKey: 'cv.custom.item.pilhao', img: storageUrl('produtos/ambi_2.5/fotos/digital/07_ambi2_5_vidro_pilhao.png') },
+    { labelKey: 'cv.custom.item.volteador', img: storageUrl('produtos/ambi_2.5/fotos/digital/09_ambi2_5_volteador.png') },
   ],
   'ambi-3-7': [
-    { label: 'Decoração', img: storageUrl('produtos/ambi_3.7/fotos/digital/03_ambi3_7_decoracao.png') },
-    { label: 'Pilhão', img: storageUrl('produtos/ambi_3.7/fotos/digital/06_ambi3_7_pilhao.png') },
+    { labelKey: 'cv.custom.item.decoracao', img: storageUrl('produtos/ambi_3.7/fotos/digital/03_ambi3_7_decoracao.png') },
+    { labelKey: 'cv.custom.item.pilhao', img: storageUrl('produtos/ambi_3.7/fotos/digital/06_ambi3_7_pilhao.png') },
   ],
 }
 
@@ -176,7 +177,8 @@ function tabAsset(slug: string, filename: string): string {
 
 export default function CargaVerticalTemplate({ product }: Props) {
   const [slideIndex, setSlideIndex] = useState(0)
-  const content = getCategoryContent('carga-vertical')!
+  const { t, tf } = useI18n()
+  const content = useCategoryContent('carga-vertical')!
   const { colors: ralColors } = useRalColors('carga-vertical')
   const { intro: categoryIntro, highlights: categoryHighlights } = useCategoryHighlights('carga-vertical')
   const { products: relatedRaw } = useProducts({ categorySlug: 'carga-vertical' })
@@ -187,7 +189,7 @@ export default function CargaVerticalTemplate({ product }: Props) {
   const relatedDisplay: { id: string; slug: string; name: string; cover_image: string; capacity?: string }[] =
     related.length > 0
       ? related.map((p) => ({ id: p.id, slug: p.slug, name: p.name, cover_image: p.cover_image, capacity: p.specifications?.capacity ?? (p.specifications?.['Capacidade'] as string | undefined) }))
-      : [{ id: 'ambi-27-placeholder', slug: 'ambi-2-7', name: 'AMBI 2.7', cover_image: '/assets/AMBI2.7_Capa.png', capacity: '2.700 Litros' }]
+      : [{ id: 'ambi-27-placeholder', slug: 'ambi-2-7', name: 'AMBI 2.7', cover_image: '/assets/AMBI2.7_Capa.png', capacity: t('cv.related.placeholderCapacity') }]
 
   const [openFaq, setOpenFaq] = useState<number | null>(null)
 
@@ -196,51 +198,33 @@ export default function CargaVerticalTemplate({ product }: Props) {
   const certifications = spec.certifications?.length
     ? spec.certifications.join(', ')
     : (spec['Certificações'] as string | undefined)
-  const introText = capacity
-    ? `O ${product.name} foi desenvolvido para a recolha seletiva em espaço público, com capacidade de ${capacity}. Fabricado em PEAD de alta resistência, oferece durabilidade urbana comprovada e compatibilidade universal com volteadores de carga vertical. Disponível para os principais fluxos de recolha seletiva: papel & cartão, vidro, embalagens e indiferenciados.`
-    : categoryIntro
+  const introText = capacity ? t('cv.intro', { name: product.name, capacity }) : categoryIntro
 
   const liftingStructures = LIFTING_STRUCTURES[product.slug] ?? LIFTING_STRUCTURES['ambi-2-7']
   const liftingStructuresList = liftingStructures
-    .map((s) => s.label)
+    .map((s) => t(s.labelKey))
     .join(', ')
-    .replace(/, ([^,]*)$/, ' e $1')
+    .replace(/, ([^,]*)$/, (_, last) => ` ${t('cv.lifting.and')} ${last}`)
+  const nameVar = { name: product.name }
 
   const CV_FAQS = [
     {
-      q: `Qual a capacidade do ${product.name}?`,
-      a: capacity
-        ? `O ${product.name} tem capacidade de ${capacity}, para recolha seletiva de papel & cartão, vidro, embalagens e indiferenciados.`
-        : `O ${product.name} está preparado para recolha seletiva de papel & cartão, vidro, embalagens e indiferenciados.`,
+      q: t('cv.faq.0.q', nameVar),
+      a: capacity ? t('cv.faq.0.a', { name: product.name, capacity }) : t('cv.faq.0.aNoCap', nameVar),
     },
-    {
-      q: `Que sistemas de elevação são compatíveis com o ${product.name}?`,
-      a: `O ${product.name} é compatível com os sistemas de elevação mais utilizados em Portugal — ${liftingStructuresList} — adaptando-se à frota existente do município ou operador.`,
-    },
-    {
-      q: `É possível personalizar cores, sinalética e decoração do ${product.name}?`,
-      a: `Sim. O ${product.name} pode ser configurado com cores RAL personalizadas, sinalética de identificação de resíduo e entidade, e opções de decoração de frentes e laterais, adaptadas à identidade do município.`,
-    },
-    {
-      q: `Que materiais compõem o ${product.name}?`,
-      a: `O corpo do ${product.name} é fabricado em PEAD de alta resistência, com estrutura em aço galvanizado em conformidade com a norma NP EN ISO 1461, garantindo durabilidade em uso urbano intensivo.`,
-    },
-    certifications && {
-      q: `Que certificações tem o ${product.name}?`,
-      a: `O ${product.name} está em conformidade com ${certifications}, garantindo qualidade e segurança reconhecidas para uso em espaço público.`,
-    },
-    {
-      q: `Como posso pedir um orçamento ou ficha técnica do ${product.name}?`,
-      a: 'Contacte a nossa equipa através da página de contactos, indicando o volume pretendido e os fluxos de resíduo a recolher — preparamos uma proposta e ficha técnica adaptadas ao seu projeto.',
-    },
+    { q: t('cv.faq.1.q', nameVar), a: t('cv.faq.1.a', { name: product.name, list: liftingStructuresList }) },
+    { q: t('cv.faq.2.q', nameVar), a: t('cv.faq.2.a', nameVar) },
+    { q: t('cv.faq.3.q', nameVar), a: t('cv.faq.3.a', nameVar) },
+    certifications && { q: t('cv.faq.4.q', nameVar), a: t('cv.faq.4.a', { name: product.name, certifications }) },
+    { q: t('cv.faq.5.q', nameVar), a: t('cv.faq.5.a') },
   ].filter(Boolean) as { q: string; a: string }[]
   const liftingSystem = spec.lifting_system ?? (spec['Sistema de elevação'] as string | undefined)
   const specProperties = [
-    capacity && { '@type': 'PropertyValue', name: 'Capacidade', value: capacity },
-    spec.dimensions && { '@type': 'PropertyValue', name: 'Dimensões', value: spec.dimensions },
-    spec.materials?.length && { '@type': 'PropertyValue', name: 'Materiais', value: spec.materials.join(', ') },
-    spec.colors?.length && { '@type': 'PropertyValue', name: 'Cores', value: spec.colors.join(', ') },
-    liftingSystem && { '@type': 'PropertyValue', name: 'Sistema de Elevação', value: liftingSystem },
+    capacity && { '@type': 'PropertyValue', name: t('cv.schema.prop.capacity'), value: capacity },
+    spec.dimensions && { '@type': 'PropertyValue', name: t('cv.schema.prop.dimensions'), value: spec.dimensions },
+    spec.materials?.length && { '@type': 'PropertyValue', name: t('cv.schema.prop.materials'), value: spec.materials.join(', ') },
+    spec.colors?.length && { '@type': 'PropertyValue', name: t('cv.schema.prop.colors'), value: spec.colors.join(', ') },
+    liftingSystem && { '@type': 'PropertyValue', name: t('cv.schema.prop.lifting'), value: liftingSystem },
   ].filter(Boolean)
 
   useEffect(() => {
@@ -253,9 +237,11 @@ export default function CargaVerticalTemplate({ product }: Props) {
 
   // a descrição de "Alta Capacidade" vem da categoria (partilhada entre AMBI 2.5/2.7/3.7) — substitui
   // pela capacidade real deste produto em vez do valor fixo do texto da categoria.
+  // (o título pode já vir traduzido: compara com o original e com a tradução da categoria)
+  const capacityTitles = ['Alta Capacidade', tf('cat.carga-vertical.highlights.3.title', 'Alta Capacidade')]
   const displayHighlights = categoryHighlights.map((h) =>
-    h.title === 'Alta Capacidade' && capacity
-      ? { ...h, description: `Contentores de carga vertical com capacidade até ${capacity}. Melhor relação preço/capacidade do segmento.` }
+    capacityTitles.includes(h.title) && capacity
+      ? { ...h, description: t('cv.highlight.capacity.desc', { capacity }) }
       : h
   )
   const leftHighlights = displayHighlights.slice(0, 2)
@@ -285,7 +271,7 @@ export default function CargaVerticalTemplate({ product }: Props) {
   return (
     <div className="min-h-screen bg-white">
       <PageSeo
-        title={`${product.name} — Carga Vertical`}
+        title={t('cv.seo.title', nameVar)}
         description={product.short_description ?? product.description}
         path={`/produtos/carga-vertical/${product.slug}`}
         ogImage={product.cover_image}
@@ -299,15 +285,15 @@ export default function CargaVerticalTemplate({ product }: Props) {
               image: product.hero_images.map((img) => `https://www.ambiconcept.pt${img}`),
               manufacturer: { '@type': 'Organization', name: 'Ambiconcept' },
               brand: { '@type': 'Brand', name: 'Ambiconcept' },
-              category: 'Contentor de Carga Vertical',
+              category: t('cv.schema.category'),
               ...(specProperties.length > 0 && { additionalProperty: specProperties }),
             },
             {
               '@type': 'BreadcrumbList',
               itemListElement: [
-                { '@type': 'ListItem', position: 1, name: 'Início', item: 'https://www.ambiconcept.pt/' },
-                { '@type': 'ListItem', position: 2, name: 'Produtos', item: 'https://www.ambiconcept.pt/produtos' },
-                { '@type': 'ListItem', position: 3, name: 'Carga Vertical', item: 'https://www.ambiconcept.pt/categorias/carga-vertical' },
+                { '@type': 'ListItem', position: 1, name: t('common.home'), item: 'https://www.ambiconcept.pt/' },
+                { '@type': 'ListItem', position: 2, name: t('common.products'), item: 'https://www.ambiconcept.pt/produtos' },
+                { '@type': 'ListItem', position: 3, name: t('cv.breadcrumb.category'), item: 'https://www.ambiconcept.pt/categorias/carga-vertical' },
                 { '@type': 'ListItem', position: 4, name: product.name, item: `https://www.ambiconcept.pt/produtos/carga-vertical/${product.slug}` },
               ],
             },
@@ -329,12 +315,12 @@ export default function CargaVerticalTemplate({ product }: Props) {
 
           {/* Header */}
           <div className="cv-showcase-head">
-            <nav aria-label="Localização" className="cv-breadcrumb">
-              <Link to="/">Início</Link>
+            <nav aria-label={t('cv.breadcrumb.label')} className="cv-breadcrumb">
+              <Link to="/">{t('common.home')}</Link>
               <span aria-hidden="true">/</span>
-              <Link to="/produtos">Produtos</Link>
+              <Link to="/produtos">{t('common.products')}</Link>
               <span aria-hidden="true">/</span>
-              <Link to="/categorias/carga-vertical">Carga Vertical</Link>
+              <Link to="/categorias/carga-vertical">{t('cv.breadcrumb.category')}</Link>
               <span aria-hidden="true">/</span>
               <span>{product.name}</span>
             </nav>
@@ -365,21 +351,21 @@ export default function CargaVerticalTemplate({ product }: Props) {
                   <img
                     key={img}
                     src={img}
-                    alt={`${product.name} — variante ${i + 1}`}
+                    alt={t('cv.carousel.alt', { name: product.name, n: i + 1 })}
                     className={`cv-slide${slideIndex === i ? ' cv-slide--active' : ''}`}
                     loading={i === 0 ? 'eager' : 'lazy'}
                   />
                 ))}
               </div>
               {product.hero_images.length > 1 && (
-                <div className="cv-carousel-dots" aria-label="Selecionar variante">
+                <div className="cv-carousel-dots" aria-label={t('cv.carousel.select')}>
                   {product.hero_images.map((_, i) => (
                     <button
                       key={i}
                       type="button"
                       onClick={() => setSlideIndex(i)}
                       className={`cv-dot${slideIndex === i ? ' cv-dot--active' : ''}`}
-                      aria-label={`Variante ${i + 1}`}
+                      aria-label={t('cv.carousel.variant', { n: i + 1 })}
                     />
                   ))}
                 </div>
@@ -411,13 +397,13 @@ export default function CargaVerticalTemplate({ product }: Props) {
       </section>
 
       {/* ── Animação de scroll ────────────────────────────── */}
-      <section ref={scrollAnimRef} className="cv-scroll-anim" aria-label={`${product.name} — vista em detalhe`}>
+      <section ref={scrollAnimRef} className="cv-scroll-anim" aria-label={t('cv.scroll.label', nameVar)}>
         <div className="cv-scroll-anim-sticky">
           <div className="cv-scroll-anim-media">
             <canvas
               ref={canvasRef}
               role="img"
-              aria-label={`${product.name} — vista em detalhe`}
+              aria-label={t('cv.scroll.label', nameVar)}
               className="cv-scroll-anim-img"
             />
             <div className="cv-scroll-callouts">
@@ -436,7 +422,7 @@ export default function CargaVerticalTemplate({ product }: Props) {
                 const isHidden = calloutKey[CV_SCROLL_CALLOUTS.indexOf(c)] !== '1'
                 return (
                   <div
-                    key={c.title}
+                    key={c.titleKey}
                     className={`cv-callout${isHidden ? ' cv-callout--hidden' : ''}`}
                     aria-hidden={isHidden}
                   >
@@ -449,8 +435,8 @@ export default function CargaVerticalTemplate({ product }: Props) {
                       className={`cv-callout-label cv-callout-label--${c.align}`}
                       style={{ top: `${c.top}%`, ...labelAnchorStyle }}
                     >
-                      <span className="cv-callout-title">{c.title}</span>
-                      <span className="cv-callout-desc">{c.description}</span>
+                      <span className="cv-callout-title">{t(c.titleKey)}</span>
+                      <span className="cv-callout-desc">{t(c.descKey)}</span>
                     </span>
                   </div>
                 )
@@ -464,24 +450,27 @@ export default function CargaVerticalTemplate({ product }: Props) {
       <section className="cv-lifting-section" aria-labelledby="cv-lifting-heading">
         <div className="cv-lifting-inner">
           <div className="cv-lifting-head">
-            <span className="cv-section-eyebrow">Sistema de Elevação e Descarga</span>
+            <span className="cv-section-eyebrow">{t('cv.lifting.eyebrow')}</span>
             <h2 id="cv-lifting-heading" className="cv-lifting-title">
-              Estruturas compatíveis com o {product.name}
+              {t('cv.lifting.title', nameVar)}
             </h2>
             <p className="cv-lifting-sub">
-              Produzidas em aço galvanizado em conformidade com a norma NP EN ISO 1461, garantindo resistência e durabilidade em condições de utilização intensiva.
+              {t('cv.lifting.sub')}
             </p>
           </div>
           <div className={`cv-lifting-grid cv-lifting-grid--${['zero', 'single', 'two', 'three'][liftingStructures.length] ?? 'three'}`}>
-            {liftingStructures.map((structure) => (
-              <div key={structure.label} className="cv-lifting-item">
+            {liftingStructures.map((structure) => {
+              const label = t(structure.labelKey)
+              return (
+              <div key={structure.labelKey} className="cv-lifting-item">
                 <div className="cv-lifting-img-wrap cv-lifting-img-wrap--slide">
-                  <img src={structure.closed} alt={`${structure.label} — posição normal`} className={`cv-lifting-slide${argolaSlide === 0 ? ' cv-lifting-slide--active' : ''}`} loading="lazy" />
-                  <img src={structure.open} alt={`${structure.label} — posição de descarga`} className={`cv-lifting-slide${argolaSlide === 1 ? ' cv-lifting-slide--active' : ''}`} loading="lazy" />
+                  <img src={structure.closed} alt={t('cv.lifting.altClosed', { label })} className={`cv-lifting-slide${argolaSlide === 0 ? ' cv-lifting-slide--active' : ''}`} loading="lazy" />
+                  <img src={structure.open} alt={t('cv.lifting.altOpen', { label })} className={`cv-lifting-slide${argolaSlide === 1 ? ' cv-lifting-slide--active' : ''}`} loading="lazy" />
                 </div>
-                <p className="cv-lifting-label">{structure.label}</p>
+                <p className="cv-lifting-label">{label}</p>
               </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </section>
@@ -491,21 +480,21 @@ export default function CargaVerticalTemplate({ product }: Props) {
         <div className="cv-custom-inner">
           <div className="cv-custom-head">
             <h2 id="cv-custom-heading" className="cv-custom-title">
-              Características e Personalização do {product.name}
+              {t('cv.custom.title', nameVar)}
             </h2>
             <p className="cv-custom-sub">
-              Cada unidade pode ser configurada com opções de personalização visual e funcional,<br />
-              adaptadas às necessidades específicas do município<br />
-              e às frações de resíduo a recolher.
+              {t('cv.custom.sub.1')}<br />
+              {t('cv.custom.sub.2')}<br />
+              {t('cv.custom.sub.3')}
             </p>
           </div>
           <div className={`cv-custom-grid cv-custom-grid--${customItems.length}`}>
             {customItems.map((item) => (
-              <div key={item.label} className="cv-custom-item">
+              <div key={item.labelKey} className="cv-custom-item">
                 <div className="cv-custom-img-wrap">
-                  <img src={item.img} alt={item.label} className="cv-custom-img" loading="lazy" />
+                  <img src={item.img} alt={t(item.labelKey)} className="cv-custom-img" loading="lazy" />
                 </div>
-                <p className="cv-custom-label">{item.label}</p>
+                <p className="cv-custom-label">{t(item.labelKey)}</p>
               </div>
             ))}
           </div>
@@ -513,9 +502,9 @@ export default function CargaVerticalTemplate({ product }: Props) {
       </section>
 
       {/* ── Opções ────────────────────────────────────────── */}
-      <section className="cv-options-section" aria-label="Opções de personalização">
+      <section className="cv-options-section" aria-label={t('cv.options.label')}>
         <div className="cv-options-inner">
-          <nav className="cv-tabs-nav" role="tablist" aria-label="Categorias de personalização">
+          <nav className="cv-tabs-nav" role="tablist" aria-label={t('cv.options.tabs')}>
             {cvTabs.map((tab) => (
               <button
                 key={tab.key}
@@ -525,7 +514,7 @@ export default function CargaVerticalTemplate({ product }: Props) {
                 className={`cv-tab-btn${activeTab === tab.key ? ' cv-tab-btn--active' : ''}`}
                 onClick={() => setActiveTab(tab.key)}
               >
-                {tab.label}
+                {t(tab.labelKey)}
               </button>
             ))}
           </nav>
@@ -533,26 +522,26 @@ export default function CargaVerticalTemplate({ product }: Props) {
           <div className="cv-tabs-body">
             <div id="cv-panel-materiais" role="tabpanel" className={`cv-tab-panel${activeTab === 'materiais' ? ' cv-tab-panel--active' : ''}`}>
               <ul className="cv-mat-list">
-                <li>Corpo do contentor em polietileno de alta densidade (PEAD) com resistência UV</li>
-                <li>Aço galvanizado em conformidade com a norma <strong>NP EN ISO 1461</strong></li>
-                <li>Bocas para identificação de resíduo em PEAD</li>
-                <li>Tapetas em borracha</li>
+                <li>{t('cv.mat.1')}</li>
+                <li>{t('cv.mat.2')} <strong>NP EN ISO 1461</strong></li>
+                <li>{t('cv.mat.3')}</li>
+                <li>{t('cv.mat.4')}</li>
               </ul>
               {/* TODO: simulação — substituir por logótipos reais quando disponíveis */}
               <div className="cv-badges-row">
                 <div className="cv-badge">
                   <span className="cv-badge-value">100%</span>
-                  <span className="cv-badge-label">Reciclável</span>
+                  <span className="cv-badge-label">{t('cv.badge.recyclable')}</span>
                 </div>
                 <div className="cv-badge">
                   <span className="cv-badge-value">TÜV</span>
-                  <span className="cv-badge-label">Certificado</span>
+                  <span className="cv-badge-label">{t('cv.badge.certified')}</span>
                 </div>
               </div>
             </div>
 
             <div id="cv-panel-cores" role="tabpanel" className={`cv-tab-panel${activeTab === 'cores' ? ' cv-tab-panel--active' : ''}`}>
-              <p className="cv-tab-desc">Cores standard disponíveis para contentores e/ou bocas<br />identificativas do tipo de resíduo.</p>
+              <p className="cv-tab-desc">{t('cv.colors.desc.1')}<br />{t('cv.colors.desc.2')}</p>
               <div className="cv-colors-grid">
                 {ralColors.map((c) => (
                   <div key={c.code} className="cv-color-item">
@@ -567,17 +556,17 @@ export default function CargaVerticalTemplate({ product }: Props) {
               <div className="cv-sinal-grid">
                 <div className="cv-sinal-item">
                   <div className="cv-sinal-img-wrap">
-                    <img src={tabAsset(product.slug, 'decor-frentes.svg')} alt="Decoração de Frentes" className="cv-sinal-img" loading="lazy" />
+                    <img src={tabAsset(product.slug, 'decor-frentes.svg')} alt={t('cv.decor.front')} className="cv-sinal-img" loading="lazy" />
                   </div>
-                  <p className="cv-sinal-title">Decoração de Frentes</p>
-                  <p className="cv-sinal-sub">Área útil para personalização</p>
+                  <p className="cv-sinal-title">{t('cv.decor.front')}</p>
+                  <p className="cv-sinal-sub">{t('cv.decor.sub')}</p>
                 </div>
                 <div className="cv-sinal-item">
                   <div className="cv-sinal-img-wrap">
-                    <img src={tabAsset(product.slug, 'decor-laterais.svg')} alt="Decoração de Laterais" className="cv-sinal-img" loading="lazy" />
+                    <img src={tabAsset(product.slug, 'decor-laterais.svg')} alt={t('cv.decor.side')} className="cv-sinal-img" loading="lazy" />
                   </div>
-                  <p className="cv-sinal-title">Decoração de Laterais</p>
-                  <p className="cv-sinal-sub">Área útil para personalização</p>
+                  <p className="cv-sinal-title">{t('cv.decor.side')}</p>
+                  <p className="cv-sinal-sub">{t('cv.decor.sub')}</p>
                 </div>
               </div>
             </div>
@@ -586,17 +575,17 @@ export default function CargaVerticalTemplate({ product }: Props) {
               <div className="cv-sinal-grid">
                 <div className="cv-sinal-item">
                   <div className="cv-sinal-img-wrap">
-                    <img src={tabAsset(product.slug, 'placa-residuo.svg')} alt="Placa de Resíduo" className="cv-sinal-img" loading="lazy" />
+                    <img src={tabAsset(product.slug, 'placa-residuo.svg')} alt={t('cv.sign.waste')} className="cv-sinal-img" loading="lazy" />
                   </div>
-                  <p className="cv-sinal-title">Placa de Resíduo</p>
-                  <p className="cv-sinal-sub">Área útil para informação</p>
+                  <p className="cv-sinal-title">{t('cv.sign.waste')}</p>
+                  <p className="cv-sinal-sub">{t('cv.sign.sub')}</p>
                 </div>
                 <div className="cv-sinal-item">
                   <div className="cv-sinal-img-wrap">
-                    <img src={tabAsset(product.slug, 'placa-entidade.svg')} alt="Placa de Entidade" className="cv-sinal-img" loading="lazy" />
+                    <img src={tabAsset(product.slug, 'placa-entidade.svg')} alt={t('cv.sign.entity')} className="cv-sinal-img" loading="lazy" />
                   </div>
-                  <p className="cv-sinal-title">Placa de Entidade</p>
-                  <p className="cv-sinal-sub">Área útil para informação</p>
+                  <p className="cv-sinal-title">{t('cv.sign.entity')}</p>
+                  <p className="cv-sinal-sub">{t('cv.sign.sub')}</p>
                 </div>
               </div>
             </div>
@@ -607,10 +596,10 @@ export default function CargaVerticalTemplate({ product }: Props) {
                   <div className="cv-sinal-item">
                     <div className="cv-sinal-img-wrap">
                       {/* TODO: placeholder — substituir por imagem própria de "Controlo de Acesso" quando disponível */}
-                      <img src="/assets/AMBI2.7_Decoracao.png" alt="Controlo de Acesso" className="cv-sinal-img" loading="lazy" />
+                      <img src="/assets/AMBI2.7_Decoracao.png" alt={t('cv.access.title')} className="cv-sinal-img" loading="lazy" />
                     </div>
-                    <p className="cv-sinal-title">Controlo de Acesso</p>
-                    <p className="cv-sinal-sub">Restrição de deposição a utilizadores autorizados</p>
+                    <p className="cv-sinal-title">{t('cv.access.title')}</p>
+                    <p className="cv-sinal-sub">{t('cv.access.sub')}</p>
                   </div>
                 </div>
               </div>
@@ -620,17 +609,17 @@ export default function CargaVerticalTemplate({ product }: Props) {
               <div className="cv-sinal-grid">
                 <div className="cv-sinal-item">
                   <div className="cv-sinal-img-wrap">
-                    <img src={tabAsset(product.slug, 'sensor-controlo.svg')} alt="Controlo de Nível" className="cv-sinal-img" loading="lazy" />
+                    <img src={tabAsset(product.slug, 'sensor-controlo.svg')} alt={t('cv.sensor.level.title')} className="cv-sinal-img" loading="lazy" />
                   </div>
-                  <p className="cv-sinal-title">Controlo de Nível</p>
-                  <p className="cv-sinal-sub">Monitorização do estado de enchimento</p>
+                  <p className="cv-sinal-title">{t('cv.sensor.level.title')}</p>
+                  <p className="cv-sinal-sub">{t('cv.sensor.level.sub')}</p>
                 </div>
                 <div className="cv-sinal-item">
                   <div className="cv-sinal-img-wrap">
-                    <img src={tabAsset(product.slug, 'sensor-localizacao.svg')} alt="Localização" className="cv-sinal-img" loading="lazy" />
+                    <img src={tabAsset(product.slug, 'sensor-localizacao.svg')} alt={t('cv.sensor.location.title')} className="cv-sinal-img" loading="lazy" />
                   </div>
-                  <p className="cv-sinal-title">Localização</p>
-                  <p className="cv-sinal-sub">Georreferenciação do equipamento</p>
+                  <p className="cv-sinal-title">{t('cv.sensor.location.title')}</p>
+                  <p className="cv-sinal-sub">{t('cv.sensor.location.sub')}</p>
                 </div>
               </div>
             </div>
@@ -639,7 +628,7 @@ export default function CargaVerticalTemplate({ product }: Props) {
       </section>
 
       {/* ── Vídeo ─────────────────────────────────────────── */}
-      <section className="cv-video-section" aria-label={`Vídeo — ${product.name}`}>
+      <section className="cv-video-section" aria-label={t('cv.video.label', nameVar)}>
         <div className="cv-video-wrap">
           <video
             className="cv-video"
@@ -653,8 +642,8 @@ export default function CargaVerticalTemplate({ product }: Props) {
             <source src="/assets/video-carga-vertical.mp4" type="video/mp4" />
           </video>
           <div className="cv-video-overlay">
-            <span className="cv-section-eyebrow">Vídeo</span>
-            <h2 className="cv-video-title">Veja o {product.name} em ação</h2>
+            <span className="cv-section-eyebrow">{t('cv.video.eyebrow')}</span>
+            <h2 className="cv-video-title">{t('cv.video.title', nameVar)}</h2>
           </div>
         </div>
       </section>
@@ -664,12 +653,12 @@ export default function CargaVerticalTemplate({ product }: Props) {
         <section className="cv-related-section" aria-labelledby="cv-related-heading">
           <div className="cv-related-inner">
             <div className="cv-related-head">
-              <span className="cv-section-eyebrow">Carga Vertical</span>
+              <span className="cv-section-eyebrow">{t('cv.related.eyebrow')}</span>
               <h2 id="cv-related-heading" className="cv-related-title">
-                Produtos Semelhantes
+                {t('cv.related.title')}
               </h2>
               <p className="cv-related-sub">
-                Outras soluções de contentorização flexíveis e adaptadas <br />às necessidades de cada município.
+                {t('cv.related.sub.1')}<br />{t('cv.related.sub.2')}
               </p>
             </div>
             <ul className="cv-related-grid" role="list">
@@ -708,9 +697,9 @@ export default function CargaVerticalTemplate({ product }: Props) {
       <section className="cv-faq-section" aria-labelledby="cv-faq-heading">
         <div className="cv-faq-inner">
           <div className="cv-faq-head">
-            <span className="cv-section-eyebrow">Perguntas Frequentes</span>
+            <span className="cv-section-eyebrow">{t('cv.faq.eyebrow')}</span>
             <h2 id="cv-faq-heading" className="cv-section-title">
-              Dúvidas sobre o {product.name}
+              {t('cv.faq.title', nameVar)}
             </h2>
           </div>
           <div className="cv-faq-list">
@@ -745,13 +734,13 @@ export default function CargaVerticalTemplate({ product }: Props) {
       <section className="cv-cta-section" aria-labelledby="cv-cta-heading">
         <div className="cv-cta-inner">
           <h2 id="cv-cta-heading" className="cv-cta-title">
-            Apresente o seu projeto. <br />Os nossos especialistas <br />encontram a solução certa.
+            {t('cv.cta.title.1')}<br />{t('cv.cta.title.2')}<br />{t('cv.cta.title.3')}
           </h2>
           <p className="cv-cta-sub">
-            Partilhe os requisitos do seu município ou operação RSU. Desenvolvemos a solução de carga vertical mais adequada ao seu contexto.
+            {t('cv.cta.sub')}
           </p>
           <Link to="/contactos" className="btn-dark">
-            Falar com um Especialista
+            {t('cv.cta.button')}
           </Link>
         </div>
       </section>

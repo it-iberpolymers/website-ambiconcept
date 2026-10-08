@@ -1,8 +1,10 @@
 import { useState, lazy, Suspense } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
+import { Link } from '@/i18n/router'
 import { useProduct } from '@/hooks/useProducts'
 import { categoryHref } from '@/lib/categorySlug'
 import PageSeo from '@/components/seo/PageSeo'
+import { useI18n } from '@/i18n'
 
 // Cada template de produto (com o respetivo CSS) só é pedido quando a
 // categoria correspondente é mesmo visitada, em vez de ir todo no bundle inicial.
@@ -35,6 +37,7 @@ export default function ProductDetail() {
   const { slug, categoria } = useParams<{ slug: string; categoria?: string }>()
   const { product, loading, error } = useProduct(slug ?? '')
   const [activeImage, setActiveImage] = useState(0)
+  const { t, tf } = useI18n()
 
   if (loading) {
     return <ProductSkeleton />
@@ -43,13 +46,13 @@ export default function ProductDetail() {
   if (error || !product) {
     return (
       <div className="min-h-screen bg-white flex flex-col items-center justify-center text-center px-5">
-        <h1 className="text-2xl font-semibold text-[#303f49] mb-3">Produto não encontrado</h1>
-        <p className="text-[#6b6b6b] mb-8">O produto que procura não existe ou foi removido.</p>
+        <h1 className="text-2xl font-semibold text-[#303f49] mb-3">{t('product.notFoundTitle')}</h1>
+        <p className="text-[#6b6b6b] mb-8">{t('product.notFoundText')}</p>
         <Link
           to="/produtos"
           className="btn-primary"
         >
-          Ver todos os produtos
+          {t('product.viewAll')}
         </Link>
       </div>
     )
@@ -85,7 +88,7 @@ export default function ProductDetail() {
     <div className="min-h-screen bg-white">
 
       <PageSeo
-        title={`${product.name} — ${product.category?.name ?? 'Produto'} | Ambiconcept`}
+        title={t('product.seo.title', { name: product.name, category: product.category?.name ?? t('product.seo.defaultCategory') })}
         description={product.short_description ?? product.description}
         path={`/produtos/${product.category?.slug ?? categoria}/${product.slug}`}
         ogImage={product.cover_image}
@@ -98,13 +101,13 @@ export default function ProductDetail() {
               description: product.description,
               image: `https://www.ambiconcept.pt${product.cover_image}`,
               manufacturer: { '@type': 'Organization', name: 'Ambiconcept' },
-              category: product.category?.name ?? 'Equipamento de Recolha',
+              category: product.category?.name ?? t('product.schema.category'),
             },
             {
               '@type': 'BreadcrumbList',
               itemListElement: [
-                { '@type': 'ListItem', position: 1, name: 'Início', item: 'https://www.ambiconcept.pt/' },
-                { '@type': 'ListItem', position: 2, name: 'Produtos', item: 'https://www.ambiconcept.pt/produtos' },
+                { '@type': 'ListItem', position: 1, name: t('common.home'), item: 'https://www.ambiconcept.pt/' },
+                { '@type': 'ListItem', position: 2, name: t('common.products'), item: 'https://www.ambiconcept.pt/produtos' },
                 { '@type': 'ListItem', position: 3, name: product.category?.name, item: `https://www.ambiconcept.pt${categoryHref(product.category?.slug ?? '')}` },
                 { '@type': 'ListItem', position: 4, name: product.name, item: `https://www.ambiconcept.pt/produtos/${product.category?.slug}/${product.slug}` },
               ],
@@ -116,10 +119,10 @@ export default function ProductDetail() {
       {/* Breadcrumb */}
       <div className="bg-[#303f49] border-b border-white/10 pt-[90px]">
         <div className="max-w-[1140px] mx-auto px-5 py-4">
-          <nav aria-label="Localização" className="flex items-center gap-2 text-[12px] text-white/75">
-            <Link to="/" className="hover:text-[color:var(--green-text)] transition-colors">Início</Link>
+          <nav aria-label={t('product.breadcrumb')} className="flex items-center gap-2 text-[12px] text-white/75">
+            <Link to="/" className="hover:text-[color:var(--green-text)] transition-colors">{t('common.home')}</Link>
             <span aria-hidden="true">/</span>
-            <Link to="/produtos" className="hover:text-[color:var(--green-text)] transition-colors">Produtos</Link>
+            <Link to="/produtos" className="hover:text-[color:var(--green-text)] transition-colors">{t('common.products')}</Link>
             {product.category && (
               <>
                 <span aria-hidden="true">/</span>
@@ -146,7 +149,7 @@ export default function ProductDetail() {
               {product.hero_images[activeImage] ? (
                 <img
                   src={product.hero_images[activeImage]}
-                  alt={`${product.name} — imagem ${activeImage + 1}`}
+                  alt={t('product.imageAlt', { name: product.name, n: activeImage + 1 })}
                   className="w-full h-full object-cover"
                 />
               ) : (
@@ -164,7 +167,7 @@ export default function ProductDetail() {
                     key={i}
                     type="button"
                     onClick={() => setActiveImage(i)}
-                    aria-label={`Ver imagem ${i + 1}`}
+                    aria-label={t('product.viewImage', { n: i + 1 })}
                     className={`flex-shrink-0 w-16 h-16 overflow-hidden border-2 transition-colors ${
                       activeImage === i ? 'border-[#7ab929]' : 'border-transparent'
                     }`}
@@ -193,13 +196,13 @@ export default function ProductDetail() {
                 to="/contactos"
                 className="btn-primary"
               >
-                Falar com um Especialista
+                {t('product.talk')}
               </Link>
               <Link
                 to="/contactos"
                 className="btn-outline"
               >
-                Contactar
+                {t('product.contact')}
               </Link>
             </div>
 
@@ -207,13 +210,13 @@ export default function ProductDetail() {
             {Object.keys(specs).length > 0 && (
               <div className="mt-10">
                 <p className="text-[12px] font-semibold tracking-[0.14em] uppercase text-[color:var(--green-text)] mb-4">
-                  Especificações
+                  {t('product.specs')}
                 </p>
                 <dl className="divide-y divide-[#eaeaea]">
                   {Object.entries(specs).map(([key, value]) => (
                     <div key={key} className="grid grid-cols-2 gap-4 py-3">
                       <dt className="text-[13px] font-medium text-[#303f49]/50 capitalize">
-                        {key.replace(/_/g, ' ')}
+                        {tf(`spec.label.${key}`, key.replace(/_/g, ' '))}
                       </dt>
                       <dd className="text-[13px] text-[#303f49]">
                         {Array.isArray(value) ? value.join(', ') : String(value)}

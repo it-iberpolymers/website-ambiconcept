@@ -1,4 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import { useI18n } from '@/i18n'
+import { localizeStat } from '@/i18n/localize'
 import { getDocs, updateDoc } from 'firebase/firestore'
 import { db, siteCollection, siteDoc } from '@/lib/firebase'
 import { stats as localStats, municipalities as allMunicipalities } from '@/data/local'
@@ -7,7 +9,8 @@ import type { Municipality, SiteStat } from '@/types'
 const USE_LOCAL = !db
 
 export function useStats(): { stats: SiteStat[]; loading: boolean; error: string | null } {
-  const [stats, setStats] = useState<SiteStat[]>(USE_LOCAL ? localStats : [])
+  const { lang, tf } = useI18n()
+  const [rawStats, setStats] = useState<SiteStat[]>(USE_LOCAL ? localStats : [])
   const [loading, setLoading] = useState(!USE_LOCAL)
   const [error, setError] = useState<string | null>(null)
 
@@ -33,6 +36,8 @@ export function useStats(): { stats: SiteStat[]; loading: boolean; error: string
 
     return () => { cancelled = true }
   }, [])
+
+  const stats = useMemo(() => (lang === 'pt' ? rawStats : rawStats.map((s) => localizeStat(s, tf))), [rawStats, lang, tf])
 
   return { stats, loading, error }
 }

@@ -1,0 +1,23 @@
+// Product catalogue (/produtos)
+export default {
+  'catalog.seo.categoryTitle': '{{name}} — Products | Ambiconcept',
+  'catalog.seo.categoryDescription': '{{description}} See all available models.',
+  'catalog.seo.title': 'Products — Full Catalogue | Ambiconcept',
+  'catalog.seo.description': 'Full catalogue of Ambiconcept containers and recycling points for municipalities and MSW operators. Vertical loading, rear loading, door-to-door, Smart Box and more.',
+  'catalog.breadcrumb': 'Breadcrumb',
+  'catalog.eyebrow': 'Catalogue',
+  'catalog.hero.line1': 'More variety, more customisation, more solutions',
+  'catalog.hero.line2': 'for municipal waste management.',
+  'catalog.categories': 'Categories',
+  'catalog.filterByCategory': 'Filter by category',
+  'catalog.filterByFlow': 'Filter by waste stream',
+  'catalog.all': 'All',
+  'catalog.count.one': '{{n}} product',
+  'catalog.count.other': '{{n}} products',
+  'catalog.empty': 'No products found for these filters.',
+  'catalog.flow.vidro': 'Glass',
+  'catalog.flow.biorresiduos': 'Biowaste',
+  'catalog.flow.limpeza-urbana': 'Urban Cleaning',
+  'catalog.flow.porta-a-porta': 'Door-to-door',
+  'catalog.flow.oleos-alimentares-usados': 'Used Cooking Oil',
+} as Record<string, string>

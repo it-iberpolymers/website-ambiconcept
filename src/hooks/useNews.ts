@@ -1,4 +1,6 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useI18n } from '@/i18n'
+import { localizeArticle } from '@/i18n/localize'
 import {
   getDocs, query, where, orderBy,
   limit as fsLimit, addDoc, updateDoc, deleteDoc, type QueryConstraint,
@@ -20,7 +22,8 @@ export function useNews(opts: UseNewsOptions = {}): {
   refetch: () => void
 } {
   const { limit } = opts
-  const [articles, setArticles] = useState<NewsArticle[]>([])
+  const { lang, tf } = useI18n()
+  const [rawArticles, setArticles] = useState<NewsArticle[]>([])
   const [loading, setLoading] = useState(!USE_LOCAL)
   const [error, setError] = useState<string | null>(null)
   const [refreshKey, setRefreshKey] = useState(0)
@@ -56,6 +59,8 @@ export function useNews(opts: UseNewsOptions = {}): {
     return () => { cancelled = true }
   }, [limit, refreshKey])
 
+  const articles = useMemo(() => (lang === 'pt' ? rawArticles : rawArticles.map((a) => localizeArticle(a, tf))), [rawArticles, lang, tf])
+
   return { articles, loading, error, refetch }
 }
 
@@ -64,7 +69,8 @@ export function useNewsArticle(slug: string): {
   loading: boolean
   error: string | null
 } {
-  const [article, setArticle] = useState<NewsArticle | null>(null)
+  const { lang, tf } = useI18n()
+  const [rawArticle, setArticle] = useState<NewsArticle | null>(null)
   const [loading, setLoading] = useState(!USE_LOCAL)
   const [error, setError] = useState<string | null>(null)
 
@@ -95,6 +101,8 @@ export function useNewsArticle(slug: string): {
 
     return () => { cancelled = true }
   }, [slug])
+
+  const article = useMemo(() => (rawArticle && lang !== 'pt' ? localizeArticle(rawArticle, tf) : rawArticle), [rawArticle, lang, tf])
 
   return { article, loading, error }
 }

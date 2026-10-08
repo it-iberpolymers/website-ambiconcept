@@ -1,9 +1,11 @@
 import { useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from '@/i18n/router'
+import { useI18n } from '@/i18n'
 import { storageUrl } from '@/data/local'
 import '@/styles/home-premium.css'
 
 export default function IntroSection() {
+  const { t } = useI18n()
   const sectionRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
@@ -21,18 +23,18 @@ export default function IntroSection() {
     <section className="hp-intro" ref={sectionRef}>
       <div className="hp-intro-inner">
         <div className="hp-intro-aside hp-reveal">
-          <img src={storageUrl('produtos/ambi_2.7/fotos/digital/00_capa.png')} alt="Contentor AMBI 2.7" loading="lazy" />
+          <img src={storageUrl('produtos/ambi_2.7/fotos/digital/00_capa.png')} alt={t('home.intro.imageAlt')} loading="lazy" />
         </div>
         <div className="hp-reveal" style={{ transitionDelay: '.1s' }}>
-          <p className="hp-label">Equipamento de Precisão</p>
+          <p className="hp-label">{t('home.intro.eyebrow')}</p>
           <h2 className="hp-intro-title">
-            Um produto de recolha seletiva não é um utensílio. É mobiliário urbano.
+            {t('home.intro.title')}
           </h2>
           <p className="hp-intro-body">
-            Cada contentor Ambiconcept é desenvolvido para resistir ao uso intensivo, às condições climáticas e ao tempo — mantendo uma presença digna no espaço público. Engenharia pensada para a cidade, para o operador e para o ambiente.
+            {t('home.intro.body')}
           </p>
           <Link to="/produtos" className="btn-primary">
-            Ver Produtos
+            {t('common.viewProducts')}
           </Link>
         </div>
       </div>

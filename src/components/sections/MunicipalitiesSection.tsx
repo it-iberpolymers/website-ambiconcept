@@ -1,6 +1,8 @@
 import { useMunicipalities } from '@/hooks/useStats'
+import { useI18n } from '@/i18n'
 
 export default function MunicipalitiesSection() {
+  const { t } = useI18n()
   const { municipalities, loading } = useMunicipalities()
 
   if (loading || municipalities.length === 0) return null
@@ -10,7 +12,7 @@ export default function MunicipalitiesSection() {
 
   return (
     <section
-      aria-label="Municípios aderentes"
+      aria-label={t('home.municipalities.label')}
       className="municipalities-marquee-section overflow-hidden"
     >
       <div

@@ -1,8 +1,12 @@
 import { useContactForm } from '@/hooks/useContactForm'
+import { useI18n } from '@/i18n'
+import { useLocalizedHref } from '@/i18n/router'
 import './ContactForm.css'
 
 export default function ContactForm() {
   const { form, status, handleChange, handleSubmit } = useContactForm()
+  const { t } = useI18n()
+  const href = useLocalizedHref()
 
   if (status === 'success') {
     return (
@@ -10,8 +14,8 @@ export default function ContactForm() {
         <svg className="cf-success-icon" fill="none" viewBox="0 0 24 24" stroke="#7AB929" strokeWidth={1.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <p className="cf-success-title">Mensagem enviada!</p>
-        <p className="cf-success-text">Entraremos em contacto consigo brevemente.</p>
+        <p className="cf-success-title">{t('form.success.title')}</p>
+        <p className="cf-success-text">{t('form.success.text')}</p>
       </div>
     )
   }
@@ -21,7 +25,7 @@ export default function ContactForm() {
 
       {status === 'error' && (
         <div role="alert" className="cf-error">
-          Ocorreu um erro ao enviar a mensagem. Por favor tente novamente.
+          {t('form.error')}
         </div>
       )}
 
@@ -29,7 +33,7 @@ export default function ContactForm() {
       <div className="cf-row">
         <div>
           <label htmlFor="contact-name" className="cf-label">
-            Nome <span aria-hidden="true" className="cf-required">*</span>
+            {t('form.name')} <span aria-hidden="true" className="cf-required">*</span>
           </label>
           <input
             id="contact-name"
@@ -44,7 +48,7 @@ export default function ContactForm() {
         </div>
         <div>
           <label htmlFor="contact-company" className="cf-label">
-            Empresa
+            {t('form.company')}
           </label>
           <input
             id="contact-company"
@@ -62,7 +66,7 @@ export default function ContactForm() {
       <div className="cf-row">
         <div>
           <label htmlFor="contact-email" className="cf-label">
-            E-mail <span aria-hidden="true" className="cf-required">*</span>
+            {t('form.email')} <span aria-hidden="true" className="cf-required">*</span>
           </label>
           <input
             id="contact-email"
@@ -77,7 +81,7 @@ export default function ContactForm() {
         </div>
         <div>
           <label htmlFor="contact-phone" className="cf-label">
-            Telefone
+            {t('form.phone')}
           </label>
           <input
             id="contact-phone"
@@ -94,7 +98,7 @@ export default function ContactForm() {
       {/* Assunto */}
       <div>
         <label htmlFor="contact-subject" className="cf-label">
-          Assunto <span aria-hidden="true" className="cf-required">*</span>
+          {t('form.subject')} <span aria-hidden="true" className="cf-required">*</span>
         </label>
         <select
           id="contact-subject"
@@ -104,16 +108,16 @@ export default function ContactForm() {
           onChange={handleChange}
           className="cf-field"
         >
-          <option value="" disabled>Selecionar assunto...</option>
-          <option value="briefing">Partilhar Briefing</option>
-          <option value="outros">Outros Assuntos</option>
+          <option value="" disabled>{t('form.subject.placeholder')}</option>
+          <option value="briefing">{t('form.subject.briefing')}</option>
+          <option value="outros">{t('form.subject.other')}</option>
         </select>
       </div>
 
       {/* Mensagem */}
       <div>
         <label htmlFor="contact-message" className="cf-label">
-          Mensagem
+          {t('form.message')}
         </label>
         <textarea
           id="contact-message"
@@ -128,7 +132,7 @@ export default function ContactForm() {
       {/* Política de privacidade */}
       <div>
         <span className="cf-privacy-label-top">
-          Política de Privacidade <span aria-hidden="true" className="cf-required">*</span>
+          {t('form.privacy.label')} <span aria-hidden="true" className="cf-required">*</span>
         </span>
         <div className="cf-privacy-wrap">
           <input
@@ -141,11 +145,11 @@ export default function ContactForm() {
             className="cf-privacy-checkbox"
           />
           <label htmlFor="contact-privacy" className="cf-privacy-label">
-            Declaro que li e aceito a{' '}
-            <a href="/politica-de-privacidade" target="_blank" className="cf-privacy-link">
-              Política de Privacidade
+            {t('form.privacy.before')}{' '}
+            <a href={href('/politica-de-privacidade')} target="_blank" className="cf-privacy-link">
+              {t('form.privacy.link')}
             </a>
-            {' '}Ambiconcept – Waste Solutions.
+            {' '}{t('form.privacy.after')}
           </label>
         </div>
       </div>
@@ -155,7 +159,7 @@ export default function ContactForm() {
         disabled={status === 'loading'}
         className="cf-submit"
       >
-        {status === 'loading' ? 'A enviar…' : 'Enviar'}
+        {status === 'loading' ? t('form.sending') : t('form.submit')}
       </button>
 
     </form>

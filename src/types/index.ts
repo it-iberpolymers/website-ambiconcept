@@ -7,6 +7,8 @@ export interface Product {
   category_id: string
   category?: ProductCategory
   specifications: ProductSpec
+  /** especificações originais em português (preenchido quando os textos são traduzidos; serve para lógica interna, ex. fluxos) */
+  specifications_pt?: ProductSpec
   cover_image: string
   hero_images: string[]
   anatomy_image?: string

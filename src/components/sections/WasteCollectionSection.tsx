@@ -1,15 +1,17 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from '@/i18n/router'
+import { useI18n } from '@/i18n'
 import './WasteCollectionSection.css'
 
 const solutions = [
-  { slug: 'vidro',             title: 'Vidro',                    image: '/assets/home-vidro.jpg',             link: '/produtos?categoria=carga-vertical' },
-  { slug: 'biorresiduos',      title: 'Biorresíduos',             image: '/assets/home-biorresiduos.png',       link: '/fluxos/porta-a-porta'  },
-  { slug: 'limpeza-urbana',     title: 'Limpeza Urbana',            image: '/assets/home-papeleiras.png',         link: '/produtos?categoria=limpeza-urbana'     },
-  { slug: 'porta-a-porta',     title: 'Porta-a-porta',           image: '/assets/home-porta-a-porta.webp',     link: '/fluxos/porta-a-porta'  },
-  { slug: 'oleos-alimentares', title: 'Óleos alimentares usados', image: '/assets/fluxo-oleos-alimentares.png', link: '/produtos?categoria=smart-box'      },
+  { slug: 'vidro',             image: '/assets/home-vidro.jpg',             link: '/produtos?categoria=carga-vertical' },
+  { slug: 'biorresiduos',      image: '/assets/home-biorresiduos.png',       link: '/fluxos/porta-a-porta'  },
+  { slug: 'limpeza-urbana',     image: '/assets/home-papeleiras.png',         link: '/produtos?categoria=limpeza-urbana'     },
+  { slug: 'porta-a-porta',     image: '/assets/home-porta-a-porta.webp',     link: '/fluxos/porta-a-porta'  },
+  { slug: 'oleos-alimentares', image: '/assets/fluxo-oleos-alimentares.png', link: '/produtos?categoria=smart-box'      },
 ]
 
 export default function WasteCollectionSection() {
+  const { t } = useI18n()
   return (
     <>
       {/* Texto + cards — section única "solutions" */}
@@ -19,14 +21,13 @@ export default function WasteCollectionSection() {
             id="solutions-heading"
             className="text-[40px] md:text-[45px] font-semibold uppercase text-[#303f49] leading-none pb-[5px] m-0"
           >
-            Recolha Seletiva de Resíduos
+            {t('home.waste.title')}
           </h2>
           <p className="text-[28px] md:text-[31px] font-normal text-[#303f49] leading-none pb-[20px] m-0">
-            Conheça as nossas Soluções
+            {t('home.waste.subtitle')}
           </p>
           <p className="text-[15px] text-[#303f49]/75 leading-relaxed m-0 max-w-[760px]">
-            Os equipamentos para recolha seletiva de resíduos são elos fundamentais na cadeia de sustentabilidade.
-            Permitem a separação eficaz dos materiais recicláveis reduzindo o impacto ambiental e promovem a economia circular.
+            {t('home.waste.body')}
           </p>
         </div>
 
@@ -49,16 +50,18 @@ export default function WasteCollectionSection() {
 }
 
 function SolutionCard({
-  title,
+  slug,
   image,
   link,
 }: {
   slug: string
-  title: string
   image: string
   link: string
 }) {
+  const { t } = useI18n()
   const navigate = useNavigate()
+  const title = t(`home.waste.sol.${slug}`)
+  const label = t('home.waste.cardLabel', { title })
 
   return (
     <div
@@ -67,7 +70,7 @@ function SolutionCard({
       role="link"
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter') navigate(link) }}
-      aria-label={`Ver solução — ${title}`}
+      aria-label={label}
     >
       {/* Imagem */}
       <img
@@ -86,9 +89,9 @@ function SolutionCard({
           to={link}
           onClick={(e) => e.stopPropagation()}
           className="btn-outline"
-          aria-label={`Ver solução — ${title}`}
+          aria-label={label}
         >
-          Ver Solução
+          {t('home.waste.cardCta')}
         </Link>
       </div>
     </div>

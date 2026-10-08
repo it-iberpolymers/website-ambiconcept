@@ -1,0 +1,21 @@
+// Contact form
+export default {
+  'form.success.title': 'Message sent!',
+  'form.success.text': 'We will get back to you shortly.',
+  'form.error': 'An error occurred while sending the message. Please try again.',
+  'form.name': 'Name',
+  'form.company': 'Company',
+  'form.email': 'Email',
+  'form.phone': 'Phone',
+  'form.subject': 'Subject',
+  'form.subject.placeholder': 'Select a subject...',
+  'form.subject.briefing': 'Share Your Brief',
+  'form.subject.other': 'Other Matters',
+  'form.message': 'Message',
+  'form.privacy.label': 'Privacy Policy',
+  'form.privacy.before': 'I have read and accept the',
+  'form.privacy.link': 'Privacy Policy',
+  'form.privacy.after': 'of Ambiconcept – Waste Solutions.',
+  'form.submit': 'Send',
+  'form.sending': 'Sending…',
+} as Record<string, string>

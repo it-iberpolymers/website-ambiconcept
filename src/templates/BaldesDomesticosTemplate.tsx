@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { useScrollSequence } from '@/hooks/useScrollSequence'
-import { Link } from 'react-router-dom'
+import { Link } from '@/i18n/router'
 import type { Product } from '@/types'
-import { getCategoryContent } from '@/data/categories-content'
+import { useI18n } from '@/i18n'
+import { useCategoryContent } from '@/hooks/useCategoryContent'
 import { storageUrl } from '@/data/local'
 import { useProducts } from '@/hooks/useProducts'
 import { useRalColors } from '@/hooks/useRalColors'
@@ -16,9 +17,9 @@ interface Props {
 }
 
 const BD_TABS = [
-  { key: 'materiais',  label: 'Materiais' },
-  { key: 'cores',      label: 'Cores' },
-  { key: 'decoracao',  label: 'Decoração' },
+  { key: 'materiais',  labelKey: 'bd.tab.materiais' },
+  { key: 'cores',      labelKey: 'bd.tab.cores' },
+  { key: 'decoracao',  labelKey: 'bd.tab.decoracao' },
 ]
 
 const SCROLL_FRAME_COUNT = 60
@@ -28,8 +29,9 @@ const SCROLL_FRAMES = Array.from(
 )
 
 export default function BaldesDomesticosTemplate({ product }: Props) {
+  const { t } = useI18n()
   const [slideIndex, setSlideIndex] = useState(0)
-  const content = getCategoryContent('baldes-domesticos')!
+  const content = useCategoryContent('baldes-domesticos')!
   const { colors: ralColors } = useRalColors('baldes-domesticos')
   const { intro: categoryIntro, highlights: categoryHighlights } = useCategoryHighlights('baldes-domesticos')
   const { products: relatedRaw } = useProducts({ categorySlug: 'baldes-domesticos' })
@@ -42,40 +44,37 @@ export default function BaldesDomesticosTemplate({ product }: Props) {
   const spec = product.specifications
   const capacity = spec.capacity ?? (spec['Capacidade'] as string | undefined)
   const fecho = (spec['Sistema de fecho'] as string | undefined)
-  const introText = capacity
-    ? `O ${product.name} foi desenvolvido para a recolha de proximidade de biorresíduos em contexto doméstico, com capacidade de ${capacity}. Compacto e higiénico, integra sistema de fecho que reduz a contaminação da fração orgânica, adaptando-se a programas porta-a-porta e pontos de proximidade em condomínios.`
-    : categoryIntro
+  const name = product.name
+  const introText = capacity ? t('bd.intro.withCapacity', { name, capacity }) : categoryIntro
 
   const BD_FAQS = [
     {
-      q: `Qual a capacidade do ${product.name}?`,
-      a: capacity
-        ? `O ${product.name} tem capacidade de ${capacity}.`
-        : `O ${product.name} está disponível em diferentes capacidades, adequadas ao contexto doméstico e a pontos de proximidade.`,
+      q: t('bd.faq.capacity.q', { name }),
+      a: capacity ? t('bd.faq.capacity.a.with', { name, capacity }) : t('bd.faq.capacity.a.without', { name }),
     },
     fecho && {
-      q: `Como funciona o sistema de fecho do ${product.name}?`,
-      a: `O ${product.name} está equipado com ${fecho}, que impede depósitos indevidos e reduz a contaminação da fração de biorresíduos.`,
+      q: t('bd.faq.closure.q', { name }),
+      a: t('bd.faq.closure.a', { name, closure: fecho }),
     },
     {
-      q: `Que materiais compõem o ${product.name}?`,
-      a: `O corpo do ${product.name} é fabricado em PEAD de fácil limpeza, resistente a uso diário intensivo.`,
+      q: t('bd.faq.materials.q', { name }),
+      a: t('bd.faq.materials.a', { name }),
     },
     {
-      q: `É possível personalizar a cor e o logótipo do ${product.name}?`,
-      a: `Sim. O ${product.name} pode ser configurado com cores RAL personalizadas e logótipo do município ou entidade.`,
+      q: t('bd.faq.custom.q', { name }),
+      a: t('bd.faq.custom.a', { name }),
     },
     {
-      q: `Como posso pedir um orçamento ou ficha técnica do ${product.name}?`,
-      a: 'Contacte a nossa equipa através da página de contactos, indicando a quantidade pretendida e o contexto de instalação — preparamos uma proposta e ficha técnica adaptadas ao seu projeto.',
+      q: t('bd.faq.quote.q', { name }),
+      a: t('bd.faq.quote.a', { name }),
     },
   ].filter(Boolean) as { q: string; a: string }[]
 
   const specProperties = [
-    capacity && { '@type': 'PropertyValue', name: 'Capacidade', value: capacity },
-    fecho && { '@type': 'PropertyValue', name: 'Sistema de Fecho', value: fecho },
-    spec.materials?.length && { '@type': 'PropertyValue', name: 'Materiais', value: spec.materials.join(', ') },
-    spec.colors?.length && { '@type': 'PropertyValue', name: 'Cores', value: spec.colors.join(', ') },
+    capacity && { '@type': 'PropertyValue', name: t('bd.schema.capacity'), value: capacity },
+    fecho && { '@type': 'PropertyValue', name: t('bd.schema.closure'), value: fecho },
+    spec.materials?.length && { '@type': 'PropertyValue', name: t('bd.schema.materials'), value: spec.materials.join(', ') },
+    spec.colors?.length && { '@type': 'PropertyValue', name: t('bd.schema.colors'), value: spec.colors.join(', ') },
   ].filter(Boolean)
 
   useEffect(() => {
@@ -98,7 +97,7 @@ export default function BaldesDomesticosTemplate({ product }: Props) {
   return (
     <div className="min-h-screen bg-white">
       <PageSeo
-        title={`${product.name} — Baldes Domésticos`}
+        title={`${product.name} — ${t('bd.category')}`}
         description={product.short_description ?? product.description}
         path={`/produtos/baldes-domesticos/${product.slug}`}
         ogImage={product.cover_image}
@@ -112,15 +111,15 @@ export default function BaldesDomesticosTemplate({ product }: Props) {
               image: product.hero_images.map((img) => `https://www.ambiconcept.pt${img}`),
               manufacturer: { '@type': 'Organization', name: 'Ambiconcept' },
               brand: { '@type': 'Brand', name: 'Ambiconcept' },
-              category: 'Balde Doméstico',
+              category: t('bd.schema.category'),
               ...(specProperties.length > 0 && { additionalProperty: specProperties }),
             },
             {
               '@type': 'BreadcrumbList',
               itemListElement: [
-                { '@type': 'ListItem', position: 1, name: 'Início', item: 'https://www.ambiconcept.pt/' },
-                { '@type': 'ListItem', position: 2, name: 'Produtos', item: 'https://www.ambiconcept.pt/produtos' },
-                { '@type': 'ListItem', position: 3, name: 'Baldes Domésticos', item: 'https://www.ambiconcept.pt/categorias/baldes-domesticos' },
+                { '@type': 'ListItem', position: 1, name: t('common.home'), item: 'https://www.ambiconcept.pt/' },
+                { '@type': 'ListItem', position: 2, name: t('common.products'), item: 'https://www.ambiconcept.pt/produtos' },
+                { '@type': 'ListItem', position: 3, name: t('bd.category'), item: 'https://www.ambiconcept.pt/categorias/baldes-domesticos' },
                 { '@type': 'ListItem', position: 4, name: product.name, item: `https://www.ambiconcept.pt/produtos/baldes-domesticos/${product.slug}` },
               ],
             },
@@ -141,12 +140,12 @@ export default function BaldesDomesticosTemplate({ product }: Props) {
         <div className="bd-showcase-inner">
 
           <div className="bd-showcase-head">
-            <nav aria-label="Localização" className="bd-breadcrumb">
-              <Link to="/">Início</Link>
+            <nav aria-label={t('bd.breadcrumb.label')} className="bd-breadcrumb">
+              <Link to="/">{t('common.home')}</Link>
               <span aria-hidden="true">/</span>
-              <Link to="/produtos">Produtos</Link>
+              <Link to="/produtos">{t('common.products')}</Link>
               <span aria-hidden="true">/</span>
-              <Link to="/categorias/baldes-domesticos">Baldes Domésticos</Link>
+              <Link to="/categorias/baldes-domesticos">{t('bd.category')}</Link>
               <span aria-hidden="true">/</span>
               <span>{product.name}</span>
             </nav>
@@ -174,21 +173,21 @@ export default function BaldesDomesticosTemplate({ product }: Props) {
                   <img
                     key={img}
                     src={img}
-                    alt={`${product.name} — variante ${i + 1}`}
+                    alt={t('bd.slide.alt', { name, n: i + 1 })}
                     className={`bd-slide${slideIndex === i ? ' bd-slide--active' : ''}`}
                     loading={i === 0 ? 'eager' : 'lazy'}
                   />
                 ))}
               </div>
               {product.hero_images.length > 1 && (
-                <div className="bd-carousel-dots" aria-label="Selecionar variante">
+                <div className="bd-carousel-dots" aria-label={t('bd.carousel.select')}>
                   {product.hero_images.map((_, i) => (
                     <button
                       key={i}
                       type="button"
                       onClick={() => setSlideIndex(i)}
                       className={`bd-dot${slideIndex === i ? ' bd-dot--active' : ''}`}
-                      aria-label={`Variante ${i + 1}`}
+                      aria-label={t('bd.carousel.variant', { n: i + 1 })}
                     />
                   ))}
                 </div>
@@ -219,12 +218,12 @@ export default function BaldesDomesticosTemplate({ product }: Props) {
       </section>
 
       {/* ── Animação de scroll ────────────────────────────── */}
-      <section ref={scrollAnimRef} className="bd-scroll-anim" aria-label={`${product.name} — vista em detalhe`}>
+      <section ref={scrollAnimRef} className="bd-scroll-anim" aria-label={t('bd.scroll.label', { name })}>
         <div className="bd-scroll-anim-sticky">
           <canvas
             ref={canvasRef}
             role="img"
-            aria-label={`${product.name} — vista em detalhe`}
+            aria-label={t('bd.scroll.label', { name })}
             className="bd-scroll-anim-img"
           />
         </div>
@@ -235,34 +234,34 @@ export default function BaldesDomesticosTemplate({ product }: Props) {
         <div className="bd-sizes-inner">
           <div className="bd-sizes-head">
             <h2 id="bd-sizes-heading" className="bd-sizes-title">
-              2 Tamanhos de Baldes do Lixo<br />
-              <span className="bd-sizes-title-line">para Bancada da Cozinha, Maior Flexibilidade</span>
+              {t('bd.sizes.title.0')}<br />
+              <span className="bd-sizes-title-line">{t('bd.sizes.title.1')}</span>
             </h2>
             <p className="bd-sizes-sub">
-              Com duas capacidades 5L e 7L, o Lockey é perfeito para ser utilizado em qualquer habitação.
+              {t('bd.sizes.sub')}
             </p>
           </div>
           <div className="bd-sizes-grid">
             <div className="bd-sizes-item">
               <div className="bd-sizes-img-wrap">
-                <img src={storageUrl('produtos/_shared/lockey-tamanhos/LOCKEY5L-Tamanho.png')} alt="Lockey 5 Litros" className="bd-sizes-img" loading="lazy" />
+                <img src={storageUrl('produtos/_shared/lockey-tamanhos/LOCKEY5L-Tamanho.png')} alt={t('bd.sizes.alt5')} className="bd-sizes-img" loading="lazy" />
               </div>
-              <p className="bd-sizes-label">5 Litros</p>
+              <p className="bd-sizes-label">{t('bd.sizes.label5')}</p>
             </div>
             <div className="bd-sizes-item">
               <div className="bd-sizes-img-wrap">
-                <img src={storageUrl('produtos/_shared/lockey-tamanhos/LOCKEY7L-Tamanho.png')} alt="Lockey 7 Litros" className="bd-sizes-img" loading="lazy" />
+                <img src={storageUrl('produtos/_shared/lockey-tamanhos/LOCKEY7L-Tamanho.png')} alt={t('bd.sizes.alt7')} className="bd-sizes-img" loading="lazy" />
               </div>
-              <p className="bd-sizes-label">7 Litros</p>
+              <p className="bd-sizes-label">{t('bd.sizes.label7')}</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* ── Opções ────────────────────────────────────────── */}
-      <section className="bd-options-section" aria-label="Opções de personalização">
+      <section className="bd-options-section" aria-label={t('bd.options.label')}>
         <div className="bd-options-inner">
-          <nav className="bd-tabs-nav" role="tablist" aria-label="Categorias de personalização">
+          <nav className="bd-tabs-nav" role="tablist" aria-label={t('bd.tabs.label')}>
             {BD_TABS.map((tab) => (
               <button
                 key={tab.key}
@@ -272,7 +271,7 @@ export default function BaldesDomesticosTemplate({ product }: Props) {
                 className={`bd-tab-btn${activeTab === tab.key ? ' bd-tab-btn--active' : ''}`}
                 onClick={() => setActiveTab(tab.key)}
               >
-                {tab.label}
+                {t(tab.labelKey)}
               </button>
             ))}
           </nav>
@@ -280,14 +279,14 @@ export default function BaldesDomesticosTemplate({ product }: Props) {
           <div className="bd-tabs-body">
             <div id="bd-panel-materiais" role="tabpanel" className={`bd-tab-panel${activeTab === 'materiais' ? ' bd-tab-panel--active' : ''}`}>
               <ul className="bd-mat-list">
-                <li>Corpo em polietileno de alta densidade (PEAD), fácil de limpar</li>
-                <li>Interior liso, sem cantos que favoreçam a acumulação de resíduos</li>
-                <li>Sistema de fecho com chave personalizada</li>
+                <li>{t('bd.mat.0')}</li>
+                <li>{t('bd.mat.1')}</li>
+                <li>{t('bd.mat.2')}</li>
               </ul>
             </div>
 
             <div id="bd-panel-cores" role="tabpanel" className={`bd-tab-panel${activeTab === 'cores' ? ' bd-tab-panel--active' : ''}`}>
-              <p className="bd-tab-desc">Cor standard disponível para o balde, tampa e pega.</p>
+              <p className="bd-tab-desc">{t('bd.colors.desc')}</p>
               <div className="bd-colors-grid">
                 {ralColors.map((c) => (
                   <div key={c.code} className="bd-color-item">
@@ -302,10 +301,10 @@ export default function BaldesDomesticosTemplate({ product }: Props) {
               <div className="bd-feature-grid">
                 <div className="bd-feature-grid-item">
                   <div className="bd-feature-grid-img-wrap">
-                    <img src={storageUrl('produtos/lockey_5l/tabs/decor-frente.svg')} alt="Decoração" className="bd-feature-grid-img" loading="lazy" />
+                    <img src={storageUrl('produtos/lockey_5l/tabs/decor-frente.svg')} alt={t('bd.tab.decoracao')} className="bd-feature-grid-img" loading="lazy" />
                   </div>
-                  <p className="bd-feature-grid-title">Decoração</p>
-                  <p className="bd-feature-grid-sub">Área útil para personalização</p>
+                  <p className="bd-feature-grid-title">{t('bd.tab.decoracao')}</p>
+                  <p className="bd-feature-grid-sub">{t('bd.decor.sub')}</p>
                 </div>
               </div>
             </div>
@@ -314,7 +313,7 @@ export default function BaldesDomesticosTemplate({ product }: Props) {
       </section>
 
       {/* ── Vídeo ─────────────────────────────────────────── */}
-      <section className="bd-video-section" aria-label={`Vídeo — ${product.name}`}>
+      <section className="bd-video-section" aria-label={t('bd.video.label', { name })}>
         <div className="bd-video-wrap">
           <video
             className="bd-video"
@@ -328,8 +327,8 @@ export default function BaldesDomesticosTemplate({ product }: Props) {
             <source src="/assets/video-baldes-domesticos.mp4" type="video/mp4" />
           </video>
           <div className="bd-video-overlay">
-            <span className="bd-section-eyebrow">Vídeo</span>
-            <h2 className="bd-video-title">Veja o {product.name} em ação</h2>
+            <span className="bd-section-eyebrow">{t('bd.video.eyebrow')}</span>
+            <h2 className="bd-video-title">{t('bd.video.title', { name })}</h2>
           </div>
         </div>
       </section>
@@ -339,12 +338,12 @@ export default function BaldesDomesticosTemplate({ product }: Props) {
         <section className="bd-related-section" aria-labelledby="bd-related-heading">
           <div className="bd-related-inner">
             <div className="bd-related-head">
-              <span className="bd-section-eyebrow">Baldes Domésticos</span>
+              <span className="bd-section-eyebrow">{t('bd.category')}</span>
               <h2 id="bd-related-heading" className="bd-related-title">
-                Produtos Semelhantes
+                {t('bd.related.title')}
               </h2>
               <p className="bd-related-sub">
-                Outras soluções de recolha de proximidade adaptadas <br />às necessidades de cada contexto.
+                {t('bd.related.sub.0')}<br />{t('bd.related.sub.1')}
               </p>
             </div>
             <ul className="bd-related-grid" role="list">
@@ -383,9 +382,9 @@ export default function BaldesDomesticosTemplate({ product }: Props) {
       <section className="bd-faq-section" aria-labelledby="bd-faq-heading">
         <div className="bd-faq-inner">
           <div className="bd-faq-head">
-            <span className="bd-section-eyebrow">Perguntas Frequentes</span>
+            <span className="bd-section-eyebrow">{t('bd.faq.eyebrow')}</span>
             <h2 id="bd-faq-heading" className="bd-related-title">
-              Dúvidas sobre o {product.name}
+              {t('bd.faq.title', { name })}
             </h2>
           </div>
           <div className="bd-faq-list">
@@ -419,13 +418,13 @@ export default function BaldesDomesticosTemplate({ product }: Props) {
       {/* ── Sistema de Recolha ────────────────────────────── */}
       <section className="bd-flow-section" aria-labelledby="bd-flow-heading">
         <div className="bd-flow-inner">
-          <h2 id="bd-flow-heading" className="bd-flow-title">Um Sistema para Recolha de Biorresíduos</h2>
+          <h2 id="bd-flow-heading" className="bd-flow-title">{t('bd.flow.title')}</h2>
           <p className="bd-flow-sub">
-            Um sistema completo para a separação e recolha dos resíduos orgânicos,<br />
-            da sua cozinha até ao contentor.
+            {t('bd.flow.sub.0')}<br />
+            {t('bd.flow.sub.1')}
           </p>
           <Link to="/fluxos/porta-a-porta" className="bd-flow-badge">
-            Solução de Recolha Seletiva de Biorresíduos
+            {t('bd.flow.badge')}
           </Link>
         </div>
       </section>
@@ -434,13 +433,13 @@ export default function BaldesDomesticosTemplate({ product }: Props) {
       <section className="bd-cta-section" aria-labelledby="bd-cta-heading">
         <div className="bd-cta-inner">
           <h2 id="bd-cta-heading" className="bd-cta-title">
-            Apresente o seu projeto. <br />Os nossos especialistas <br />encontram a solução certa.
+            {t('bd.cta.title.0')}<br />{t('bd.cta.title.1')}<br />{t('bd.cta.title.2')}
           </h2>
           <p className="bd-cta-sub">
-            Partilhe os requisitos do seu município ou condomínio. Desenvolvemos a solução de recolha de proximidade mais adequada ao seu contexto.
+            {t('bd.cta.sub')}
           </p>
           <Link to="/contactos" className="btn-dark">
-            Falar com um Especialista
+            {t('bd.cta.button')}
           </Link>
         </div>
       </section>

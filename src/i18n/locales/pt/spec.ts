@@ -1,0 +1,23 @@
+// Rótulos das especificações dos produtos (chave = rótulo exato usado em src/data/local.ts e nos templates)
+export default {
+  'spec.title': 'Especificações',
+  'spec.label.Capacidade': 'Capacidade',
+  'spec.label.Material': 'Material',
+  'spec.label.Materiais': 'Materiais',
+  'spec.label.Cores': 'Cores',
+  'spec.label.Dimensões': 'Dimensões',
+  'spec.label.Sistema de elevação': 'Sistema de elevação',
+  'spec.label.Frações': 'Frações',
+  'spec.label.Certificações': 'Certificações',
+  'spec.label.Personalização': 'Personalização',
+  'spec.label.Rodas': 'Rodas',
+  'spec.label.Instalação': 'Instalação',
+  'spec.label.Acesso': 'Acesso',
+  'spec.label.Fluxo': 'Fluxo',
+  'spec.label.Fixação': 'Fixação',
+  'spec.label.Interior amovível': 'Interior amovível',
+  'spec.label.Ambiente': 'Ambiente',
+  'spec.label.Tratamento': 'Tratamento',
+  'spec.label.Sistema de fecho': 'Sistema de fecho',
+  'spec.label.Sistema de Fecho': 'Sistema de Fecho',
+} as Record<string, string>

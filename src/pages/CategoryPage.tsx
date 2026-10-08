@@ -1,7 +1,8 @@
-import { useParams, Link, Navigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
+import { Link, Navigate } from '@/i18n/router'
 import { useProducts } from '@/hooks/useProducts'
-import { getCategoryContent } from '@/data/categories-content'
-import { categories } from '@/data/local'
+import { useCategoryContent } from '@/hooks/useCategoryContent'
+import { useI18n } from '@/i18n'
 import { cardImgStyle } from '@/lib/cardImgStyle'
 import { toPublicSlug } from '@/lib/categorySlug'
 import PageSeo from '@/components/seo/PageSeo'
@@ -11,8 +12,8 @@ import '@/styles/category-page.css'
 export default function CategoryPage() {
   const { slug: rawSlug } = useParams<{ slug: string }>()
   const slug = rawSlug ? toPublicSlug(rawSlug) : rawSlug
-  const content = getCategoryContent(slug ?? '')
-  const category = categories.find((c) => c.slug === slug)
+  const { t } = useI18n()
+  const content = useCategoryContent(slug ?? '')
   const { products, loading } = useProducts({ categorySlug: slug })
 
   // Category exists but no rich content yet — fall back to filtered catalog
@@ -33,10 +34,10 @@ export default function CategoryPage() {
       {/* Header */}
       <div className="ps-hero text-center">
         <div className="max-w-[1140px] mx-auto px-5 relative z-[1]">
-          <nav aria-label="Localização" className="flex items-center justify-center gap-1.5 text-[12px] text-white/75 mb-8">
-            <Link to="/" className="hover:text-[#95d855] transition-colors">Início</Link>
+          <nav aria-label={t('catpage.breadcrumb')} className="flex items-center justify-center gap-1.5 text-[12px] text-white/75 mb-8">
+            <Link to="/" className="hover:text-[#95d855] transition-colors">{t('common.home')}</Link>
             <span aria-hidden="true">/</span>
-            <Link to="/produtos" className="hover:text-[#95d855] transition-colors">Produtos</Link>
+            <Link to="/produtos" className="hover:text-[#95d855] transition-colors">{t('common.products')}</Link>
             <span aria-hidden="true">/</span>
             <span className="text-white/75">{content.headline}</span>
           </nav>
@@ -62,7 +63,7 @@ export default function CategoryPage() {
           <h2 className="cp-intro-title">{content.headline}</h2>
           <p className="cp-intro-tagline">{content.tagline}</p>
           <p className="cp-intro-body">{content.intro}</p>
-          <a href="#modelos" className="btn-outline">Ver modelos</a>
+          <a href="#modelos" className="btn-outline">{t('catpage.viewModels')}</a>
         </div>
         <div className="cp-intro-img-wrap">
           <img
@@ -77,9 +78,9 @@ export default function CategoryPage() {
       {/* Highlights */}
       <section className="cp-highlights-section" aria-labelledby="highlights-heading">
         <div className="cp-highlights-inner">
-          <span className="cp-section-eyebrow">Características</span>
+          <span className="cp-section-eyebrow">{t('catpage.highlights.eyebrow')}</span>
           <h2 id="highlights-heading" className="cp-section-title">
-            Desenvolvido para o ambiente urbano
+            {t('catpage.highlights.title')}
           </h2>
           <div className="cp-highlights-grid">
             {content.highlights.map((h, i) => (
@@ -100,9 +101,9 @@ export default function CategoryPage() {
         aria-labelledby="products-heading"
       >
         <div className="cp-products-inner">
-          <span className="cp-section-eyebrow">Modelos disponíveis</span>
+          <span className="cp-section-eyebrow">{t('catpage.products.eyebrow')}</span>
           <h2 id="products-heading" className="cp-section-title">
-            {category?.name ?? content.headline}
+            {content.headline}
           </h2>
 
           {loading ? (
@@ -157,16 +158,15 @@ export default function CategoryPage() {
       <section className="cp-specs-section" aria-labelledby="specs-heading">
         <div className="cp-specs-inner">
           <div>
-            <span className="cp-specs-label">Ficha Técnica</span>
+            <span className="cp-specs-label">{t('catpage.specs.label')}</span>
             <h2 id="specs-heading" className="cp-specs-title">
-              Especificações da categoria
+              {t('catpage.specs.title')}
             </h2>
             <p className="cp-specs-sub">
-              Parâmetros técnicos de referência para os contentores de {content.headline.toLowerCase()}.
-              Cada produto pode ter especificações individuais — consulte a ficha de cada modelo.
+              {t('catpage.specs.sub', { name: content.headline.toLowerCase() })}
             </p>
             <Link to="/contactos" className="btn-ghost">
-              Falar com um Especialista
+              {t('catpage.talkSpecialist')}
             </Link>
           </div>
           <dl className="cp-specs-table">
@@ -184,13 +184,13 @@ export default function CategoryPage() {
       <section className="cp-cta-section cp-cta-section--green" aria-labelledby="cta-cat-heading">
         <div className="cp-cta-inner">
           <h2 id="cta-cat-heading" className="cp-cta-title">
-            Apresente o seu projeto. <br /><span className="cp-cta-title-line">Os nossos especialistas encontram</span> <br />a solução certa.
+            {t('catpage.cta.line1')} <br /><span className="cp-cta-title-line">{t('catpage.cta.line2')}</span> <br />{t('catpage.cta.line3')}
           </h2>
           <p className="cp-cta-sub">
-            Partilhe os requisitos do seu município ou operação RSU. Desenvolvemos a solução de {content.headline.toLowerCase()} mais adequada ao seu contexto.
+            {t('catpage.cta.sub', { name: content.headline.toLowerCase() })}
           </p>
           <Link to="/contactos" className="btn-dark">
-            Falar com um Especialista
+            {t('catpage.talkSpecialist')}
           </Link>
         </div>
       </section>

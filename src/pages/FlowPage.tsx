@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { useParams, Link, Navigate } from 'react-router-dom'
-import { getFlowContent, type FlowImpactStat, type FlowSdgItem } from '@/data/flows-content'
+import { useParams } from 'react-router-dom'
+import { Link, Navigate } from '@/i18n/router'
+import type { FlowImpactStat, FlowSdgItem } from '@/data/flows-content'
+import { useFlowContent } from '@/hooks/useFlowContent'
+import { useI18n } from '@/i18n'
 import { FLOWS } from '@/data/flows'
 import { SMART_BOX_FEATURE_ICONS } from '@/templates/smart-box-feature-icons'
 import { BALDES_DOMESTICOS_FEATURE_ICONS } from '@/templates/baldes-domesticos-feature-icons'
@@ -476,6 +479,7 @@ function useScrollRotation(degreesPerPixel = 0.3) {
 }
 
 function ImpactStat({ stat }: { stat: FlowImpactStat }) {
+  const { locale } = useI18n()
   const [countRef, count] = useCountUp(stat.target)
   const rotation = useScrollRotation(0.1)
   const iconStyle = stat.icon === 'recycle' ? { transform: `rotate(${rotation}deg)` } : undefined
@@ -483,7 +487,7 @@ function ImpactStat({ stat }: { stat: FlowImpactStat }) {
     <div className="fl-impact-stat">
       <span className="fl-impact-stat-icon" style={iconStyle}>{IMPACT_ICONS[stat.icon]}</span>
       <p ref={countRef} className="fl-impact-stat-value">
-        {stat.prefix ?? ''}{count.toLocaleString('pt-PT')}{stat.suffix ?? ''}
+        {stat.prefix ?? ''}{count.toLocaleString(locale)}{stat.suffix ?? ''}
       </p>
       <p className="fl-impact-stat-label">{stat.label}</p>
       <p className="fl-impact-stat-desc">{stat.description}</p>
@@ -493,7 +497,8 @@ function ImpactStat({ stat }: { stat: FlowImpactStat }) {
 
 export default function FlowPage() {
   const { slug } = useParams<{ slug: string }>()
-  const content = getFlowContent(slug ?? '')
+  const { t } = useI18n()
+  const content = useFlowContent(slug ?? '')
   const flow = FLOWS.find((f) => f.slug === slug)
 
   const [introFeatureRef, introFeatureY] = useParallax()
@@ -523,10 +528,10 @@ export default function FlowPage() {
           style={{ background: 'linear-gradient(180deg, rgba(0,0,0,.62) 0%, rgba(0,0,0,.5) 35%, rgba(0,0,0,.14) 65%, rgba(0,0,0,.08) 100%)' }}
         />
         <div className="relative h-full flex flex-col">
-          <nav aria-label="Localização" className="flex items-center justify-center gap-1.5 text-[12px] font-medium text-white pt-[100px] px-5" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.5)' }}>
-            <Link to="/" className="hover:text-white transition-colors">Início</Link>
+          <nav aria-label={t('flowpage.breadcrumb.label')} className="flex items-center justify-center gap-1.5 text-[12px] font-medium text-white pt-[100px] px-5" style={{ textShadow: '0 1px 6px rgba(0,0,0,0.5)' }}>
+            <Link to="/" className="hover:text-white transition-colors">{t('common.home')}</Link>
             <span aria-hidden="true">/</span>
-            <span>Fluxos</span>
+            <span>{t('common.flows')}</span>
             <span aria-hidden="true">/</span>
             <span>{content.headline}</span>
           </nav>
@@ -567,7 +572,7 @@ export default function FlowPage() {
                   <div className="fl-products-highlight-img-wrap">
                     <img src={product.image} alt={product.imageAlt} className="fl-products-highlight-img" loading="lazy" />
                   </div>
-                  <Link to={product.ctaHref} className="btn-outline fl-products-highlight-cta">Ver Produto</Link>
+                  <Link to={product.ctaHref} className="btn-outline fl-products-highlight-cta">{t('common.viewProduct')}</Link>
                 </div>
               ))}
             </div>
@@ -582,8 +587,8 @@ export default function FlowPage() {
             <div className="fl-intro-text">
               <h2 className="fl-intro-heading">{content.introHeading}</h2>
               <p className="fl-intro-body">{content.intro}</p>
-              <Link to={content.introCtaHref ?? `/produtos?fluxo=${encodeURIComponent(content.headline)}`} className="btn-outline">
-                {content.introCtaLabel ?? 'Ver soluções'}
+              <Link to={content.introCtaHref ?? `/produtos?fluxo=${encodeURIComponent(flow.label)}`} className="btn-outline">
+                {content.introCtaLabel ?? t('flowpage.viewSolutions')}
               </Link>
             </div>
           </div>
@@ -640,7 +645,7 @@ export default function FlowPage() {
         <div className="cp-intro">
           <div>
             <p className="cp-intro-body">{content.intro}</p>
-            <Link to={`/produtos?fluxo=${encodeURIComponent(content.headline)}`} className="btn-outline">Ver soluções</Link>
+            <Link to={`/produtos?fluxo=${encodeURIComponent(flow.label)}`} className="btn-outline">{t('flowpage.viewSolutions')}</Link>
           </div>
           <div className="cp-intro-img-wrap">
             <img
@@ -673,9 +678,9 @@ export default function FlowPage() {
       ) : (
         <section className="cp-highlights-section" aria-labelledby="highlights-heading">
           <div className="cp-highlights-inner">
-            <span className="cp-section-eyebrow">Vantagens</span>
+            <span className="cp-section-eyebrow">{t('flowpage.advantages.eyebrow')}</span>
             <h2 id="highlights-heading" className="cp-section-title">
-              Porquê escolher a Ambiconcept para {content.headline.toLowerCase()}
+              {t('flowpage.advantages.title', { flow: content.headline.toLowerCase() })}
             </h2>
             <div className="cp-highlights-grid">
               {content.highlights.map((h, i) => (
@@ -723,13 +728,13 @@ export default function FlowPage() {
       <section className="cp-cta-section cp-cta-section--green" aria-labelledby="cta-flow-heading">
         <div className="cp-cta-inner">
           <h2 id="cta-flow-heading" className="cp-cta-title">
-            Apresente o seu projeto. <br /><span className="cp-cta-title-line">Os nossos especialistas encontram</span> <br />a solução certa.
+            {t('flowpage.cta.title1')} <br /><span className="cp-cta-title-line">{t('flowpage.cta.title2')}</span> <br />{t('flowpage.cta.title3')}
           </h2>
           <p className="cp-cta-sub">
-            Partilhe os requisitos do seu município ou operação RSU. Desenvolvemos a solução de recolha de {content.headline.toLowerCase()} mais adequada ao seu contexto.
+            {t('flowpage.cta.sub', { flow: content.headline.toLowerCase() })}
           </p>
           <Link to="/contactos" className="btn-dark">
-            Falar com um Especialista
+            {t('flowpage.cta.button')}
           </Link>
         </div>
       </section>

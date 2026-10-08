@@ -1,8 +1,10 @@
 import { useEffect, useRef } from 'react'
 import ContactForm from '@/components/ui/ContactForm'
+import { useI18n } from '@/i18n'
 import '@/styles/contact-layout.css'
 
 export default function ContactSection() {
+  const { t } = useI18n()
   const leafRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -32,14 +34,14 @@ export default function ContactSection() {
               id="contact-heading"
               className="cl-heading text-[30px] md:text-[45px] font-semibold uppercase leading-none"
             >
-              Partilhe o seu Briefing
+              {t('home.contact.title')}
             </h2>
             <p className="cl-subheading text-[22px] md:text-[34px] font-normal leading-none">
-              Os especialistas encontram a solução certa
+              {t('home.contact.subtitle')}
             </p>
             <p className="cl-desc">
-              Descreva as necessidades do seu município ou operação RSU.<br />
-              A equipa Ambiconcept analisa o briefing e propõe a solução de equipamento mais adequada.
+              {t('home.contact.desc.0')}<br />
+              {t('home.contact.desc.1')}
             </p>
           </div>
           <div ref={leafRef} className="hidden md:flex md:w-[12%] md:ml-auto justify-center items-start pt-12">

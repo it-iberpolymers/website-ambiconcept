@@ -1,15 +1,19 @@
-import { Link } from 'react-router-dom'
+import { Link } from '@/i18n/router'
+import { useI18n } from '@/i18n'
+import PageSeo from '@/components/seo/PageSeo'
 import '@/styles/page-shell.css'
 
 export default function PrivacyPolicy() {
+  const { t } = useI18n()
   return (
     <div className="ps-page">
+      <PageSeo title={t('privacy.seo.title')} description={t('privacy.seo.description')} path="/politica-de-privacidade" />
 
       <div className="ps-hero">
         <div className="max-w-[800px] mx-auto px-5 relative z-[1]">
-          <p className="text-[12px] font-semibold tracking-[0.14em] uppercase text-[#95d855] mb-3">Legal</p>
+          <p className="text-[12px] font-semibold tracking-[0.14em] uppercase text-[#95d855] mb-3">{t('privacy.eyebrow')}</p>
           <h1 className="text-[34px] md:text-[48px] font-bold tracking-[-0.03em] text-white leading-tight">
-            Política de Privacidade
+            {t('privacy.title')}
           </h1>
         </div>
         <svg className="ps-hero-wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
@@ -22,52 +26,52 @@ export default function PrivacyPolicy() {
         <div className="space-y-8 text-[#303f49]">
 
           <section>
-            <h2 className="text-[18px] font-semibold text-[#1c2b1f] mb-3">1. Responsável pelo Tratamento</h2>
+            <h2 className="text-[18px] font-semibold text-[#1c2b1f] mb-3">{t('privacy.s1.title')}</h2>
             <p className="leading-relaxed text-[#303f49]/75">
-              A <strong>AMBICONCEPT – Waste Solutions</strong>, empresa do Grupo Iberpolymers, é responsável pelo tratamento dos dados pessoais recolhidos através deste website, em conformidade com o Regulamento Geral sobre a Proteção de Dados (RGPD) e demais legislação aplicável.
+              {t('privacy.s1.before')}<strong>{t('privacy.s1.bold')}</strong>{t('privacy.s1.after')}
             </p>
           </section>
 
           <section>
-            <h2 className="text-[18px] font-semibold text-[#1c2b1f] mb-3">2. Dados Recolhidos</h2>
+            <h2 className="text-[18px] font-semibold text-[#1c2b1f] mb-3">{t('privacy.s2.title')}</h2>
             <p className="leading-relaxed text-[#303f49]/75 mb-3">
-              Através do formulário de contacto, recolhemos os seguintes dados:
+              {t('privacy.s2.intro')}
             </p>
             <ul className="list-disc list-inside space-y-1 text-[#303f49]/75">
-              <li>Nome e empresa</li>
-              <li>Endereço de e-mail</li>
-              <li>Número de telefone (opcional)</li>
-              <li>Mensagem e assunto da comunicação</li>
+              <li>{t('privacy.s2.item.0')}</li>
+              <li>{t('privacy.s2.item.1')}</li>
+              <li>{t('privacy.s2.item.2')}</li>
+              <li>{t('privacy.s2.item.3')}</li>
             </ul>
           </section>
 
           <section>
-            <h2 className="text-[18px] font-semibold text-[#1c2b1f] mb-3">3. Finalidade do Tratamento</h2>
+            <h2 className="text-[18px] font-semibold text-[#1c2b1f] mb-3">{t('privacy.s3.title')}</h2>
             <p className="leading-relaxed text-[#303f49]/75">
-              Os dados são tratados exclusivamente para responder às solicitações de informação e orçamento enviadas pelos utilizadores, e para manter comunicação comercial relacionada com os nossos produtos e serviços.
+              {t('privacy.s3.text')}
             </p>
           </section>
 
           <section>
-            <h2 className="text-[18px] font-semibold text-[#1c2b1f] mb-3">4. Conservação dos Dados</h2>
+            <h2 className="text-[18px] font-semibold text-[#1c2b1f] mb-3">{t('privacy.s4.title')}</h2>
             <p className="leading-relaxed text-[#303f49]/75">
-              Os dados pessoais são conservados pelo período estritamente necessário para cumprir as finalidades descritas, sendo eliminados quando a relação comercial ou de interesse terminar, salvo obrigação legal em contrário.
+              {t('privacy.s4.text')}
             </p>
           </section>
 
           <section>
-            <h2 className="text-[18px] font-semibold text-[#1c2b1f] mb-3">5. Direitos dos Titulares</h2>
+            <h2 className="text-[18px] font-semibold text-[#1c2b1f] mb-3">{t('privacy.s5.title')}</h2>
             <p className="leading-relaxed text-[#303f49]/75">
-              Tem direito de acesso, retificação, apagamento, limitação e portabilidade dos seus dados, bem como o direito de se opor ao tratamento. Para exercer estes direitos, contacte-nos através do formulário em{' '}
-              <Link to="/contactos" className="text-[color:var(--green-text)] hover:underline">Contactos</Link>.
+              {t('privacy.s5.before')}{' '}
+              <Link to="/contactos" className="text-[color:var(--green-text)] hover:underline">{t('common.contacts')}</Link>{t('privacy.s5.after')}
             </p>
           </section>
 
           <section>
-            <h2 className="text-[18px] font-semibold text-[#1c2b1f] mb-3">6. Contacto</h2>
+            <h2 className="text-[18px] font-semibold text-[#1c2b1f] mb-3">{t('privacy.s6.title')}</h2>
             <p className="leading-relaxed text-[#303f49]/75">
-              Para qualquer questão relacionada com a proteção de dados, pode contactar-nos através da página de{' '}
-              <Link to="/contactos" className="text-[color:var(--green-text)] hover:underline">Contactos</Link>.
+              {t('privacy.s6.before')}{' '}
+              <Link to="/contactos" className="text-[color:var(--green-text)] hover:underline">{t('common.contacts')}</Link>{t('privacy.s6.after')}
             </p>
           </section>
 
@@ -78,7 +82,7 @@ export default function PrivacyPolicy() {
             to="/"
             className="btn-outline"
           >
-            ← Voltar ao início
+            {t('common.backHome')}
           </Link>
         </div>
        </div>

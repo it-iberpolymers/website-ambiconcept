@@ -1,0 +1,15 @@
+export default {
+  'common.language': 'Langue',
+  'common.home': 'Accueil',
+  'common.products': 'Produits',
+  'common.flows': 'Flux',
+  'common.news': 'Actualités',
+  'common.contacts': 'Contact',
+  'common.viewProduct': 'Voir le produit',
+  'common.viewProducts': 'Voir les produits',
+  'common.viewAll': 'Tout voir',
+  'common.readMore': 'Lire la suite »',
+  'common.loading': 'Chargement…',
+  'common.backHome': '← Retour à l’accueil',
+  'common.talkToSpecialist': 'Parler à un spécialiste →',
+} as Record<string, string>

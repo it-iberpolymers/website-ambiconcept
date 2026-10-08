@@ -1,12 +1,13 @@
 import { useState, useEffect, useRef } from 'react'
 import { useScrollSequence } from '@/hooks/useScrollSequence'
-import { Link } from 'react-router-dom'
+import { Link } from '@/i18n/router'
 import type { Product } from '@/types'
-import { getCategoryContent } from '@/data/categories-content'
+import { useCategoryContent } from '@/hooks/useCategoryContent'
 import { storageUrl } from '@/data/local'
 import { useProducts } from '@/hooks/useProducts'
 import { useRalColors } from '@/hooks/useRalColors'
 import { useCategoryHighlights } from '@/hooks/useCategoryHighlights'
+import { useI18n } from '@/i18n'
 import PageSeo from '@/components/seo/PageSeo'
 import { SMART_BOX_FEATURE_ICONS as FEATURE_ICONS } from './smart-box-feature-icons'
 import '@/styles/template-smart-box.css'
@@ -16,17 +17,17 @@ interface Props {
 }
 
 const SB_TABS = [
-  { key: 'materiais',    label: 'Materiais' },
-  { key: 'cores',        label: 'Cores' },
-  { key: 'sinaletica',   label: 'Sinalética' },
-  { key: 'sensorizacao', label: 'Sensorização' },
+  { key: 'materiais',    labelKey: 'sb.tab.materiais' },
+  { key: 'cores',        labelKey: 'sb.tab.cores' },
+  { key: 'sinaletica',   labelKey: 'sb.tab.sinaletica' },
+  { key: 'sensorizacao', labelKey: 'sb.tab.sensorizacao' },
 ]
 
 // TODO: placeholders (imagens do AMBI 2.5) — substituir por imagens próprias do AMBI 1.0
 const SB_CUSTOM_ITEMS = [
-  { label: 'Abertura Manual', img: storageUrl('produtos/ambi_2.5/fotos/digital/12_ambi2_5_decor.png') },
-  { label: 'Fecho com Amortecedor', img: storageUrl('produtos/ambi_2.5/fotos/digital/07_ambi2_5_vidro_pilhao.png') },
-  { label: 'Abertura com Pedal', img: storageUrl('produtos/ambi_2.5/fotos/digital/09_ambi2_5_volteador.png') },
+  { labelKey: 'sb.custom.item.manual', img: storageUrl('produtos/ambi_2.5/fotos/digital/12_ambi2_5_decor.png') },
+  { labelKey: 'sb.custom.item.damper', img: storageUrl('produtos/ambi_2.5/fotos/digital/07_ambi2_5_vidro_pilhao.png') },
+  { labelKey: 'sb.custom.item.pedal', img: storageUrl('produtos/ambi_2.5/fotos/digital/09_ambi2_5_volteador.png') },
 ]
 
 const SCROLL_FRAME_COUNT = 60
@@ -36,8 +37,9 @@ const SCROLL_FRAMES = Array.from(
 )
 
 export default function SmartBoxTemplate({ product }: Props) {
+  const { t, tf } = useI18n()
   const [slideIndex, setSlideIndex] = useState(0)
-  const content = getCategoryContent('smart-box')!
+  const content = useCategoryContent('smart-box')!
   const { colors: ralColors } = useRalColors('smart-box')
   const { intro: categoryIntro, highlights: categoryHighlights } = useCategoryHighlights('smart-box')
   const { products: relatedRaw } = useProducts({ categorySlug: 'smart-box' })
@@ -51,42 +53,43 @@ export default function SmartBoxTemplate({ product }: Props) {
   const capacity = spec.capacity ?? (spec['Capacidade'] as string | undefined)
   const acesso = (spec['Acesso'] as string | undefined)
   const instalacao = (spec['Instalação'] as string | undefined)
+  const name = product.name
 
   const SB_FAQS = [
     {
-      q: `Qual a capacidade do ${product.name}?`,
+      q: t('sb.faq.capacity.q', { name }),
       a: capacity
-        ? `O ${product.name} tem capacidade de ${capacity}.`
-        : `O ${product.name} está disponível em diferentes capacidades, adequadas a fluxos especiais de resíduos.`,
+        ? t('sb.faq.capacity.a', { name, capacity })
+        : t('sb.faq.capacity.a.generic', { name }),
     },
     acesso && {
-      q: `Como funciona o acesso ao ${product.name}?`,
-      a: `O ${product.name} está equipado com ${acesso.toLowerCase()}, que impede depósitos indevidos e garante a qualidade do fluxo recolhido.`,
+      q: t('sb.faq.access.q', { name }),
+      a: t('sb.faq.access.a', { name, access: acesso.toLowerCase() }),
     },
     instalacao && {
-      q: `Que tipos de instalação são possíveis para o ${product.name}?`,
-      a: `O ${product.name} pode ser instalado em ${instalacao.toLowerCase()}, adaptando-se ao espaço disponível.`,
+      q: t('sb.faq.install.q', { name }),
+      a: t('sb.faq.install.a', { name, install: instalacao.toLowerCase() }),
     },
     {
-      q: `Que materiais compõem o ${product.name}?`,
-      a: `O corpo do ${product.name} é fabricado em aço e PEAD, resistente a uso intensivo e às condições climáticas.`,
+      q: t('sb.faq.materials.q', { name }),
+      a: t('sb.faq.materials.a', { name }),
     },
     {
-      q: `É possível personalizar a cor e o logótipo do ${product.name}?`,
-      a: `Sim. O ${product.name} pode ser configurado com cores RAL personalizadas e logótipo do município ou entidade.`,
+      q: t('sb.faq.custom.q', { name }),
+      a: t('sb.faq.custom.a', { name }),
     },
     {
-      q: `Como posso pedir um orçamento ou ficha técnica do ${product.name}?`,
-      a: 'Contacte a nossa equipa através da página de contactos, indicando a quantidade pretendida e o contexto de instalação — preparamos uma proposta e ficha técnica adaptadas ao seu projeto.',
+      q: t('sb.faq.quote.q', { name }),
+      a: t('sb.faq.quote.a', { name }),
     },
   ].filter(Boolean) as { q: string; a: string }[]
 
   const specProperties = [
-    capacity && { '@type': 'PropertyValue', name: 'Capacidade', value: capacity },
-    acesso && { '@type': 'PropertyValue', name: 'Acesso', value: acesso },
-    instalacao && { '@type': 'PropertyValue', name: 'Instalação', value: instalacao },
-    spec.materials?.length && { '@type': 'PropertyValue', name: 'Materiais', value: spec.materials.join(', ') },
-    spec.colors?.length && { '@type': 'PropertyValue', name: 'Cores', value: spec.colors.join(', ') },
+    capacity && { '@type': 'PropertyValue', name: tf('spec.label.Capacidade', 'Capacidade'), value: capacity },
+    acesso && { '@type': 'PropertyValue', name: tf('spec.label.Acesso', 'Acesso'), value: acesso },
+    instalacao && { '@type': 'PropertyValue', name: tf('spec.label.Instalação', 'Instalação'), value: instalacao },
+    spec.materials?.length && { '@type': 'PropertyValue', name: t('sb.tab.materiais'), value: spec.materials.join(', ') },
+    spec.colors?.length && { '@type': 'PropertyValue', name: t('sb.tab.cores'), value: spec.colors.join(', ') },
   ].filter(Boolean)
 
   useEffect(() => {
@@ -109,7 +112,7 @@ export default function SmartBoxTemplate({ product }: Props) {
   return (
     <div className="min-h-screen bg-white">
       <PageSeo
-        title={`${product.name} — Smart Box`}
+        title={t('sb.seo.title', { name })}
         description={product.short_description ?? product.description}
         path={`/produtos/smart-box/${product.slug}`}
         ogImage={product.cover_image}
@@ -129,8 +132,8 @@ export default function SmartBoxTemplate({ product }: Props) {
             {
               '@type': 'BreadcrumbList',
               itemListElement: [
-                { '@type': 'ListItem', position: 1, name: 'Início', item: 'https://www.ambiconcept.pt/' },
-                { '@type': 'ListItem', position: 2, name: 'Produtos', item: 'https://www.ambiconcept.pt/produtos' },
+                { '@type': 'ListItem', position: 1, name: t('common.home'), item: 'https://www.ambiconcept.pt/' },
+                { '@type': 'ListItem', position: 2, name: t('common.products'), item: 'https://www.ambiconcept.pt/produtos' },
                 { '@type': 'ListItem', position: 3, name: 'Smart Box', item: 'https://www.ambiconcept.pt/categorias/smart-box' },
                 { '@type': 'ListItem', position: 4, name: product.name, item: `https://www.ambiconcept.pt/produtos/smart-box/${product.slug}` },
               ],
@@ -152,10 +155,10 @@ export default function SmartBoxTemplate({ product }: Props) {
         <div className="sb-showcase-inner">
 
           <div className="sb-showcase-head">
-            <nav aria-label="Localização" className="sb-breadcrumb">
-              <Link to="/">Início</Link>
+            <nav aria-label={t('sb.breadcrumb.aria')} className="sb-breadcrumb">
+              <Link to="/">{t('common.home')}</Link>
               <span aria-hidden="true">/</span>
-              <Link to="/produtos">Produtos</Link>
+              <Link to="/produtos">{t('common.products')}</Link>
               <span aria-hidden="true">/</span>
               <Link to="/categorias/smart-box">Smart Box</Link>
               <span aria-hidden="true">/</span>
@@ -185,21 +188,21 @@ export default function SmartBoxTemplate({ product }: Props) {
                   <img
                     key={img}
                     src={img}
-                    alt={`${product.name} — variante ${i + 1}`}
+                    alt={t('sb.carousel.alt', { name, n: i + 1 })}
                     className={`sb-slide${slideIndex === i ? ' sb-slide--active' : ''}`}
                     loading={i === 0 ? 'eager' : 'lazy'}
                   />
                 ))}
               </div>
               {product.hero_images.length > 1 && (
-                <div className="sb-carousel-dots" aria-label="Selecionar variante">
+                <div className="sb-carousel-dots" aria-label={t('sb.carousel.dots')}>
                   {product.hero_images.map((_, i) => (
                     <button
                       key={i}
                       type="button"
                       onClick={() => setSlideIndex(i)}
                       className={`sb-dot${slideIndex === i ? ' sb-dot--active' : ''}`}
-                      aria-label={`Variante ${i + 1}`}
+                      aria-label={t('sb.carousel.dot', { n: i + 1 })}
                     />
                   ))}
                 </div>
@@ -230,12 +233,12 @@ export default function SmartBoxTemplate({ product }: Props) {
       </section>
 
       {/* ── Animação de scroll ────────────────────────────── */}
-      <section ref={scrollAnimRef} className="sb-scroll-anim" aria-label={`${product.name} — vista em detalhe`}>
+      <section ref={scrollAnimRef} className="sb-scroll-anim" aria-label={t('sb.scroll.label', { name })}>
         <div className="sb-scroll-anim-sticky">
           <canvas
             ref={canvasRef}
             role="img"
-            aria-label={`${product.name} — vista em detalhe`}
+            aria-label={t('sb.scroll.label', { name })}
             className="sb-scroll-anim-img"
           />
         </div>
@@ -246,21 +249,21 @@ export default function SmartBoxTemplate({ product }: Props) {
         <div className="sb-custom-inner">
           <div className="sb-custom-head">
             <h2 id="sb-custom-heading" className="sb-custom-title">
-              Características e Personalização do {product.name}
+              {t('sb.custom.title', { name })}
             </h2>
             <p className="sb-custom-sub">
-              Cada unidade pode ser configurada com opções de personalização visual e funcional,<br />
-              adaptadas às necessidades específicas do município ou condomínio<br />
-              e às frações de resíduo a recolher.
+              {t('sb.custom.sub.0')}<br />
+              {t('sb.custom.sub.1')}<br />
+              {t('sb.custom.sub.2')}
             </p>
           </div>
           <div className="sb-custom-grid">
             {SB_CUSTOM_ITEMS.map((item) => (
-              <div key={item.label} className="sb-custom-item">
+              <div key={item.labelKey} className="sb-custom-item">
                 <div className="sb-custom-img-wrap">
-                  <img src={item.img} alt={item.label} className="sb-custom-img" loading="lazy" />
+                  <img src={item.img} alt={t(item.labelKey)} className="sb-custom-img" loading="lazy" />
                 </div>
-                <p className="sb-custom-label">{item.label}</p>
+                <p className="sb-custom-label">{t(item.labelKey)}</p>
               </div>
             ))}
           </div>
@@ -268,9 +271,9 @@ export default function SmartBoxTemplate({ product }: Props) {
       </section>
 
       {/* ── Opções ────────────────────────────────────────── */}
-      <section className="sb-options-section" aria-label="Opções de personalização">
+      <section className="sb-options-section" aria-label={t('sb.options.aria')}>
         <div className="sb-options-inner">
-          <nav className="sb-tabs-nav" role="tablist" aria-label="Categorias de personalização">
+          <nav className="sb-tabs-nav" role="tablist" aria-label={t('sb.tabs.aria')}>
             {SB_TABS.map((tab) => (
               <button
                 key={tab.key}
@@ -280,7 +283,7 @@ export default function SmartBoxTemplate({ product }: Props) {
                 className={`sb-tab-btn${activeTab === tab.key ? ' sb-tab-btn--active' : ''}`}
                 onClick={() => setActiveTab(tab.key)}
               >
-                {tab.label}
+                {t(tab.labelKey)}
               </button>
             ))}
           </nav>
@@ -288,14 +291,14 @@ export default function SmartBoxTemplate({ product }: Props) {
           <div className="sb-tabs-body">
             <div id="sb-panel-materiais" role="tabpanel" className={`sb-tab-panel${activeTab === 'materiais' ? ' sb-tab-panel--active' : ''}`}>
               <ul className="sb-mat-list">
-                <li>Estrutura em aço resistente a uso intensivo</li>
-                <li>Corpo em polietileno de alta densidade (PEAD), fácil de limpar</li>
-                <li>Sistema de abertura controlada</li>
+                <li>{t('sb.materials.0')}</li>
+                <li>{t('sb.materials.1')}</li>
+                <li>{t('sb.materials.2')}</li>
               </ul>
             </div>
 
             <div id="sb-panel-cores" role="tabpanel" className={`sb-tab-panel${activeTab === 'cores' ? ' sb-tab-panel--active' : ''}`}>
-              <p className="sb-tab-desc">Cores standard disponível para o corpo da Smart Box.</p>
+              <p className="sb-tab-desc">{t('sb.colors.desc')}</p>
               <div className="sb-colors-grid">
                 {ralColors.map((c) => (
                   <div key={c.code} className="sb-color-item">
@@ -310,10 +313,10 @@ export default function SmartBoxTemplate({ product }: Props) {
               <div className="sb-feature-grid">
                 <div className="sb-feature-grid-item">
                   <div className="sb-feature-grid-img-wrap">
-                    <img src={storageUrl('produtos/ambi_1.0/tabs/sinaletica-frente.svg')} alt="Sinalética" className="sb-feature-grid-img" loading="lazy" />
+                    <img src={storageUrl('produtos/ambi_1.0/tabs/sinaletica-frente.svg')} alt={t('sb.signage.title')} className="sb-feature-grid-img" loading="lazy" />
                   </div>
-                  <p className="sb-feature-grid-title">Sinalética</p>
-                  <p className="sb-feature-grid-sub">Área útil para informação</p>
+                  <p className="sb-feature-grid-title">{t('sb.signage.title')}</p>
+                  <p className="sb-feature-grid-sub">{t('sb.signage.sub')}</p>
                 </div>
               </div>
             </div>
@@ -322,17 +325,17 @@ export default function SmartBoxTemplate({ product }: Props) {
               <div className="sb-feature-grid">
                 <div className="sb-feature-grid-item">
                   <div className="sb-feature-grid-img-wrap">
-                    <img src={storageUrl('produtos/ambi_1.0/tabs/sensor-controlo.svg')} alt="Controlo de Nível" className="sb-feature-grid-img" loading="lazy" />
+                    <img src={storageUrl('produtos/ambi_1.0/tabs/sensor-controlo.svg')} alt={t('sb.level.title')} className="sb-feature-grid-img" loading="lazy" />
                   </div>
-                  <p className="sb-feature-grid-title">Controlo de Nível</p>
-                  <p className="sb-feature-grid-sub">Monitorização do estado{'\n'}de enchimento</p>
+                  <p className="sb-feature-grid-title">{t('sb.level.title')}</p>
+                  <p className="sb-feature-grid-sub">{t('sb.level.sub')}</p>
                 </div>
                 <div className="sb-feature-grid-item">
                   <div className="sb-feature-grid-img-wrap">
-                    <img src={storageUrl('produtos/ambi_1.0/tabs/sensor-localizacao.svg')} alt="Localização" className="sb-feature-grid-img" loading="lazy" />
+                    <img src={storageUrl('produtos/ambi_1.0/tabs/sensor-localizacao.svg')} alt={t('sb.location.title')} className="sb-feature-grid-img" loading="lazy" />
                   </div>
-                  <p className="sb-feature-grid-title">Localização</p>
-                  <p className="sb-feature-grid-sub">Georreferenciação do equipamento</p>
+                  <p className="sb-feature-grid-title">{t('sb.location.title')}</p>
+                  <p className="sb-feature-grid-sub">{t('sb.location.sub')}</p>
                 </div>
               </div>
             </div>
@@ -341,7 +344,7 @@ export default function SmartBoxTemplate({ product }: Props) {
       </section>
 
       {/* ── Vídeo ─────────────────────────────────────────── */}
-      <section className="sb-video-section" aria-label={`Vídeo — ${product.name}`}>
+      <section className="sb-video-section" aria-label={t('sb.video.aria', { name })}>
         <div className="sb-video-wrap">
           <video
             className="sb-video"
@@ -355,8 +358,8 @@ export default function SmartBoxTemplate({ product }: Props) {
             <source src="/assets/video-smart-box.mp4" type="video/mp4" />
           </video>
           <div className="sb-video-overlay">
-            <span className="sb-section-eyebrow">Vídeo</span>
-            <h2 className="sb-video-title">Veja o {product.name} em ação</h2>
+            <span className="sb-section-eyebrow">{t('sb.video.eyebrow')}</span>
+            <h2 className="sb-video-title">{t('sb.video.title', { name })}</h2>
           </div>
         </div>
       </section>
@@ -368,10 +371,10 @@ export default function SmartBoxTemplate({ product }: Props) {
             <div className="sb-related-head">
               <span className="sb-section-eyebrow">Smart Box</span>
               <h2 id="sb-related-heading" className="sb-related-title">
-                Produtos Semelhantes
+                {t('sb.related.title')}
               </h2>
               <p className="sb-related-sub">
-                Outras soluções para fluxos especiais de resíduos adaptadas <br />às necessidades de cada contexto.
+                {t('sb.related.sub.0')}<br />{t('sb.related.sub.1')}
               </p>
             </div>
             <ul className="sb-related-grid" role="list">
@@ -410,9 +413,9 @@ export default function SmartBoxTemplate({ product }: Props) {
       <section className="sb-faq-section" aria-labelledby="sb-faq-heading">
         <div className="sb-faq-inner">
           <div className="sb-faq-head">
-            <span className="sb-section-eyebrow">Perguntas Frequentes</span>
+            <span className="sb-section-eyebrow">{t('sb.faq.eyebrow')}</span>
             <h2 id="sb-faq-heading" className="sb-related-title">
-              Dúvidas sobre o {product.name}
+              {t('sb.faq.title', { name })}
             </h2>
           </div>
           <div className="sb-faq-list">
@@ -444,27 +447,27 @@ export default function SmartBoxTemplate({ product }: Props) {
       </section>
 
       {/* ── Sistemas de Recolha ───────────────────────────── */}
-      <section className="sb-flow-section" aria-label="Sistemas de recolha">
+      <section className="sb-flow-section" aria-label={t('sb.flow.aria')}>
         <div className="sb-flow-inner">
           <div className="sb-flow-grid">
             <div className="sb-flow-item">
-              <h2 className="sb-flow-title">Um Sistema para Recolha de Biorresíduos</h2>
+              <h2 className="sb-flow-title">{t('sb.flow.bio.title')}</h2>
               <p className="sb-flow-sub">
-                <span className="sb-flow-sub-line">Um sistema completo para a separação e recolha dos resíduos orgânicos,</span><br />
-                <span className="sb-flow-sub-line">da sua cozinha até ao contentor.</span>
+                <span className="sb-flow-sub-line">{t('sb.flow.bio.sub.0')}</span><br />
+                <span className="sb-flow-sub-line">{t('sb.flow.bio.sub.1')}</span>
               </p>
               <Link to="/fluxos/porta-a-porta" className="sb-flow-badge">
-                Solução de Recolha Seletiva de Biorresíduos
+                {t('sb.flow.bio.badge')}
               </Link>
             </div>
             <div className="sb-flow-item">
-              <h2 className="sb-flow-title">Um Sistema para Recolha de Óleos Alimentares Usados</h2>
+              <h2 className="sb-flow-title">{t('sb.flow.uco.title')}</h2>
               <p className="sb-flow-sub">
-                <span className="sb-flow-sub-line">Um sistema completo para a recolha segura de óleos alimentares usados,</span><br />
-                <span className="sb-flow-sub-line">do ponto de descarte doméstico até à reciclagem.</span>
+                <span className="sb-flow-sub-line">{t('sb.flow.uco.sub.0')}</span><br />
+                <span className="sb-flow-sub-line">{t('sb.flow.uco.sub.1')}</span>
               </p>
               <Link to="/categorias/smart-box" className="sb-flow-badge">
-                Solução de Recolha de Óleos Alimentares Usados
+                {t('sb.flow.uco.badge')}
               </Link>
             </div>
           </div>
@@ -475,13 +478,13 @@ export default function SmartBoxTemplate({ product }: Props) {
       <section className="sb-cta-section" aria-labelledby="sb-cta-heading">
         <div className="sb-cta-inner">
           <h2 id="sb-cta-heading" className="sb-cta-title">
-            Apresente o seu projeto. <br />Os nossos especialistas <br />encontram a solução certa.
+            {t('sb.cta.title.0')}<br />{t('sb.cta.title.1')}<br />{t('sb.cta.title.2')}
           </h2>
           <p className="sb-cta-sub">
-            Partilhe os requisitos do seu município ou condomínio. Desenvolvemos a solução de Smart Box mais adequada ao seu contexto.
+            {t('sb.cta.sub')}
           </p>
           <Link to="/contactos" className="btn-dark">
-            Falar com um Especialista
+            {t('sb.cta.button')}
           </Link>
         </div>
       </section>

@@ -1,17 +1,22 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from '@/i18n/router'
 import { useHeroSlides } from '@/hooks/useHeroSlides'
+import { useI18n } from '@/i18n'
 import { storageUrl } from '@/data/local'
 import '@/styles/home-premium.css'
 
 const HERO_RENDER = storageUrl('produtos/ambi_2.7/fotos/digital/00_capa.png')
 
-// destaca "sua cidade" no título, como na proposta aprovada
-function Title({ text }: { text: string }) {
-  return <>{text.split(/(sua cidade)/i).map((part, i) => (/^sua cidade$/i.test(part) ? <em key={i}>{part}</em> : part))}</>
+// destaca a expressão (ex.: "sua cidade") no título, como na proposta aprovada; sem a expressão, o título fica como está
+function Title({ text, phrase }: { text: string; phrase: string }) {
+  if (!phrase) return <>{text}</>
+  const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const lower = phrase.toLowerCase()
+  return <>{text.split(new RegExp(`(${escaped})`, 'i')).map((part, i) => (part.toLowerCase() === lower ? <em key={i}>{part}</em> : part))}</>
 }
 
 export default function Hero() {
+  const { t } = useI18n()
   const { slides, loading } = useHeroSlides()
   const [current, setCurrent] = useState(0)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -39,12 +44,12 @@ export default function Hero() {
   const slide = slides[current]
 
   return (
-    <section aria-label="Destaque principal" className="hp-hero">
+    <section aria-label={t('home.hero.label')} className="hp-hero">
       <div className="hp-hero-inner">
         <div className="hp-hero-copy">
-          <p className="hp-label hp-hero-eyebrow">Waste Solutions</p>
+          <p className="hp-label hp-hero-eyebrow">{t('home.hero.eyebrow')}</p>
           <h1 key={slide.id + '-title'} className="hp-hero-title animate-fade-in">
-            <Title text={slide.title} />
+            <Title text={slide.title} phrase={t('home.hero.highlight')} />
           </h1>
           {slide.subtitle && (
             <p key={slide.id + '-sub'} className="hp-hero-sub animate-fade-in">{slide.subtitle}</p>
@@ -53,7 +58,7 @@ export default function Hero() {
             {slide.cta_label && slide.cta_url && (
               <Link to={slide.cta_url} className="btn-primary">{slide.cta_label}</Link>
             )}
-            <Link to="/contactos" className="btn-ghost">Falar com a equipa</Link>
+            <Link to="/contactos" className="btn-ghost">{t('home.hero.talkToTeam')}</Link>
           </div>
           {slides.length > 1 && (
             <div className="hp-hero-dots">
@@ -62,7 +67,7 @@ export default function Hero() {
                   key={idx}
                   type="button"
                   onClick={() => go(idx)}
-                  aria-label={`Slide ${idx + 1}`}
+                  aria-label={t('home.hero.slide', { n: idx + 1 })}
                   className={`hp-hero-dot${idx === current ? ' is-active' : ''}`}
                 />
               ))}
@@ -72,7 +77,7 @@ export default function Hero() {
 
         <div className="hp-hero-art" aria-hidden="true">
           <img src={HERO_RENDER} alt="" />
-          <span className="hp-hero-tag hp-hero-tag--a">2.700 L · PEAD</span>
+          <span className="hp-hero-tag hp-hero-tag--a">{t('home.hero.tag')}</span>
           <span className="hp-hero-tag hp-hero-tag--b">EN 840</span>
         </div>
       </div>

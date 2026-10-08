@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { getDoc } from 'firebase/firestore'
 import { db, siteDoc } from '@/lib/firebase'
 import { slugVariants } from '@/lib/categorySlug'
+import { useI18n } from '@/i18n'
+import { localizeDeep } from '@/i18n/localize'
 import { getCategoryContent, type CategoryHighlight } from '@/data/categories-content'
 
 interface CategoryHighlightsData {
@@ -15,8 +17,9 @@ function localFallback(categorySlug: string): CategoryHighlightsData {
 }
 
 export function useCategoryHighlights(categorySlug: string): CategoryHighlightsData & { loading: boolean } {
+  const { lang, tf } = useI18n()
   const fallback = localFallback(categorySlug)
-  const [data, setData] = useState<CategoryHighlightsData>(fallback)
+  const [rawData, setData] = useState<CategoryHighlightsData>(fallback)
   const [loading, setLoading] = useState(!!db)
 
   useEffect(() => {
@@ -49,6 +52,9 @@ export function useCategoryHighlights(categorySlug: string): CategoryHighlightsD
 
     return () => { cancelled = true }
   }, [categorySlug])
+
+  // língua atual: chaves `cat.<slug>.intro` e `cat.<slug>.highlights.<i>.…`
+  const data = lang === 'pt' ? rawData : localizeDeep(rawData, `cat.${categorySlug}`, tf)
 
   return { ...data, loading }
 }

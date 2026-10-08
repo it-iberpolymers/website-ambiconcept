@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import Header from './Header'
 import Footer from './Footer'
 import { startLenis, lenis } from '@/lib/lenis'
+import { useI18n } from '@/i18n'
 import 'lenis/dist/lenis.css'
 
 function ScrollToTop() {
@@ -15,11 +16,12 @@ function ScrollToTop() {
 }
 
 export default function Layout() {
+  const { t } = useI18n()
   useEffect(() => startLenis(), [])
   return (
     <>
       <a href="#main-content" className="skip-link">
-        Saltar para o conteúdo
+        {t('layout.skipLink')}
       </a>
       <ScrollToTop />
       <Header />

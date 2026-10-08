@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useStats } from '@/hooks/useStats'
+import { useI18n } from '@/i18n'
 import '@/styles/home-premium.css'
 
 const MUNICIPALITIES = [
@@ -29,6 +30,7 @@ function useCountUp(target: number, shouldStart: boolean) {
 }
 
 export default function StatsSection() {
+  const { t, locale } = useI18n()
   const statsRef = useRef<HTMLElement>(null)
   const marqueeRef = useRef<HTMLDivElement>(null)
   const [started, setStarted] = useState(false)
@@ -92,9 +94,9 @@ export default function StatsSection() {
 
       <div className="hp-stats-inner">
         <div className="hp-stats-head">
-          <div className="hp-label hp-label--centered">Impacto</div>
+          <div className="hp-label hp-label--centered">{t('home.stats.eyebrow')}</div>
           <h2 id="stats-heading" className="hp-stats-title">
-            Mais de {containersTarget.toLocaleString('pt-PT')} contentores instalados em +{municipalitiesTarget} municípios portugueses.
+            {t('home.stats.title', { containers: containersTarget.toLocaleString(locale), municipalities: municipalitiesTarget })}
           </h2>
         </div>
 
@@ -103,9 +105,9 @@ export default function StatsSection() {
             <div className="hp-stat-inner">
               <div className="hp-stat-num">
                 <span className="hp-stat-prefix">+</span>
-                <span>{containerCount.toLocaleString('pt-PT')}</span>
+                <span>{containerCount.toLocaleString(locale)}</span>
               </div>
-              <div className="hp-stat-label">Contentores Instalados</div>
+              <div className="hp-stat-label">{t('home.stats.containers')}</div>
             </div>
           </div>
           <div className="hp-stat-divider" aria-hidden="true" />
@@ -113,9 +115,9 @@ export default function StatsSection() {
             <div className="hp-stat-inner">
               <div className="hp-stat-num">
                 <span className="hp-stat-prefix">+</span>
-                <span>{munCount.toLocaleString('pt-PT')}</span>
+                <span>{munCount.toLocaleString(locale)}</span>
               </div>
-              <div className="hp-stat-label">Municípios Aderentes</div>
+              <div className="hp-stat-label">{t('home.stats.municipalities')}</div>
             </div>
           </div>
         </div>
@@ -129,7 +131,7 @@ export default function StatsSection() {
             </span>
           ))}
         </div>
-        <ul className="sr-only" aria-label="Municípios aderentes">
+        <ul className="sr-only" aria-label={t('home.stats.municipalitiesList')}>
           {MUNICIPALITIES.map(name => <li key={name}>{name}</li>)}
         </ul>
       </div>

@@ -1,9 +1,21 @@
-import { useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Fragment, useEffect, useRef } from 'react'
+import { Link } from '@/i18n/router'
+import { useI18n } from '@/i18n'
 import '@/styles/home-premium.css'
 
+// "\n" na tradução = quebra de linha (<br />) no título do painel
+function Lines({ text }: { text: string }) {
+  return (
+    <>
+      {text.split('\n').map((line, i) => (
+        <Fragment key={i}>{i > 0 && <br />}{line}</Fragment>
+      ))}
+    </>
+  )
+}
 
 export default function ProductsPremiumSection() {
+  const { t } = useI18n()
   const sectionRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
@@ -19,36 +31,36 @@ export default function ProductsPremiumSection() {
 
   return (
     <section id="produtos" className="hp-products" ref={sectionRef} aria-labelledby="products-heading">
-      <h2 id="products-heading" className="sr-only">Produtos Ambiconcept — Recolha Seletiva</h2>
+      <h2 id="products-heading" className="sr-only">{t('home.products.heading')}</h2>
 
       {/* Vidro */}
       <div className="hp-product-panel hp-reveal">
         <div className="hp-product-vis hp-product-vis--photo">
-          <img src="/assets/home-vidro.jpg" alt="Contentor de recolha seletiva de vidro AMBI 2.7 — contentor de carga vertical para municípios, Portugal" className="hp-product-photo" loading="lazy" />
+          <img src="/assets/home-vidro.jpg" alt={t('home.products.vidro.alt')} className="hp-product-photo" loading="lazy" />
         </div>
         <div className="hp-product-copy">
-          <p className="hp-product-index">01 — Ecopontos · Carga Vertical e Traseira</p>
-          <h3 className="hp-product-name">Vidro</h3>
+          <p className="hp-product-index">{t('home.products.vidro.index')}</p>
+          <h3 className="hp-product-name">{t('home.products.vidro.name')}</h3>
           <p className="hp-product-models">AMBI 2.5 · AMBI 2.7 · AMBI TWO</p>
           <p className="hp-product-desc">
-            Contentores de recolha seletiva de vidro para espaço público. Equipados com volteador para preservar a integridade do material recolhido.
+            {t('home.products.vidro.desc')}
           </p>
           <div className="hp-product-specs">
             <div className="hp-spec-row">
-              <span className="hp-spec-label">Capacidade</span>
-              <span className="hp-spec-value">120 – 2.700 Litros</span>
+              <span className="hp-spec-label">{t('home.products.spec.capacity')}</span>
+              <span className="hp-spec-value">{t('home.products.vidro.capacity')}</span>
             </div>
             <div className="hp-spec-row">
-              <span className="hp-spec-label">Sistema</span>
-              <span className="hp-spec-value">Com volteador</span>
+              <span className="hp-spec-label">{t('home.products.spec.system')}</span>
+              <span className="hp-spec-value">{t('home.products.vidro.system')}</span>
             </div>
             <div className="hp-spec-row">
-              <span className="hp-spec-label">Cor</span>
-              <span className="hp-spec-value">Verde / RAL personalizado</span>
+              <span className="hp-spec-label">{t('home.products.spec.color')}</span>
+              <span className="hp-spec-value">{t('home.products.vidro.color')}</span>
             </div>
           </div>
           <Link to="/fluxos/vidro" className="hp-product-cta">
-            Ver contentores de vidro →
+            {t('home.products.vidro.cta')}
           </Link>
         </div>
       </div>
@@ -56,31 +68,31 @@ export default function ProductsPremiumSection() {
       {/* Biorresíduos */}
       <div className="hp-product-panel hp-flip hp-reveal">
         <div className="hp-product-vis hp-product-vis--photo">
-          <img src="/assets/home-biorresiduos.png" alt="Contentores de biorresíduos AMBI TWO e AMBI FOUR — recolha porta-a-porta e carga traseira para municípios portugueses" className="hp-product-photo" loading="lazy" />
+          <img src="/assets/home-biorresiduos.png" alt={t('home.products.bio.alt')} className="hp-product-photo" loading="lazy" />
         </div>
         <div className="hp-product-copy">
-          <p className="hp-product-index">02 — Porta-a-porta · Carga Traseira · Smart Box</p>
-          <h3 className="hp-product-name">Biorresíduos</h3>
+          <p className="hp-product-index">{t('home.products.bio.index')}</p>
+          <h3 className="hp-product-name">{t('home.products.bio.name')}</h3>
           <p className="hp-product-models">Lockey · AMBI TWO · AMBI FOUR · AMBI 1.0</p>
           <p className="hp-product-desc">
-            Soluções de recolha de biorresíduos para porta-a-porta e espaço público. Do balde doméstico ao contentor de grande capacidade.
+            {t('home.products.bio.desc')}
           </p>
           <div className="hp-product-specs">
             <div className="hp-spec-row">
-              <span className="hp-spec-label">Capacidade</span>
-              <span className="hp-spec-value">5 – 1.100 Litros</span>
+              <span className="hp-spec-label">{t('home.products.spec.capacity')}</span>
+              <span className="hp-spec-value">{t('home.products.bio.capacity')}</span>
             </div>
             <div className="hp-spec-row">
-              <span className="hp-spec-label">Sistema</span>
-              <span className="hp-spec-value">Porta-a-porta / Carga traseira</span>
+              <span className="hp-spec-label">{t('home.products.spec.system')}</span>
+              <span className="hp-spec-value">{t('home.products.bio.system')}</span>
             </div>
             <div className="hp-spec-row">
-              <span className="hp-spec-label">Material</span>
-              <span className="hp-spec-value">PEAD</span>
+              <span className="hp-spec-label">{t('home.products.spec.material')}</span>
+              <span className="hp-spec-value">{t('home.products.bio.material')}</span>
             </div>
           </div>
           <Link to="/fluxos/biorresiduos" className="hp-product-cta">
-            Ver contentores de biorresíduos →
+            {t('home.products.bio.cta')}
           </Link>
         </div>
       </div>
@@ -88,31 +100,31 @@ export default function ProductsPremiumSection() {
       {/* Limpeza Urbana */}
       <div className="hp-product-panel hp-reveal">
         <div className="hp-product-vis hp-product-vis--photo">
-          <img src="/assets/home-papeleiras.png" alt="Equipamento de limpeza urbana AMBI URBAN e AMBI BEACH para espaço público e zonas balneares, Portugal" className="hp-product-photo" loading="lazy" />
+          <img src="/assets/home-papeleiras.png" alt={t('home.products.urbana.alt')} className="hp-product-photo" loading="lazy" />
         </div>
         <div className="hp-product-copy">
-          <p className="hp-product-index">03 — Limpeza Urbana</p>
-          <h3 className="hp-product-name">Limpeza<br />Urbana</h3>
+          <p className="hp-product-index">{t('home.products.urbana.index')}</p>
+          <h3 className="hp-product-name"><Lines text={t('home.products.urbana.name')} /></h3>
           <p className="hp-product-models">AMBI URBAN · AMBI BEACH</p>
           <p className="hp-product-desc">
-            Presença urbana integrada. Design que não compete com a cidade — serve-a. Para espaços públicos de alta frequência de uso.
+            {t('home.products.urbana.desc')}
           </p>
           <div className="hp-product-specs">
             <div className="hp-spec-row">
-              <span className="hp-spec-label">Capacidade</span>
-              <span className="hp-spec-value">80 Litros</span>
+              <span className="hp-spec-label">{t('home.products.spec.capacity')}</span>
+              <span className="hp-spec-value">{t('home.products.urbana.capacity')}</span>
             </div>
             <div className="hp-spec-row">
-              <span className="hp-spec-label">Fixação</span>
-              <span className="hp-spec-value">Poste / Solo</span>
+              <span className="hp-spec-label">{t('home.products.spec.fixing')}</span>
+              <span className="hp-spec-value">{t('home.products.urbana.fixing')}</span>
             </div>
             <div className="hp-spec-row">
-              <span className="hp-spec-label">Ambiente</span>
-              <span className="hp-spec-value">Urbano / Praia</span>
+              <span className="hp-spec-label">{t('home.products.spec.environment')}</span>
+              <span className="hp-spec-value">{t('home.products.urbana.environment')}</span>
             </div>
           </div>
           <Link to="/fluxos/limpeza-urbana" className="hp-product-cta">
-            Ver limpeza urbana →
+            {t('home.products.urbana.cta')}
           </Link>
         </div>
       </div>
@@ -120,31 +132,31 @@ export default function ProductsPremiumSection() {
       {/* Porta-a-porta */}
       <div className="hp-product-panel hp-flip hp-reveal">
         <div className="hp-product-vis hp-product-vis--photo">
-          <img src="/assets/home-porta-a-porta.webp" alt="Contentor porta-a-porta AMBI TWO 240L — recolha domiciliária compatível com viatura de carga traseira, Portugal" className="hp-product-photo" loading="lazy" />
+          <img src="/assets/home-porta-a-porta.webp" alt={t('home.products.ptp.alt')} className="hp-product-photo" loading="lazy" />
         </div>
         <div className="hp-product-copy">
-          <p className="hp-product-index">04 — Carga Traseira</p>
-          <h3 className="hp-product-name">Porta-a-porta</h3>
+          <p className="hp-product-index">{t('home.products.ptp.index')}</p>
+          <h3 className="hp-product-name">{t('home.products.ptp.name')}</h3>
           <p className="hp-product-models">AMBI TWO 120L · AMBI TWO 140L · AMBI TWO 240L · AMBI TWO 340L</p>
           <p className="hp-product-desc">
-            Contentores de recolha domiciliária concebidos para sistemas porta-a-porta. Compatíveis com frota de carga traseira e adaptáveis a qualquer contexto urbano.
+            {t('home.products.ptp.desc')}
           </p>
           <div className="hp-product-specs">
             <div className="hp-spec-row">
-              <span className="hp-spec-label">Capacidade</span>
-              <span className="hp-spec-value">120 – 340 Litros</span>
+              <span className="hp-spec-label">{t('home.products.spec.capacity')}</span>
+              <span className="hp-spec-value">{t('home.products.ptp.capacity')}</span>
             </div>
             <div className="hp-spec-row">
-              <span className="hp-spec-label">Rodas</span>
-              <span className="hp-spec-value">2 ou 4</span>
+              <span className="hp-spec-label">{t('home.products.spec.wheels')}</span>
+              <span className="hp-spec-value">{t('home.products.ptp.wheels')}</span>
             </div>
             <div className="hp-spec-row">
-              <span className="hp-spec-label">Sistema</span>
-              <span className="hp-spec-value">Carga traseira</span>
+              <span className="hp-spec-label">{t('home.products.spec.system')}</span>
+              <span className="hp-spec-value">{t('home.products.ptp.system')}</span>
             </div>
           </div>
           <Link to="/fluxos/porta-a-porta" className="hp-product-cta">
-            Ver contentores porta-a-porta →
+            {t('home.products.ptp.cta')}
           </Link>
         </div>
       </div>
@@ -152,31 +164,31 @@ export default function ProductsPremiumSection() {
       {/* Óleos Alimentares Usados */}
       <div className="hp-product-panel hp-reveal">
         <div className="hp-product-vis hp-product-vis--photo">
-          <img src="/assets/fluxo-oleos-alimentares.png" alt="Contentor AMBI 1.0 para recolha de óleos alimentares usados — smart box de superfície para espaço público, Portugal" className="hp-product-photo" loading="lazy" />
+          <img src="/assets/fluxo-oleos-alimentares.png" alt={t('home.products.oleos.alt')} className="hp-product-photo" loading="lazy" />
         </div>
         <div className="hp-product-copy">
-          <p className="hp-product-index">05 — Smart Box</p>
-          <h3 className="hp-product-name">Óleos<br />Alimentares<br />Usados</h3>
+          <p className="hp-product-index">{t('home.products.oleos.index')}</p>
+          <h3 className="hp-product-name"><Lines text={t('home.products.oleos.name')} /></h3>
           <p className="hp-product-models">AMBI 1.0</p>
           <p className="hp-product-desc">
-            Contentor inteligente para recolha de óleos alimentares usados. Compacto, seguro e preparado para instalação em espaço público ou condomínio.
+            {t('home.products.oleos.desc')}
           </p>
           <div className="hp-product-specs">
             <div className="hp-spec-row">
-              <span className="hp-spec-label">Capacidade</span>
-              <span className="hp-spec-value">1.000 Litros</span>
+              <span className="hp-spec-label">{t('home.products.spec.capacity')}</span>
+              <span className="hp-spec-value">{t('home.products.oleos.capacity')}</span>
             </div>
             <div className="hp-spec-row">
-              <span className="hp-spec-label">Instalação</span>
-              <span className="hp-spec-value">Superfície</span>
+              <span className="hp-spec-label">{t('home.products.spec.installation')}</span>
+              <span className="hp-spec-value">{t('home.products.oleos.installation')}</span>
             </div>
             <div className="hp-spec-row">
-              <span className="hp-spec-label">Acesso</span>
-              <span className="hp-spec-value">Abertura controlada</span>
+              <span className="hp-spec-label">{t('home.products.spec.access')}</span>
+              <span className="hp-spec-value">{t('home.products.oleos.access')}</span>
             </div>
           </div>
           <Link to="/fluxos/oleos-alimentares-usados" className="hp-product-cta">
-            Ver contentor de óleos alimentares →
+            {t('home.products.oleos.cta')}
           </Link>
         </div>
       </div>

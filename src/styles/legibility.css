@@ -40,7 +40,7 @@ body .at-sizes-sub, body .bd-sizes-sub, body .ct-sizes-sub {
   /* migalhas de pão e ligação "voltar" */
   body nav[aria-label="Localização"] a,
   body .cv-breadcrumb a, body .at-breadcrumb a, body .sb-breadcrumb a, body .pp-breadcrumb a, body .bd-breadcrumb a, body .ct-breadcrumb a,
-  body a[href="/noticias"].inline-flex {
+  body a[href$="/noticias"].inline-flex {
     display: inline-flex;
     align-items: center;
     min-height: 44px;

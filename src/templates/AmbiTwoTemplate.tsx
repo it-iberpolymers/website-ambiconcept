@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
 import { useScrollSequence } from '@/hooks/useScrollSequence'
-import { Link } from 'react-router-dom'
+import { Link } from '@/i18n/router'
 import type { Product } from '@/types'
-import { getCategoryContent } from '@/data/categories-content'
 import { storageUrl } from '@/data/local'
+import { useI18n } from '@/i18n'
+import { useCategoryContent } from '@/hooks/useCategoryContent'
 import { useProducts } from '@/hooks/useProducts'
 import { useRalColors } from '@/hooks/useRalColors'
 import { useCategoryHighlights } from '@/hooks/useCategoryHighlights'
@@ -16,26 +17,26 @@ interface Props {
 }
 
 const AT_TABS = [
-  { key: 'materiais',  label: 'Materiais' },
-  { key: 'cores',      label: 'Cores' },
-  { key: 'sinaletica', label: 'Sinalética' },
-  { key: 'rodas',      label: 'Rodas' },
+  { key: 'materiais',  label: 'at.tab.materiais' },
+  { key: 'cores',      label: 'at.tab.cores' },
+  { key: 'sinaletica', label: 'at.tab.sinaletica' },
+  { key: 'rodas',      label: 'at.tab.rodas' },
 ]
 
 // TODO: placeholders — substituir por imagens próprias do AMBI TWO quando disponíveis
 const AT_CUSTOM_ITEMS = [
-  { label: '2 Tamanhos de Roda', img: '/assets/home-porta-a-porta.webp' },
-  { label: 'Fecho de Segurança', img: '/assets/home-porta-a-porta.webp' },
-  { label: 'Pedal para Abertura da Tampa', img: '/assets/home-porta-a-porta.webp' },
+  { label: 'at.custom.wheels', img: '/assets/home-porta-a-porta.webp' },
+  { label: 'at.custom.lock', img: '/assets/home-porta-a-porta.webp' },
+  { label: 'at.custom.pedal', img: '/assets/home-porta-a-porta.webp' },
 ]
 
 // TODO: substituir por fotos próprias de cada fração de resíduo quando disponíveis
 const AT_SIZES = [
-  { label: 'Papel & Cartão', img: '/assets/home-porta-a-porta.webp' },
-  { label: 'Vidro', img: '/assets/home-porta-a-porta.webp' },
-  { label: 'Embalagens', img: '/assets/home-porta-a-porta.webp' },
-  { label: 'Indiferenciados', img: '/assets/home-porta-a-porta.webp' },
-  { label: 'Biorresíduos', img: '/assets/home-porta-a-porta.webp' },
+  { label: 'at.sizes.paper', img: '/assets/home-porta-a-porta.webp' },
+  { label: 'at.sizes.glass', img: '/assets/home-porta-a-porta.webp' },
+  { label: 'at.sizes.packaging', img: '/assets/home-porta-a-porta.webp' },
+  { label: 'at.sizes.general', img: '/assets/home-porta-a-porta.webp' },
+  { label: 'at.sizes.bio', img: '/assets/home-porta-a-porta.webp' },
 ]
 
 const SCROLL_FRAME_COUNT = 60
@@ -46,7 +47,8 @@ const SCROLL_FRAMES = Array.from(
 
 export default function AmbiTwoTemplate({ product }: Props) {
   const [slideIndex, setSlideIndex] = useState(0)
-  const content = getCategoryContent('carga-traseira')!
+  const { t } = useI18n()
+  const content = useCategoryContent('carga-traseira')!
   const { colors: ralColors } = useRalColors('carga-traseira')
   const { intro: categoryIntro, highlights: categoryHighlights } = useCategoryHighlights('carga-traseira')
   const { products: relatedRaw } = useProducts({ categorySlug: 'carga-traseira' })
@@ -61,41 +63,42 @@ export default function AmbiTwoTemplate({ product }: Props) {
   const rodas = (spec['Rodas'] as string | undefined)
   const fracoes = (spec['Frações'] as string | undefined)
 
+  const name = product.name
   const AT_FAQS = [
     {
-      q: `Qual a capacidade do ${product.name}?`,
+      q: t('at.faq.capacity.q', { name }),
       a: capacity
-        ? `O ${product.name} tem capacidade de ${capacity}, adaptando-se a qualquer tipologia de habitação.`
-        : `O ${product.name} está disponível em diferentes capacidades, adequadas à recolha porta-a-porta.`,
+        ? t('at.faq.capacity.a', { name, capacity })
+        : t('at.faq.capacity.aDefault', { name }),
     },
     rodas && {
-      q: `Quantas rodas tem o ${product.name}?`,
-      a: `O ${product.name} está disponível com ${rodas.toLowerCase()} rodas, facilitando a movimentação e a recolha.`,
+      q: t('at.faq.wheels.q', { name }),
+      a: t('at.faq.wheels.a', { name, wheels: rodas.toLowerCase() }),
     },
     fracoes && {
-      q: `Que frações de resíduos posso recolher com o ${product.name}?`,
-      a: `O ${product.name} está preparado para as seguintes frações: ${fracoes.toLowerCase()}.`,
+      q: t('at.faq.fractions.q', { name }),
+      a: t('at.faq.fractions.a', { name, fractions: fracoes.toLowerCase() }),
     },
     {
-      q: `O ${product.name} é compatível com identificação RFID?`,
-      a: `Sim. O ${product.name} pode ser equipado com sistema de identificação por RFID, para controlo e monitorização da recolha.`,
+      q: t('at.faq.rfid.q', { name }),
+      a: t('at.faq.rfid.a', { name }),
     },
     {
-      q: `Que materiais compõem o ${product.name}?`,
-      a: `O corpo do ${product.name} é fabricado em PEAD, resistente a uso intensivo e às condições climáticas.`,
+      q: t('at.faq.materials.q', { name }),
+      a: t('at.faq.materials.a', { name }),
     },
     {
-      q: `Como posso pedir um orçamento ou ficha técnica do ${product.name}?`,
-      a: 'Contacte a nossa equipa através da página de contactos, indicando a quantidade pretendida e o contexto de instalação — preparamos uma proposta e ficha técnica adaptadas ao seu projeto.',
+      q: t('at.faq.quote.q', { name }),
+      a: t('at.faq.quote.a', { name }),
     },
   ].filter(Boolean) as { q: string; a: string }[]
 
   const specProperties = [
-    capacity && { '@type': 'PropertyValue', name: 'Capacidade', value: capacity },
-    rodas && { '@type': 'PropertyValue', name: 'Rodas', value: rodas },
-    fracoes && { '@type': 'PropertyValue', name: 'Frações', value: fracoes },
-    spec.materials?.length && { '@type': 'PropertyValue', name: 'Materiais', value: spec.materials.join(', ') },
-    spec.colors?.length && { '@type': 'PropertyValue', name: 'Cores', value: spec.colors.join(', ') },
+    capacity && { '@type': 'PropertyValue', name: t('at.schema.capacity'), value: capacity },
+    rodas && { '@type': 'PropertyValue', name: t('at.schema.wheels'), value: rodas },
+    fracoes && { '@type': 'PropertyValue', name: t('at.schema.fractions'), value: fracoes },
+    spec.materials?.length && { '@type': 'PropertyValue', name: t('at.schema.materials'), value: spec.materials.join(', ') },
+    spec.colors?.length && { '@type': 'PropertyValue', name: t('at.schema.colors'), value: spec.colors.join(', ') },
   ].filter(Boolean)
 
   useEffect(() => {
@@ -118,7 +121,7 @@ export default function AmbiTwoTemplate({ product }: Props) {
   return (
     <div className="min-h-screen bg-white">
       <PageSeo
-        title={`${product.name} — Carga Traseira`}
+        title={t('at.seo.title', { name: product.name })}
         description={product.short_description ?? product.description}
         path={`/produtos/carga-traseira/${product.slug}`}
         ogImage={product.cover_image}
@@ -132,15 +135,15 @@ export default function AmbiTwoTemplate({ product }: Props) {
               image: product.hero_images.map((img) => `https://www.ambiconcept.pt${img}`),
               manufacturer: { '@type': 'Organization', name: 'Ambiconcept' },
               brand: { '@type': 'Brand', name: 'Ambiconcept' },
-              category: 'Carga Traseira',
+              category: t('at.category'),
               ...(specProperties.length > 0 && { additionalProperty: specProperties }),
             },
             {
               '@type': 'BreadcrumbList',
               itemListElement: [
-                { '@type': 'ListItem', position: 1, name: 'Início', item: 'https://www.ambiconcept.pt/' },
-                { '@type': 'ListItem', position: 2, name: 'Produtos', item: 'https://www.ambiconcept.pt/produtos' },
-                { '@type': 'ListItem', position: 3, name: 'Carga Traseira', item: 'https://www.ambiconcept.pt/categorias/carga-traseira' },
+                { '@type': 'ListItem', position: 1, name: t('common.home'), item: 'https://www.ambiconcept.pt/' },
+                { '@type': 'ListItem', position: 2, name: t('common.products'), item: 'https://www.ambiconcept.pt/produtos' },
+                { '@type': 'ListItem', position: 3, name: t('at.category'), item: 'https://www.ambiconcept.pt/categorias/carga-traseira' },
                 { '@type': 'ListItem', position: 4, name: product.name, item: `https://www.ambiconcept.pt/produtos/carga-traseira/${product.slug}` },
               ],
             },
@@ -161,12 +164,12 @@ export default function AmbiTwoTemplate({ product }: Props) {
         <div className="at-showcase-inner">
 
           <div className="at-showcase-head">
-            <nav aria-label="Localização" className="at-breadcrumb">
-              <Link to="/">Início</Link>
+            <nav aria-label={t('at.breadcrumb.aria')} className="at-breadcrumb">
+              <Link to="/">{t('common.home')}</Link>
               <span aria-hidden="true">/</span>
-              <Link to="/produtos">Produtos</Link>
+              <Link to="/produtos">{t('common.products')}</Link>
               <span aria-hidden="true">/</span>
-              <Link to="/categorias/carga-traseira">Carga Traseira</Link>
+              <Link to="/categorias/carga-traseira">{t('at.category')}</Link>
               <span aria-hidden="true">/</span>
               <span>{product.name}</span>
             </nav>
@@ -194,21 +197,21 @@ export default function AmbiTwoTemplate({ product }: Props) {
                   <img
                     key={img}
                     src={img}
-                    alt={`${product.name} — variante ${i + 1}`}
+                    alt={t('at.slide.alt', { name: product.name, n: i + 1 })}
                     className={`at-slide${slideIndex === i ? ' at-slide--active' : ''}`}
                     loading={i === 0 ? 'eager' : 'lazy'}
                   />
                 ))}
               </div>
               {product.hero_images.length > 1 && (
-                <div className="at-carousel-dots" aria-label="Selecionar variante">
+                <div className="at-carousel-dots" aria-label={t('at.dots.aria')}>
                   {product.hero_images.map((_, i) => (
                     <button
                       key={i}
                       type="button"
                       onClick={() => setSlideIndex(i)}
                       className={`at-dot${slideIndex === i ? ' at-dot--active' : ''}`}
-                      aria-label={`Variante ${i + 1}`}
+                      aria-label={t('at.dot.aria', { n: i + 1 })}
                     />
                   ))}
                 </div>
@@ -239,12 +242,12 @@ export default function AmbiTwoTemplate({ product }: Props) {
       </section>
 
       {/* ── Animação de scroll ────────────────────────────── */}
-      <section ref={scrollAnimRef} className="at-scroll-anim" aria-label={`${product.name} — vista em detalhe`}>
+      <section ref={scrollAnimRef} className="at-scroll-anim" aria-label={t('at.scroll.aria', { name: product.name })}>
         <div className="at-scroll-anim-sticky">
           <canvas
             ref={canvasRef}
             role="img"
-            aria-label={`${product.name} — vista em detalhe`}
+            aria-label={t('at.scroll.aria', { name: product.name })}
             className="at-scroll-anim-img"
           />
         </div>
@@ -255,21 +258,21 @@ export default function AmbiTwoTemplate({ product }: Props) {
         <div className="at-custom-inner">
           <div className="at-custom-head">
             <h2 id="at-custom-heading" className="at-custom-title">
-              Características e Personalização do {product.name}
+              {t('at.custom.title', { name: product.name })}
             </h2>
             <p className="at-custom-sub">
-              Cada unidade pode ser configurada com opções de personalização visual e funcional,<br />
-              adaptadas às necessidades específicas do município ou condomínio<br />
-              e às frações de resíduo a recolher.
+              {t('at.custom.sub.1')}<br />
+              {t('at.custom.sub.2')}<br />
+              {t('at.custom.sub.3')}
             </p>
           </div>
           <div className="at-custom-grid">
             {AT_CUSTOM_ITEMS.map((item) => (
               <div key={item.label} className="at-custom-item">
                 <div className="at-custom-img-wrap">
-                  <img src={item.img} alt={item.label} className="at-custom-img" loading="lazy" />
+                  <img src={item.img} alt={t(item.label)} className="at-custom-img" loading="lazy" />
                 </div>
-                <p className="at-custom-label">{item.label}</p>
+                <p className="at-custom-label">{t(item.label)}</p>
               </div>
             ))}
           </div>
@@ -282,19 +285,19 @@ export default function AmbiTwoTemplate({ product }: Props) {
           <div className="at-sizes-head">
             <h2 id="at-sizes-heading" className="at-sizes-title">
               AMBI TWO<br />
-              <span className="at-sizes-title-line">para Vários Tipos de Resíduos, <br />Maior Flexibilidade</span>
+              <span className="at-sizes-title-line">{t('at.sizes.title.1')}<br />{t('at.sizes.title.2')}</span>
             </h2>
             <p className="at-sizes-sub">
-              O AMBI TWO adapta-se a diferentes tipos de resíduos — papel & cartão, vidro, embalagens, <br />indiferenciados e biorresíduos — e a qualquer tipologia de habitação e de viatura.
+              {t('at.sizes.sub.1')}<br />{t('at.sizes.sub.2')}
             </p>
           </div>
           <div className="at-sizes-grid">
             {AT_SIZES.map((size) => (
               <div key={size.label} className="at-sizes-item">
                 <div className="at-sizes-img-wrap">
-                  <img src={size.img} alt={`AMBI TWO ${size.label}`} className="at-sizes-img" loading="lazy" />
+                  <img src={size.img} alt={t('at.sizes.alt', { label: t(size.label) })} className="at-sizes-img" loading="lazy" />
                 </div>
-                <p className="at-sizes-label">{size.label}</p>
+                <p className="at-sizes-label">{t(size.label)}</p>
               </div>
             ))}
           </div>
@@ -302,9 +305,9 @@ export default function AmbiTwoTemplate({ product }: Props) {
       </section>
 
       {/* ── Opções ────────────────────────────────────────── */}
-      <section className="at-options-section" aria-label="Opções de personalização">
+      <section className="at-options-section" aria-label={t('at.options.aria')}>
         <div className="at-options-inner">
-          <nav className="at-tabs-nav" role="tablist" aria-label="Categorias de personalização">
+          <nav className="at-tabs-nav" role="tablist" aria-label={t('at.tabs.aria')}>
             {AT_TABS.map((tab) => (
               <button
                 key={tab.key}
@@ -314,7 +317,7 @@ export default function AmbiTwoTemplate({ product }: Props) {
                 className={`at-tab-btn${activeTab === tab.key ? ' at-tab-btn--active' : ''}`}
                 onClick={() => setActiveTab(tab.key)}
               >
-                {tab.label}
+                {t(tab.label)}
               </button>
             ))}
           </nav>
@@ -322,14 +325,14 @@ export default function AmbiTwoTemplate({ product }: Props) {
           <div className="at-tabs-body">
             <div id="at-panel-materiais" role="tabpanel" className={`at-tab-panel${activeTab === 'materiais' ? ' at-tab-panel--active' : ''}`}>
               <ul className="at-mat-list">
-                <li>Corpo em polietileno de alta densidade (PEAD), resistente a uso intensivo</li>
-                <li>Rodas reforçadas para movimentação diária</li>
-                <li>Compatível com sistemas de identificação RFID</li>
+                <li>{t('at.tab.materials.1')}</li>
+                <li>{t('at.tab.materials.2')}</li>
+                <li>{t('at.tab.materials.3')}</li>
               </ul>
             </div>
 
             <div id="at-panel-cores" role="tabpanel" className={`at-tab-panel${activeTab === 'cores' ? ' at-tab-panel--active' : ''}`}>
-              <p className="at-tab-desc">Cores standard disponíveis para o corpo do contentor.</p>
+              <p className="at-tab-desc">{t('at.tab.colors.desc')}</p>
               <div className="at-colors-grid">
                 {ralColors.map((c) => (
                   <div key={c.code} className="at-color-item">
@@ -344,17 +347,17 @@ export default function AmbiTwoTemplate({ product }: Props) {
               <div className="at-feature-grid">
                 <div className="at-feature-grid-item">
                   <div className="at-feature-grid-img-wrap">
-                    <img src={storageUrl('produtos/ambi_2.7/tabs/placa-residuo.svg')} alt="Placa de Resíduo" className="at-feature-grid-img" loading="lazy" />
+                    <img src={storageUrl('produtos/ambi_2.7/tabs/placa-residuo.svg')} alt={t('at.tab.signs.waste')} className="at-feature-grid-img" loading="lazy" />
                   </div>
-                  <p className="at-feature-grid-title">Placa de Resíduo</p>
-                  <p className="at-feature-grid-sub">Área útil para informação</p>
+                  <p className="at-feature-grid-title">{t('at.tab.signs.waste')}</p>
+                  <p className="at-feature-grid-sub">{t('at.tab.signs.sub')}</p>
                 </div>
                 <div className="at-feature-grid-item">
                   <div className="at-feature-grid-img-wrap">
-                    <img src={storageUrl('produtos/ambi_2.7/tabs/placa-entidade.svg')} alt="Placa de Entidade" className="at-feature-grid-img" loading="lazy" />
+                    <img src={storageUrl('produtos/ambi_2.7/tabs/placa-entidade.svg')} alt={t('at.tab.signs.entity')} className="at-feature-grid-img" loading="lazy" />
                   </div>
-                  <p className="at-feature-grid-title">Placa de Entidade</p>
-                  <p className="at-feature-grid-sub">Área útil para informação</p>
+                  <p className="at-feature-grid-title">{t('at.tab.signs.entity')}</p>
+                  <p className="at-feature-grid-sub">{t('at.tab.signs.sub')}</p>
                 </div>
               </div>
             </div>
@@ -362,8 +365,8 @@ export default function AmbiTwoTemplate({ product }: Props) {
             <div id="at-panel-rodas" role="tabpanel" className={`at-tab-panel${activeTab === 'rodas' ? ' at-tab-panel--active' : ''}`}>
               <p className="at-tab-desc">
                 {rodas
-                  ? `Disponível com ${rodas.toLowerCase()} rodas, para facilitar a movimentação e a recolha em qualquer contexto.`
-                  : 'Disponível com 2 rodas, para facilitar a movimentação e a recolha em qualquer contexto.'}
+                  ? t('at.tab.wheels.desc', { wheels: rodas.toLowerCase() })
+                  : t('at.tab.wheels.descDefault')}
               </p>
             </div>
           </div>
@@ -371,7 +374,7 @@ export default function AmbiTwoTemplate({ product }: Props) {
       </section>
 
       {/* ── Vídeo ─────────────────────────────────────────── */}
-      <section className="at-video-section" aria-label={`Vídeo — ${product.name}`}>
+      <section className="at-video-section" aria-label={t('at.video.aria', { name: product.name })}>
         <div className="at-video-wrap">
           <video
             className="at-video"
@@ -385,8 +388,8 @@ export default function AmbiTwoTemplate({ product }: Props) {
             <source src="/assets/video-carga-traseira.mp4" type="video/mp4" />
           </video>
           <div className="at-video-overlay">
-            <span className="at-section-eyebrow">Vídeo</span>
-            <h2 className="at-video-title">Veja o {product.name} em ação</h2>
+            <span className="at-section-eyebrow">{t('at.video.eyebrow')}</span>
+            <h2 className="at-video-title">{t('at.video.title', { name: product.name })}</h2>
           </div>
         </div>
       </section>
@@ -398,10 +401,10 @@ export default function AmbiTwoTemplate({ product }: Props) {
             <div className="at-related-head">
               <span className="at-section-eyebrow">AMBI TWO</span>
               <h2 id="at-related-heading" className="at-related-title">
-                Produtos Semelhantes
+                {t('at.related.title')}
               </h2>
               <p className="at-related-sub">
-                Outras capacidades de recolha porta-a-porta adaptadas <br />às necessidades de cada contexto.
+                {t('at.related.sub.1')}<br />{t('at.related.sub.2')}
               </p>
             </div>
             <ul className="at-related-grid" role="list">
@@ -440,9 +443,9 @@ export default function AmbiTwoTemplate({ product }: Props) {
       <section className="at-faq-section" aria-labelledby="at-faq-heading">
         <div className="at-faq-inner">
           <div className="at-faq-head">
-            <span className="at-section-eyebrow">Perguntas Frequentes</span>
+            <span className="at-section-eyebrow">{t('at.faq.eyebrow')}</span>
             <h2 id="at-faq-heading" className="at-related-title">
-              Dúvidas sobre o {product.name}
+              {t('at.faq.title', { name: product.name })}
             </h2>
           </div>
           <div className="at-faq-list">
@@ -476,13 +479,13 @@ export default function AmbiTwoTemplate({ product }: Props) {
       {/* ── Sistema de Recolha ────────────────────────────── */}
       <section className="at-flow-section" aria-labelledby="at-flow-heading">
         <div className="at-flow-inner">
-          <h2 id="at-flow-heading" className="at-flow-title">Um Sistema para Recolha Seletiva Porta-a-Porta</h2>
+          <h2 id="at-flow-heading" className="at-flow-title">{t('at.flow.title')}</h2>
           <p className="at-flow-sub">
-            Um sistema completo para a recolha domiciliária das várias frações de resíduos,<br />
-            da porta de casa até ao centro de triagem.
+            {t('at.flow.sub.1')}<br />
+            {t('at.flow.sub.2')}
           </p>
           <Link to="/fluxos/porta-a-porta" className="at-flow-badge">
-            Solução de Recolha Seletiva Porta-a-Porta
+            {t('at.flow.badge')}
           </Link>
         </div>
       </section>
@@ -491,13 +494,13 @@ export default function AmbiTwoTemplate({ product }: Props) {
       <section className="at-cta-section" aria-labelledby="at-cta-heading">
         <div className="at-cta-inner">
           <h2 id="at-cta-heading" className="at-cta-title">
-            Apresente o seu projeto. <br />Os nossos especialistas <br />encontram a solução certa.
+            {t('at.cta.title.1')}<br />{t('at.cta.title.2')}<br />{t('at.cta.title.3')}
           </h2>
           <p className="at-cta-sub">
-            Partilhe os requisitos do seu município ou condomínio. Desenvolvemos a solução de recolha porta-a-porta mais adequada ao seu contexto.
+            {t('at.cta.sub')}
           </p>
           <Link to="/contactos" className="btn-dark">
-            Falar com um Especialista
+            {t('at.cta.button')}
           </Link>
         </div>
       </section>

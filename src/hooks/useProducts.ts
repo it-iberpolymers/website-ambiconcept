@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import {
   getDocs, query, where,
   limit as fsLimit, orderBy, type QueryConstraint,
@@ -7,6 +7,8 @@ import {
 import { db, siteCollection, siteDoc } from '@/lib/firebase'
 import { categories as localCategories, products as localProducts } from '@/data/local'
 import { toPublicSlug, slugVariants } from '@/lib/categorySlug'
+import { useI18n } from '@/i18n'
+import { localizeProduct, localizeCategory } from '@/i18n/localize'
 import type { Product, ProductCategory } from '@/types'
 
 // When Firebase credentials are missing, db is null — fall back to local static data
@@ -39,7 +41,8 @@ export function useProducts(opts: UseProductsOptions = {}): {
   refetch: () => void
 } {
   const { categorySlug, featured, limit } = opts
-  const [products, setProducts] = useState<Product[]>([])
+  const { lang, tf } = useI18n()
+  const [rawProducts, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(!USE_LOCAL)
   const [error, setError] = useState<string | null>(null)
   const [refreshKey, setRefreshKey] = useState(0)
@@ -84,6 +87,9 @@ export function useProducts(opts: UseProductsOptions = {}): {
     return () => { cancelled = true }
   }, [categorySlug, featured, limit, refreshKey])
 
+  // textos traduzidos para a língua atual (no admin a língua é sempre português)
+  const products = useMemo(() => (lang === 'pt' ? rawProducts : rawProducts.map((p) => localizeProduct(p, tf))), [rawProducts, lang, tf])
+
   return { products, loading, error, refetch }
 }
 
@@ -105,7 +111,8 @@ export function useProduct(slug: string): {
   loading: boolean
   error: string | null
 } {
-  const [product, setProduct] = useState<Product | null>(null)
+  const { lang, tf } = useI18n()
+  const [rawProduct, setProduct] = useState<Product | null>(null)
   const [loading, setLoading] = useState(!USE_LOCAL)
   const [error, setError] = useState<string | null>(null)
 
@@ -137,6 +144,8 @@ export function useProduct(slug: string): {
     return () => { cancelled = true }
   }, [slug])
 
+  const product = useMemo(() => (rawProduct && lang !== 'pt' ? localizeProduct(rawProduct, tf) : rawProduct), [rawProduct, lang, tf])
+
   return { product, loading, error }
 }
 
@@ -144,7 +153,8 @@ export function useProductCategories(): {
   categories: ProductCategory[]
   loading: boolean
 } {
-  const [categories, setCategories] = useState<ProductCategory[]>(USE_LOCAL ? localCategories : [])
+  const { lang, tf } = useI18n()
+  const [rawCategories, setCategories] = useState<ProductCategory[]>(USE_LOCAL ? localCategories : [])
   const [loading, setLoading] = useState(!USE_LOCAL)
 
   useEffect(() => {
@@ -171,6 +181,8 @@ export function useProductCategories(): {
 
     return () => { cancelled = true }
   }, [])
+
+  const categories = useMemo(() => (lang === 'pt' ? rawCategories : rawCategories.map((c) => localizeCategory(c, tf))), [rawCategories, lang, tf])
 
   return { categories, loading }
 }

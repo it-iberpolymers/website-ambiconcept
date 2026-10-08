@@ -1,8 +1,10 @@
-import { Link } from 'react-router-dom'
+import { Link } from '@/i18n/router'
 import { useNews } from '@/hooks/useNews'
+import { useI18n } from '@/i18n'
 import '@/styles/home-premium.css'
 
 export default function NewsSection() {
+  const { t, locale } = useI18n()
   const { articles } = useNews({ limit: 2 })
 
   return (
@@ -14,7 +16,7 @@ export default function NewsSection() {
           id="news-heading"
           className="text-[40px] md:text-[45px] font-semibold uppercase text-[#303f49] leading-none pb-[5px] m-0"
         >
-          Notícias
+          {t('common.news')}
         </h2>
         <p className="text-[31px] md:text-[34px] font-normal text-[#303f49] leading-none pb-[30px] m-0">
           Ambiconcept
@@ -53,7 +55,7 @@ export default function NewsSection() {
                   to={`/noticias/${article.slug}`}
                   className="inline-block text-[12px] font-bold uppercase text-[color:var(--green-text)] hover:text-[#303f49] transition-colors mb-5"
                 >
-                  Ler Mais »
+                  {t('common.readMore')}
                 </Link>
               </div>
 
@@ -63,7 +65,7 @@ export default function NewsSection() {
                   dateTime={article.published_at}
                   className="text-[12px] text-[#6b6b6b] leading-snug"
                 >
-                  {new Date(article.published_at).toLocaleDateString('pt-PT', {
+                  {new Date(article.published_at).toLocaleDateString(locale, {
                     day: 'numeric',
                     month: 'long',
                     year: 'numeric',
@@ -81,7 +83,7 @@ export default function NewsSection() {
             to="/noticias"
             className="btn-outline"
           >
-            Ver Todas
+            {t('common.viewAll')}
           </Link>
         </div>
 

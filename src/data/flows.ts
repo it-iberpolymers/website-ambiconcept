@@ -12,7 +12,8 @@ export interface Flow {
 // negócio que não têm campo próprio (Limpeza Urbana = categoria de slug limpeza-urbana,
 // Porta-a-porta = só a gama AMBI TWO, não o AMBI FOUR).
 function fracoesText(product: Product): string {
-  const spec = product.specifications ?? {}
+  // usa as especificações originais em português: o texto visível pode estar traduzido
+  const spec = product.specifications_pt ?? product.specifications ?? {}
   return String(spec['Frações'] ?? spec['Fluxo'] ?? '')
 }
 

@@ -1,11 +1,14 @@
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
+import { Link } from '@/i18n/router'
 import { useNewsArticle } from '@/hooks/useNews'
 import PageSeo from '@/components/seo/PageSeo'
+import { useI18n } from '@/i18n'
 import '@/styles/page-shell.css'
 
 export default function NewsArticle() {
   const { slug } = useParams<{ slug: string }>()
   const { article, loading } = useNewsArticle(slug ?? '')
+  const { t, locale } = useI18n()
 
   if (loading) {
     return (
@@ -25,13 +28,13 @@ export default function NewsArticle() {
     return (
       <div className="ps-page flex flex-col items-center justify-center text-center px-5">
         <p className="text-6xl font-black text-[#eaeaea] mb-4">404</p>
-        <h1 className="text-2xl font-semibold text-[#303f49] mb-2">Artigo não encontrado</h1>
-        <p className="text-[#6b6b6b] mb-8">O artigo que procura não existe ou foi removido.</p>
+        <h1 className="text-2xl font-semibold text-[#303f49] mb-2">{t('news.article.notFoundTitle')}</h1>
+        <p className="text-[#6b6b6b] mb-8">{t('news.article.notFoundText')}</p>
         <Link
           to="/noticias"
           className="btn-outline"
         >
-          Ver todas as notícias
+          {t('news.article.viewAll')}
         </Link>
       </div>
     )
@@ -83,7 +86,7 @@ export default function NewsArticle() {
             <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="15 18 9 12 15 6"/>
             </svg>
-            Notícias
+            {t('common.news')}
           </Link>
 
           <div className="flex items-center gap-3 mb-4">
@@ -91,7 +94,7 @@ export default function NewsArticle() {
               {article.category}
             </span>
             <time dateTime={article.published_at} className="text-[12px] text-white/75">
-              {new Date(article.published_at).toLocaleDateString('pt-PT', {
+              {new Date(article.published_at).toLocaleDateString(locale, {
                 day: 'numeric', month: 'long', year: 'numeric',
               })}
             </time>
@@ -134,7 +137,7 @@ export default function NewsArticle() {
             to="/noticias"
             className="btn-outline"
           >
-            ← Ver todas as notícias
+            {t('news.article.viewAllBack')}
           </Link>
         </div>
        </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { NavLink, Outlet, Link, Navigate } from 'react-router-dom'
+import { I18nProvider } from '@/i18n'
 import { useAuth } from '@/hooks/useAuth'
 
 function IconGrid() {
@@ -190,7 +191,10 @@ export default function AdminLayout() {
 
         {/* Content */}
         <main className="flex-1 overflow-y-auto p-6">
-          <Outlet />
+          {/* o painel de administração fica sempre em português, para não gravar textos traduzidos */}
+          <I18nProvider forceLang="pt">
+            <Outlet />
+          </I18nProvider>
         </main>
       </div>
     </div>

@@ -1,4 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import { useI18n } from '@/i18n'
+import { localizeHeroSlide } from '@/i18n/localize'
 import { getDocs, query, orderBy, writeBatch } from 'firebase/firestore'
 import { db, siteCollection, siteDoc } from '@/lib/firebase'
 import { heroSlides as localSlides } from '@/data/local'
@@ -7,7 +9,8 @@ import type { HeroSlide } from '@/types'
 const USE_LOCAL = !db
 
 export function useHeroSlides(): { slides: HeroSlide[]; loading: boolean; error: string | null } {
-  const [slides, setSlides] = useState<HeroSlide[]>(USE_LOCAL ? localSlides : [])
+  const { lang, tf } = useI18n()
+  const [rawSlides, setSlides] = useState<HeroSlide[]>(USE_LOCAL ? localSlides : [])
   const [loading, setLoading] = useState(!USE_LOCAL)
   const [error, setError] = useState<string | null>(null)
 
@@ -33,6 +36,8 @@ export function useHeroSlides(): { slides: HeroSlide[]; loading: boolean; error:
 
     return () => { cancelled = true }
   }, [])
+
+  const slides = useMemo(() => (lang === 'pt' ? rawSlides : rawSlides.map((s) => localizeHeroSlide(s, tf))), [rawSlides, lang, tf])
 
   return { slides, loading, error }
 }

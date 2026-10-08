@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from '@/i18n/router'
 import type { Product } from '@/types'
-import { getCategoryContent } from '@/data/categories-content'
 import { storageUrl } from '@/data/local'
+import { useI18n } from '@/i18n'
+import { useCategoryContent } from '@/hooks/useCategoryContent'
 import { useProducts } from '@/hooks/useProducts'
 import { useRalColors } from '@/hooks/useRalColors'
 import { useCategoryHighlights } from '@/hooks/useCategoryHighlights'
@@ -14,51 +15,53 @@ interface Props {
   product: Product
 }
 
+// `label` guarda a chave i18n; t() é chamado ao desenhar
 const PP_TABS = [
-  { key: 'materiais',  label: 'Materiais' },
-  { key: 'cores',      label: 'Cores' },
-  { key: 'decoracao',  label: 'Decoração' },
-  { key: 'sinaletica', label: 'Sinalética' },
+  { key: 'materiais',  label: 'pp.tab.materiais' },
+  { key: 'cores',      label: 'pp.tab.cores' },
+  { key: 'decoracao',  label: 'pp.tab.decoracao' },
+  { key: 'sinaletica', label: 'pp.tab.sinaletica' },
 ]
 
 const CUSTOM_ITEMS: Record<string, { label: string; img: string }[]> = {
-  'ambi-urban': [{ label: 'Fixação', img: storageUrl('produtos/ambi_urban/personalizacao/fixacao.png') }],
-  'ambi-beach': [{ label: 'Ancoragem', img: storageUrl('produtos/ambi_beach/personalizacao/ancoragem.png') }],
+  'ambi-urban': [{ label: 'pp.custom.fixacao', img: storageUrl('produtos/ambi_urban/personalizacao/fixacao.png') }],
+  'ambi-beach': [{ label: 'pp.custom.ancoragem', img: storageUrl('produtos/ambi_beach/personalizacao/ancoragem.png') }],
 }
-const CUSTOM_ITEMS_DEFAULT = [{ label: 'Fixação', img: storageUrl('produtos/ambi_urban/personalizacao/fixacao.png') }]
+const CUSTOM_ITEMS_DEFAULT = [{ label: 'pp.custom.fixacao', img: storageUrl('produtos/ambi_urban/personalizacao/fixacao.png') }]
 
 // TODO: substituir os placeholders (AMBI2.7-*) quando houver assets próprios para os restantes produtos
 const DECOR_ITEMS: Record<string, { label: string; img: string }[]> = {
   'ambi-urban': [
-    { label: 'Decoração de Frente', img: storageUrl('produtos/ambi_urban/tabs/decor-frente.svg') },
-    { label: 'Decoração Lateral', img: storageUrl('produtos/ambi_urban/tabs/decor-lateral.svg') },
+    { label: 'pp.decor.frente', img: storageUrl('produtos/ambi_urban/tabs/decor-frente.svg') },
+    { label: 'pp.decor.lateral', img: storageUrl('produtos/ambi_urban/tabs/decor-lateral.svg') },
   ],
   'ambi-beach': [
-    { label: 'Decoração de Frente', img: storageUrl('produtos/ambi_beach/tabs/decor-frente.svg') },
-    { label: 'Decoração Lateral', img: storageUrl('produtos/ambi_beach/tabs/decor-lateral.svg') },
+    { label: 'pp.decor.frente', img: storageUrl('produtos/ambi_beach/tabs/decor-frente.svg') },
+    { label: 'pp.decor.lateral', img: storageUrl('produtos/ambi_beach/tabs/decor-lateral.svg') },
   ],
 }
 const DECOR_ITEMS_DEFAULT = [
-  { label: 'Decoração de Frente', img: '/assets/AMBI2.7-decor-frentes.svg' },
-  { label: 'Decoração de Laterais', img: '/assets/AMBI2.7-decor-laterais.svg' },
+  { label: 'pp.decor.frente', img: '/assets/AMBI2.7-decor-frentes.svg' },
+  { label: 'pp.decor.laterais', img: '/assets/AMBI2.7-decor-laterais.svg' },
 ]
 
 const SINAL_ITEMS: Record<string, { label: string; sub: string; img: string }[]> = {
   'ambi-urban': [
-    { label: 'Sinalética', sub: 'Área útil para informação', img: storageUrl('produtos/ambi_urban/tabs/sinaletica-frente.svg') },
+    { label: 'pp.sinal.label', sub: 'pp.sinal.sub', img: storageUrl('produtos/ambi_urban/tabs/sinaletica-frente.svg') },
   ],
   'ambi-beach': [
-    { label: 'Sinalética', sub: 'Área útil para informação', img: storageUrl('produtos/ambi_beach/tabs/sinaletica-frente.svg') },
+    { label: 'pp.sinal.label', sub: 'pp.sinal.sub', img: storageUrl('produtos/ambi_beach/tabs/sinaletica-frente.svg') },
   ],
 }
 const SINAL_ITEMS_DEFAULT = [
-  { label: 'Placa de Resíduo', sub: 'Área útil para informação', img: '/assets/AMBI2.7-placa-residuo.svg' },
-  { label: 'Placa de Entidade', sub: 'Área útil para informação', img: '/assets/AMBI2.7-placa-entidade.svg' },
+  { label: 'pp.sinal.placaResiduo', sub: 'pp.sinal.sub', img: '/assets/AMBI2.7-placa-residuo.svg' },
+  { label: 'pp.sinal.placaEntidade', sub: 'pp.sinal.sub', img: '/assets/AMBI2.7-placa-entidade.svg' },
 ]
 
 export default function PapeleirasTemplate({ product }: Props) {
+  const { t, tf } = useI18n()
   const [slideIndex, setSlideIndex] = useState(0)
-  const content = getCategoryContent('limpeza-urbana')!
+  const content = useCategoryContent('limpeza-urbana')!
   const { colors: ralColors } = useRalColors('limpeza-urbana')
   const { intro: categoryIntro, highlights: categoryHighlights } = useCategoryHighlights('limpeza-urbana')
   const { products: relatedRaw } = useProducts({ categorySlug: 'limpeza-urbana' })
@@ -71,40 +74,41 @@ export default function PapeleirasTemplate({ product }: Props) {
   const spec = product.specifications
   const capacity = spec.capacity ?? (spec['Capacidade'] as string | undefined)
   const fixacao = (spec['Fixação'] as string | undefined)
+  const name = product.name
   const introText = capacity
-    ? `A ${product.name} foi desenvolvida para uso intensivo em espaço público, com capacidade de ${capacity}. Estrutura robusta, com opções de fixação a poste, mural ou solo, adaptada a qualquer contexto urbano.`
+    ? t('pp.intro.withCapacity', { name, capacity })
     : categoryIntro
 
   const PP_FAQS = [
     {
-      q: `Qual a capacidade da ${product.name}?`,
+      q: t('pp.faq.capacity.q', { name }),
       a: capacity
-        ? `A ${product.name} tem capacidade de ${capacity}.`
-        : `A ${product.name} está disponível em diferentes capacidades, adequadas a espaço público de alta frequência de uso.`,
+        ? t('pp.faq.capacity.a.with', { name, capacity })
+        : t('pp.faq.capacity.a.without', { name }),
     },
     fixacao && {
-      q: `Que opções de fixação tem a ${product.name}?`,
-      a: `A ${product.name} pode ser fixada a ${fixacao}, adaptando-se ao contexto urbano onde vai ser instalada.`,
+      q: t('pp.faq.fixacao.q', { name }),
+      a: t('pp.faq.fixacao.a', { name, fixacao }),
     },
     {
-      q: `Que materiais compõem a ${product.name}?`,
-      a: `O corpo da ${product.name} é fabricado em aço resistente a uso intensivo, com interior amovível que facilita o esvaziamento e a manutenção higiénica.`,
+      q: t('pp.faq.materials.q', { name }),
+      a: t('pp.faq.materials.a', { name }),
     },
     {
-      q: `É possível personalizar a cor e o logótipo da ${product.name}?`,
-      a: `Sim. A ${product.name} pode ser configurada com cores RAL personalizadas e logótipo do município ou entidade.`,
+      q: t('pp.faq.custom.q', { name }),
+      a: t('pp.faq.custom.a', { name }),
     },
     {
-      q: `Como posso pedir um orçamento ou ficha técnica da ${product.name}?`,
-      a: 'Contacte a nossa equipa através da página de contactos, indicando a quantidade pretendida e o contexto de instalação — preparamos uma proposta e ficha técnica adaptadas ao seu projeto.',
+      q: t('pp.faq.quote.q', { name }),
+      a: t('pp.faq.quote.a'),
     },
   ].filter(Boolean) as { q: string; a: string }[]
 
   const specProperties = [
-    capacity && { '@type': 'PropertyValue', name: 'Capacidade', value: capacity },
-    fixacao && { '@type': 'PropertyValue', name: 'Fixação', value: fixacao },
-    spec.materials?.length && { '@type': 'PropertyValue', name: 'Materiais', value: spec.materials.join(', ') },
-    spec.colors?.length && { '@type': 'PropertyValue', name: 'Cores', value: spec.colors.join(', ') },
+    capacity && { '@type': 'PropertyValue', name: tf('spec.label.Capacidade', 'Capacidade'), value: capacity },
+    fixacao && { '@type': 'PropertyValue', name: tf('spec.label.Fixação', 'Fixação'), value: fixacao },
+    spec.materials?.length && { '@type': 'PropertyValue', name: t('pp.tab.materiais'), value: spec.materials.join(', ') },
+    spec.colors?.length && { '@type': 'PropertyValue', name: t('pp.tab.cores'), value: spec.colors.join(', ') },
   ].filter(Boolean)
 
   useEffect(() => {
@@ -126,7 +130,7 @@ export default function PapeleirasTemplate({ product }: Props) {
   return (
     <div className="min-h-screen bg-white">
       <PageSeo
-        title={`${product.name} — Limpeza Urbana`}
+        title={t('pp.seo.title', { name })}
         description={product.short_description ?? product.description}
         path={`/produtos/limpeza-urbana/${product.slug}`}
         ogImage={product.cover_image}
@@ -140,15 +144,15 @@ export default function PapeleirasTemplate({ product }: Props) {
               image: product.hero_images.map((img) => `https://www.ambiconcept.pt${img}`),
               manufacturer: { '@type': 'Organization', name: 'Ambiconcept' },
               brand: { '@type': 'Brand', name: 'Ambiconcept' },
-              category: 'Limpeza Urbana',
+              category: t('pp.category'),
               ...(specProperties.length > 0 && { additionalProperty: specProperties }),
             },
             {
               '@type': 'BreadcrumbList',
               itemListElement: [
-                { '@type': 'ListItem', position: 1, name: 'Início', item: 'https://www.ambiconcept.pt/' },
-                { '@type': 'ListItem', position: 2, name: 'Produtos', item: 'https://www.ambiconcept.pt/produtos' },
-                { '@type': 'ListItem', position: 3, name: 'Limpeza Urbana', item: 'https://www.ambiconcept.pt/categorias/limpeza-urbana' },
+                { '@type': 'ListItem', position: 1, name: t('common.home'), item: 'https://www.ambiconcept.pt/' },
+                { '@type': 'ListItem', position: 2, name: t('common.products'), item: 'https://www.ambiconcept.pt/produtos' },
+                { '@type': 'ListItem', position: 3, name: t('pp.category'), item: 'https://www.ambiconcept.pt/categorias/limpeza-urbana' },
                 { '@type': 'ListItem', position: 4, name: product.name, item: `https://www.ambiconcept.pt/produtos/limpeza-urbana/${product.slug}` },
               ],
             },
@@ -169,12 +173,12 @@ export default function PapeleirasTemplate({ product }: Props) {
         <div className="pp-showcase-inner">
 
           <div className="pp-showcase-head">
-            <nav aria-label="Localização" className="pp-breadcrumb">
-              <Link to="/">Início</Link>
+            <nav aria-label={t('pp.breadcrumb.aria')} className="pp-breadcrumb">
+              <Link to="/">{t('common.home')}</Link>
               <span aria-hidden="true">/</span>
-              <Link to="/produtos">Produtos</Link>
+              <Link to="/produtos">{t('common.products')}</Link>
               <span aria-hidden="true">/</span>
-              <Link to="/categorias/limpeza-urbana">Limpeza Urbana</Link>
+              <Link to="/categorias/limpeza-urbana">{t('pp.category')}</Link>
               <span aria-hidden="true">/</span>
               <span>{product.name}</span>
             </nav>
@@ -202,21 +206,21 @@ export default function PapeleirasTemplate({ product }: Props) {
                   <img
                     key={img}
                     src={img}
-                    alt={`${product.name} — variante ${i + 1}`}
+                    alt={t('pp.carousel.alt', { name, n: i + 1 })}
                     className={`pp-slide${slideIndex === i ? ' pp-slide--active' : ''}`}
                     loading={i === 0 ? 'eager' : 'lazy'}
                   />
                 ))}
               </div>
               {product.hero_images.length > 1 && (
-                <div className="pp-carousel-dots" aria-label="Selecionar variante">
+                <div className="pp-carousel-dots" aria-label={t('pp.carousel.select')}>
                   {product.hero_images.map((_, i) => (
                     <button
                       key={i}
                       type="button"
                       onClick={() => setSlideIndex(i)}
                       className={`pp-dot${slideIndex === i ? ' pp-dot--active' : ''}`}
-                      aria-label={`Variante ${i + 1}`}
+                      aria-label={t('pp.carousel.variant', { n: i + 1 })}
                     />
                   ))}
                 </div>
@@ -247,15 +251,15 @@ export default function PapeleirasTemplate({ product }: Props) {
       </section>
 
       {/* ── Personalização ────────────────────────────────── */}
-      <section className="pp-custom-section" aria-label="Personalização">
+      <section className="pp-custom-section" aria-label={t('pp.custom.aria')}>
         <div className="pp-custom-inner">
           <div className="pp-custom-grid">
             {customItems.map((item) => (
               <div key={item.label} className="pp-custom-item">
                 <div className="pp-custom-img-wrap">
-                  <img src={item.img} alt={item.label} className="pp-custom-img" loading="lazy" />
+                  <img src={item.img} alt={t(item.label)} className="pp-custom-img" loading="lazy" />
                 </div>
-                <p className="pp-custom-label">{item.label}</p>
+                <p className="pp-custom-label">{t(item.label)}</p>
               </div>
             ))}
           </div>
@@ -263,9 +267,9 @@ export default function PapeleirasTemplate({ product }: Props) {
       </section>
 
       {/* ── Opções ────────────────────────────────────────── */}
-      <section className="pp-options-section" aria-label="Opções de personalização">
+      <section className="pp-options-section" aria-label={t('pp.options.aria')}>
         <div className="pp-options-inner">
-          <nav className="pp-tabs-nav" role="tablist" aria-label="Categorias de personalização">
+          <nav className="pp-tabs-nav" role="tablist" aria-label={t('pp.tabs.aria')}>
             {PP_TABS.map((tab) => (
               <button
                 key={tab.key}
@@ -275,7 +279,7 @@ export default function PapeleirasTemplate({ product }: Props) {
                 className={`pp-tab-btn${activeTab === tab.key ? ' pp-tab-btn--active' : ''}`}
                 onClick={() => setActiveTab(tab.key)}
               >
-                {tab.label}
+                {t(tab.label)}
               </button>
             ))}
           </nav>
@@ -283,14 +287,14 @@ export default function PapeleirasTemplate({ product }: Props) {
           <div className="pp-tabs-body">
             <div id="pp-panel-materiais" role="tabpanel" className={`pp-tab-panel${activeTab === 'materiais' ? ' pp-tab-panel--active' : ''}`}>
               <ul className="pp-mat-list">
-                <li>Estrutura em aço pintado, resistente a uso intensivo</li>
-                <li>Interior amovível em PEAD, facilita o esvaziamento e a limpeza</li>
-                <li>Versão costeira em aço inox com tratamento anticorrosão salino</li>
+                <li>{t('pp.mat.0')}</li>
+                <li>{t('pp.mat.1')}</li>
+                <li>{t('pp.mat.2')}</li>
               </ul>
             </div>
 
             <div id="pp-panel-cores" role="tabpanel" className={`pp-tab-panel${activeTab === 'cores' ? ' pp-tab-panel--active' : ''}`}>
-              <p className="pp-tab-desc">Cores standard disponíveis para a tampa do equipamento.</p>
+              <p className="pp-tab-desc">{t('pp.cores.desc')}</p>
               <div className="pp-colors-grid">
                 {ralColors.map((c) => (
                   <div key={c.code} className="pp-color-item">
@@ -306,10 +310,10 @@ export default function PapeleirasTemplate({ product }: Props) {
                 {decorItems.map((item) => (
                   <div key={item.label} className="pp-feature-grid-item">
                     <div className="pp-feature-grid-img-wrap">
-                      <img src={item.img} alt={item.label} className="pp-feature-grid-img" loading="lazy" />
+                      <img src={item.img} alt={t(item.label)} className="pp-feature-grid-img" loading="lazy" />
                     </div>
-                    <p className="pp-feature-grid-title">{item.label}</p>
-                    <p className="pp-feature-grid-sub">Área útil para personalização</p>
+                    <p className="pp-feature-grid-title">{t(item.label)}</p>
+                    <p className="pp-feature-grid-sub">{t('pp.decor.sub')}</p>
                   </div>
                 ))}
               </div>
@@ -320,10 +324,10 @@ export default function PapeleirasTemplate({ product }: Props) {
                 {sinalItems.map((item) => (
                   <div key={item.label} className="pp-feature-grid-item">
                     <div className="pp-feature-grid-img-wrap">
-                      <img src={item.img} alt={item.label} className="pp-feature-grid-img" loading="lazy" />
+                      <img src={item.img} alt={t(item.label)} className="pp-feature-grid-img" loading="lazy" />
                     </div>
-                    <p className="pp-feature-grid-title">{item.label}</p>
-                    <p className="pp-feature-grid-sub">{item.sub}</p>
+                    <p className="pp-feature-grid-title">{t(item.label)}</p>
+                    <p className="pp-feature-grid-sub">{t(item.sub)}</p>
                   </div>
                 ))}
               </div>
@@ -334,7 +338,7 @@ export default function PapeleirasTemplate({ product }: Props) {
       </section>
 
       {/* ── Vídeo ─────────────────────────────────────────── */}
-      <section className="pp-video-section" aria-label={`Vídeo — ${product.name}`}>
+      <section className="pp-video-section" aria-label={t('pp.video.aria', { name })}>
         <div className="pp-video-wrap">
           <video
             className="pp-video"
@@ -348,8 +352,8 @@ export default function PapeleirasTemplate({ product }: Props) {
             <source src="/assets/video-papeleiras.mp4" type="video/mp4" />
           </video>
           <div className="pp-video-overlay">
-            <span className="pp-section-eyebrow">Vídeo</span>
-            <h2 className="pp-video-title">Veja a {product.name} em ação</h2>
+            <span className="pp-section-eyebrow">{t('pp.video.eyebrow')}</span>
+            <h2 className="pp-video-title">{t('pp.video.title', { name })}</h2>
           </div>
         </div>
       </section>
@@ -359,12 +363,12 @@ export default function PapeleirasTemplate({ product }: Props) {
         <section className="pp-related-section" aria-labelledby="pp-related-heading">
           <div className="pp-related-inner">
             <div className="pp-related-head">
-              <span className="pp-section-eyebrow">Limpeza Urbana</span>
+              <span className="pp-section-eyebrow">{t('pp.category')}</span>
               <h2 id="pp-related-heading" className="pp-related-title">
-                Produtos Semelhantes
+                {t('pp.related.title')}
               </h2>
               <p className="pp-related-sub">
-                Outras soluções de mobiliário urbano adaptadas <br />às necessidades de cada município.
+                {t('pp.related.sub.1')}{' '}<br />{t('pp.related.sub.2')}
               </p>
             </div>
             <ul className="pp-related-grid" role="list">
@@ -403,9 +407,9 @@ export default function PapeleirasTemplate({ product }: Props) {
       <section className="pp-faq-section" aria-labelledby="pp-faq-heading">
         <div className="pp-faq-inner">
           <div className="pp-faq-head">
-            <span className="pp-section-eyebrow">Perguntas Frequentes</span>
+            <span className="pp-section-eyebrow">{t('pp.faq.eyebrow')}</span>
             <h2 id="pp-faq-heading" className="pp-related-title">
-              Dúvidas sobre a {product.name}
+              {t('pp.faq.title', { name })}
             </h2>
           </div>
           <div className="pp-faq-list">
@@ -440,13 +444,13 @@ export default function PapeleirasTemplate({ product }: Props) {
       <section className="pp-cta-section" aria-labelledby="pp-cta-heading">
         <div className="pp-cta-inner">
           <h2 id="pp-cta-heading" className="pp-cta-title">
-            Apresente o seu projeto. <br />Os nossos especialistas <br />encontram a solução certa.
+            {t('pp.cta.title.1')} <br />{t('pp.cta.title.2')} <br />{t('pp.cta.title.3')}
           </h2>
           <p className="pp-cta-sub">
-            Partilhe os requisitos do seu município. Desenvolvemos a solução de mobiliário urbano mais adequada ao seu contexto.
+            {t('pp.cta.sub')}
           </p>
           <Link to="/contactos" className="btn-dark">
-            Falar com um Especialista
+            {t('pp.cta.button')}
           </Link>
         </div>
       </section>

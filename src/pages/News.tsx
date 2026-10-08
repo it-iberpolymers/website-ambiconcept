@@ -1,32 +1,34 @@
-import { Link } from 'react-router-dom'
+import { Link } from '@/i18n/router'
 import { useNews } from '@/hooks/useNews'
 import PageSeo from '@/components/seo/PageSeo'
+import { useI18n } from '@/i18n'
 import '@/styles/page-shell.css'
 
 export default function News() {
   const { articles, loading, error } = useNews()
+  const { t, locale } = useI18n()
 
   return (
     <div className="ps-page">
 
       <PageSeo
-        title="Notícias — Gestão de Resíduos e Economia Circular"
-        description="Artigos sobre sustentabilidade, economia circular e gestão de resíduos urbanos. Perspetivas e novidades da Ambiconcept Waste Solutions."
+        title={t('news.seo.title')}
+        description={t('news.seo.description')}
         path="/noticias"
       />
 
       {/* Cabeçalho */}
       <div className="ps-hero">
         <div className="max-w-[1140px] mx-auto px-5 relative z-[1]">
-          <nav aria-label="Localização" className="flex items-center gap-2 text-[12px] text-white/75 mb-6">
-            <Link to="/" className="hover:text-[#95d855] transition-colors">Início</Link>
+          <nav aria-label={t('news.breadcrumb')} className="flex items-center gap-2 text-[12px] text-white/75 mb-6">
+            <Link to="/" className="hover:text-[#95d855] transition-colors">{t('common.home')}</Link>
             <span aria-hidden="true">/</span>
-            <span className="text-white/75">Notícias</span>
+            <span className="text-white/75">{t('common.news')}</span>
           </nav>
-          <p className="text-[12px] font-semibold tracking-[0.14em] uppercase text-[#95d855] mb-3">Atualidade</p>
-          <h1 className="text-[40px] md:text-[56px] font-bold tracking-[-0.03em] text-white leading-none">Notícias</h1>
+          <p className="text-[12px] font-semibold tracking-[0.14em] uppercase text-[#95d855] mb-3">{t('news.eyebrow')}</p>
+          <h1 className="text-[40px] md:text-[56px] font-bold tracking-[-0.03em] text-white leading-none">{t('common.news')}</h1>
           <p className="mt-5 text-[#b4c7b8] max-w-xl text-[15px] leading-relaxed">
-            Acompanhe as novidades sobre sustentabilidade, economia circular e gestão de resíduos.
+            {t('news.intro')}
           </p>
         </div>
         <svg className="ps-hero-wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
@@ -42,9 +44,9 @@ export default function News() {
             ))}
           </div>
         ) : error ? (
-          <p className="text-[#cc3b2d] text-sm py-8">Erro ao carregar notícias. Por favor recarregue a página.</p>
+          <p className="text-[#cc3b2d] text-sm py-8">{t('news.error')}</p>
         ) : articles.length === 0 ? (
-          <p className="text-[#6b6b6b] text-sm py-12 text-center">Nenhuma notícia publicada ainda.</p>
+          <p className="text-[#6b6b6b] text-sm py-12 text-center">{t('news.empty')}</p>
         ) : (
           <ul className="grid md:grid-cols-2 gap-[25px]" role="list">
             {articles.map((article) => (
@@ -94,14 +96,14 @@ export default function News() {
                       to={`/noticias/${article.slug}`}
                       className="inline-block text-[12px] font-bold uppercase text-[color:var(--green-text)] hover:text-[#303f49] transition-colors mb-5"
                     >
-                      Ler Mais »
+                      {t('common.readMore')}
                     </Link>
                   </div>
 
                   {/* Rodapé com data */}
                   <div className="mt-auto border-t border-[#eaeaea] px-[30px] py-[15px]">
                     <time dateTime={article.published_at} className="text-[12px] text-[#6b6b6b] leading-snug">
-                      {new Date(article.published_at).toLocaleDateString('pt-PT', {
+                      {new Date(article.published_at).toLocaleDateString(locale, {
                         day: 'numeric', month: 'long', year: 'numeric',
                       })}
                     </time>

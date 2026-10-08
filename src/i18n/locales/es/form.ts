@@ -1,0 +1,21 @@
+// Formulario de contacto
+export default {
+  'form.success.title': '¡Mensaje enviado!',
+  'form.success.text': 'Nos pondremos en contacto con usted en breve.',
+  'form.error': 'Se ha producido un error al enviar el mensaje. Por favor, inténtelo de nuevo.',
+  'form.name': 'Nombre',
+  'form.company': 'Empresa',
+  'form.email': 'Correo electrónico',
+  'form.phone': 'Teléfono',
+  'form.subject': 'Asunto',
+  'form.subject.placeholder': 'Seleccionar asunto...',
+  'form.subject.briefing': 'Compartir Briefing',
+  'form.subject.other': 'Otros Asuntos',
+  'form.message': 'Mensaje',
+  'form.privacy.label': 'Política de Privacidad',
+  'form.privacy.before': 'Declaro que he leído y acepto la',
+  'form.privacy.link': 'Política de Privacidad',
+  'form.privacy.after': 'de Ambiconcept – Waste Solutions.',
+  'form.submit': 'Enviar',
+  'form.sending': 'Enviando…',
+} as Record<string, string>

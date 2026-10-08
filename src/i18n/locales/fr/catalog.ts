@@ -1,0 +1,23 @@
+// Catalogue de produits (/produtos)
+export default {
+  'catalog.seo.categoryTitle': '{{name}} — Produits | Ambiconcept',
+  'catalog.seo.categoryDescription': '{{description}} Découvrez tous les modèles disponibles.',
+  'catalog.seo.title': 'Produits — Catalogue complet | Ambiconcept',
+  'catalog.seo.description': 'Catalogue complet des conteneurs et points d’apport volontaire Ambiconcept pour les communes et les opérateurs de collecte des déchets. Chargement vertical, chargement arrière, porte-à-porte, Smart Box et plus encore.',
+  'catalog.breadcrumb': 'Fil d’Ariane',
+  'catalog.eyebrow': 'Catalogue',
+  'catalog.hero.line1': 'Plus de variété, plus de personnalisation, plus de solutions',
+  'catalog.hero.line2': 'pour la gestion des déchets municipaux.',
+  'catalog.categories': 'Catégories',
+  'catalog.filterByCategory': 'Filtrer par catégorie',
+  'catalog.filterByFlow': 'Filtrer par flux de déchets',
+  'catalog.all': 'Toutes',
+  'catalog.count.one': '{{n}} produit',
+  'catalog.count.other': '{{n}} produits',
+  'catalog.empty': 'Aucun produit trouvé pour ces filtres.',
+  'catalog.flow.vidro': 'Verre',
+  'catalog.flow.biorresiduos': 'Biodéchets',
+  'catalog.flow.limpeza-urbana': 'Propreté urbaine',
+  'catalog.flow.porta-a-porta': 'Porte-à-porte',
+  'catalog.flow.oleos-alimentares-usados': 'Huiles alimentaires usagées',
+} as Record<string, string>
