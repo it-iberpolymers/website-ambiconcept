@@ -3,6 +3,7 @@ import { useNews, createArticle, updateArticle, deleteArticle } from '@/hooks/us
 import type { NewsArticle } from '@/types'
 import Modal from '@/components/ui/Modal'
 import FirebaseNotice from '../FirebaseNotice'
+import { StatusBadge, ToggleButton } from '../ActiveControls'
 
 const inputClass = 'w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#7ab929]/40 focus:border-[#7ab929] transition-colors'
 const labelClass = 'block text-[12px] font-semibold uppercase tracking-wide text-gray-400 mb-1'
@@ -44,7 +45,7 @@ function toFormState(article: NewsArticle | null): FormState {
 }
 
 export default function AdminNoticias() {
-  const { articles, loading, refetch } = useNews()
+  const { articles, loading, refetch } = useNews({ includeInactive: true })
   const [modalOpen, setModalOpen] = useState(false)
   const [editing, setEditing] = useState<NewsArticle | null>(null)
   const [form, setForm] = useState<FormState>(toFormState(null))
@@ -94,6 +95,15 @@ export default function AdminNoticias() {
     }
   }
 
+  async function handleToggle(article: NewsArticle) {
+    try {
+      await updateArticle(article.id, { active: article.active === false })
+      refetch()
+    } catch (err) {
+      alert('Erro ao alterar: ' + err)
+    }
+  }
+
   async function handleDelete(article: NewsArticle) {
     if (!window.confirm(`Eliminar "${article.title}"?`)) return
     await deleteArticle(article.id)
@@ -127,12 +137,13 @@ export default function AdminNoticias() {
               <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Título</th>
               <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Categoria</th>
               <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Data</th>
+              <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Estado</th>
               <th className="px-5 py-3" />
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-50">
             {loading ? (
-              <tr><td colSpan={4} className="px-5 py-8 text-center text-gray-400">A carregar…</td></tr>
+              <tr><td colSpan={5} className="px-5 py-8 text-center text-gray-400">A carregar…</td></tr>
             ) : articles.map(article => (
               <tr key={article.id} className="hover:bg-gray-50/60 transition-colors">
                 <td className="px-5 py-4 max-w-[240px]">
@@ -143,7 +154,9 @@ export default function AdminNoticias() {
                 <td className="px-5 py-4 text-gray-500 whitespace-nowrap">
                   {new Date(article.published_at).toLocaleDateString('pt-PT')}
                 </td>
+                <td className="px-5 py-4"><StatusBadge active={article.active !== false} /></td>
                 <td className="px-5 py-4 text-right whitespace-nowrap">
+                  <span className="mr-4"><ToggleButton active={article.active !== false} onClick={() => handleToggle(article)} /></span>
                   <button
                     onClick={() => openEdit(article)}
                     className="text-xs font-medium text-[color:var(--green-text)] hover:text-[#5d9519] transition-colors mr-4"

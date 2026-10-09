@@ -13,8 +13,8 @@ function StatCard({ label, value, color }: { label: string; value: number | stri
 }
 
 export default function AdminDashboard() {
-  const { articles } = useNews()
-  const { products } = useProducts()
+  const { articles } = useNews({ includeInactive: true })
+  const { products } = useProducts({ includeInactive: true })
   const { stats } = useStats()
   const { contacts } = useContacts()
 

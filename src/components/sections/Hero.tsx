@@ -2,10 +2,9 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link } from '@/i18n/router'
 import { useHeroSlides } from '@/hooks/useHeroSlides'
 import { useI18n } from '@/i18n'
-import { storageUrl } from '@/data/local'
+import { HERO_RENDER, slideOwnImage } from '@/lib/heroSlide'
 import '@/styles/home-premium.css'
 
-const HERO_RENDER = storageUrl('produtos/ambi_2.7/fotos/digital/00_capa.png')
 
 // destaca a expressão (ex.: "sua cidade") no título, como na proposta aprovada; sem a expressão, o título fica como está
 function Title({ text, phrase }: { text: string; phrase: string }) {
@@ -42,6 +41,7 @@ export default function Hero() {
   if (loading || slides.length === 0) return null
 
   const slide = slides[current]
+  const slideImage = slideOwnImage(slide)
 
   return (
     <section aria-label={t('home.hero.label')} className="hp-hero">
@@ -75,10 +75,17 @@ export default function Hero() {
           )}
         </div>
 
-        <div className="hp-hero-art" aria-hidden="true">
-          <img src={HERO_RENDER} alt="" />
-          <span className="hp-hero-tag hp-hero-tag--a">{t('home.hero.tag')}</span>
-          <span className="hp-hero-tag hp-hero-tag--b">EN 840</span>
+        <div className={`hp-hero-art${slideImage ? ' has-photo' : ''}`} aria-hidden="true">
+          {slideImage
+            ? <img key={slide.id} src={slideImage} alt="" className="hp-hero-photo animate-fade-in" />
+            : <img src={HERO_RENDER} alt="" />}
+          {/* etiquetas e círculos são do render do AMBI 2.7; com a imagem de outro slide não fazem sentido */}
+          {!slideImage && (
+            <>
+              <span className="hp-hero-tag hp-hero-tag--a">{t('home.hero.tag')}</span>
+              <span className="hp-hero-tag hp-hero-tag--b">EN 840</span>
+            </>
+          )}
         </div>
       </div>
 

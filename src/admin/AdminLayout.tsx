@@ -84,7 +84,7 @@ function IconX() {
 const navItems = [
   { to: '/admin/dashboard', label: 'Dashboard', Icon: IconGrid },
   { to: '/admin/hero', label: 'Slider Hero', Icon: IconSlider },
-  { to: '/admin/featured', label: 'Banner Destaque', Icon: IconStar },
+  { to: '/admin/featured', label: 'Banners', Icon: IconStar },
   { to: '/admin/noticias', label: 'Notícias', Icon: IconNews },
   { to: '/admin/produtos', label: 'Produtos', Icon: IconBox },
   { to: '/admin/contactos', label: 'Contactos', Icon: IconMail },

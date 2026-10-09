@@ -3,6 +3,7 @@ import AudiencesSection from '@/components/sections/AudiencesSection'
 import IntroSection from '@/components/sections/IntroSection'
 import FlowsSection from '@/components/sections/FlowsSection'
 import ProductsPremiumSection from '@/components/sections/ProductsPremiumSection'
+import FeaturedSection from '@/components/sections/FeaturedSection'
 import StatsSection from '@/components/sections/StatsSection'
 import NewsSection from '@/components/sections/NewsSection'
 import ContactSection from '@/components/sections/ContactSection'
@@ -24,6 +25,7 @@ export default function Home() {
       <IntroSection />
       <FlowsSection />
       <ProductsPremiumSection />
+      <FeaturedSection />
       <StatsSection />
       <NewsSection />
       <ContactSection />

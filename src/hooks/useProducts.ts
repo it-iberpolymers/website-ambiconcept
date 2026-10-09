@@ -32,6 +32,8 @@ interface UseProductsOptions {
   categorySlug?: string
   featured?: boolean
   limit?: number
+  /** só o admin: inclui os produtos retirados do site */
+  includeInactive?: boolean
 }
 
 export function useProducts(opts: UseProductsOptions = {}): {
@@ -40,7 +42,7 @@ export function useProducts(opts: UseProductsOptions = {}): {
   error: string | null
   refetch: () => void
 } {
-  const { categorySlug, featured, limit } = opts
+  const { categorySlug, featured, limit, includeInactive } = opts
   const { lang, tf } = useI18n()
   const [rawProducts, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(!USE_LOCAL)
@@ -52,6 +54,7 @@ export function useProducts(opts: UseProductsOptions = {}): {
     if (USE_LOCAL) {
       let result = [...localProducts].sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
       if (featured) result = result.filter((p) => p.featured)
+      if (!includeInactive) result = result.filter((p) => p.active !== false)
       if (categorySlug) result = result.filter((p) => p.category?.slug === categorySlug)
       if (limit) result = result.slice(0, limit)
       setProducts(result)
@@ -73,6 +76,7 @@ export function useProducts(opts: UseProductsOptions = {}): {
         if (!cancelled) {
           let result = snap.docs
             .map((d) => normalizeProduct({ id: d.id, ...d.data() }))
+            .filter((p) => includeInactive || p.active !== false)
             .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
           if (limit) result = result.slice(0, limit)
           setProducts(result)
@@ -85,7 +89,7 @@ export function useProducts(opts: UseProductsOptions = {}): {
     })()
 
     return () => { cancelled = true }
-  }, [categorySlug, featured, limit, refreshKey])
+  }, [categorySlug, featured, limit, includeInactive, refreshKey])
 
   // textos traduzidos para a língua atual (no admin a língua é sempre português)
   const products = useMemo(() => (lang === 'pt' ? rawProducts : rawProducts.map((p) => localizeProduct(p, tf))), [rawProducts, lang, tf])
@@ -132,7 +136,8 @@ export function useProduct(slug: string): {
           query(siteCollection('products'), where('slug', '==', slug), fsLimit(1))
         )
         if (!cancelled) {
-          setProduct(snap.empty ? null : normalizeProduct({ id: snap.docs[0].id, ...snap.docs[0].data() }))
+          const found = snap.empty ? null : normalizeProduct({ id: snap.docs[0].id, ...snap.docs[0].data() })
+          setProduct(found && found.active !== false ? found : null)
         }
       } catch (e) {
         if (!cancelled) setError(String(e))

@@ -15,6 +15,8 @@ export interface Product {
   anatomy_image_2?: string
   images?: string[]
   featured: boolean
+  /** false = retirado do site sem ser apagado (ausente = ativo) */
+  active?: boolean
   price?: number
   sort_order?: number
   created_at: string
@@ -49,6 +51,8 @@ export interface NewsArticle {
   category: string
   language: 'pt'
   image_url?: string
+  /** false = retirado do site sem ser apagado (ausente = ativo) */
+  active?: boolean
   published_at: string
   created_at: string
 }
@@ -80,6 +84,11 @@ export interface ContactSubmission {
 }
 
 export interface FeaturedBanner {
+  /** id do documento em siteContent ('featured-banner' é o banner original; novos: 'banner-<data>') */
+  id?: string
+  /** false = retirado do site sem ser apagado (ausente = ativo) */
+  active?: boolean
+  created_at?: string
   title: string
   subtitle?: string
   description: string
@@ -96,5 +105,7 @@ export interface HeroSlide {
   subtitle?: string
   cta_label?: string
   cta_url?: string
+  /** false = retirado do site sem ser apagado (ausente = ativo) */
+  active?: boolean
   sort_order: number
 }

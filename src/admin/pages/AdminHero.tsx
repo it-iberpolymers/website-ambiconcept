@@ -1,10 +1,16 @@
 import { useState, useEffect } from 'react'
-import { useHeroSlides, saveHeroSlides } from '@/hooks/useHeroSlides'
+import { useHeroSlides, saveHeroSlides, setSlideActive } from '@/hooks/useHeroSlides'
 import type { HeroSlide } from '@/types'
+import { HERO_RENDER, slideOwnImage } from '@/lib/heroSlide'
 import FirebaseNotice from '../FirebaseNotice'
+import { StatusBadge, ToggleButton } from '../ActiveControls'
+
+// o primeiro slide é o principal: está sempre ativo e não se elimina (o site precisa de pelo menos um)
+const withFirstActive = (list: HeroSlide[]): HeroSlide[] =>
+  list.length > 0 && list[0].active === false ? [{ ...list[0], active: true }, ...list.slice(1)] : list
 
 export default function AdminHero() {
-  const { slides: fetchedSlides, loading } = useHeroSlides()
+  const { slides: fetchedSlides, loading } = useHeroSlides({ includeInactive: true })
   const [slides, setSlides] = useState<HeroSlide[]>([])
   const [originalIds, setOriginalIds] = useState<string[]>([])
   const [saved, setSaved] = useState(false)
@@ -12,13 +18,24 @@ export default function AdminHero() {
 
   useEffect(() => {
     if (!loading) {
-      setSlides(fetchedSlides)
+      setSlides(withFirstActive(fetchedSlides))
       setOriginalIds(fetchedSlides.map(s => s.id))
     }
   }, [loading, fetchedSlides])
 
   function updateSlide(id: string, patch: Partial<HeroSlide>) {
     setSlides(prev => prev.map(s => s.id === id ? { ...s, ...patch } : s))
+  }
+
+  // um slide já guardado muda logo na base de dados; um slide novo só quando se carregar em Guardar
+  async function toggleSlide(slide: HeroSlide) {
+    const active = slide.active === false
+    try {
+      if (originalIds.includes(slide.id)) await setSlideActive(slide.id, active)
+      updateSlide(slide.id, { active })
+    } catch (e) {
+      alert('Erro ao alterar: ' + e)
+    }
   }
 
   function addSlide() {
@@ -38,7 +55,7 @@ export default function AdminHero() {
 
   function removeSlide(id: string) {
     setSlides(prev =>
-      prev.filter(s => s.id !== id).map((s, i) => ({ ...s, sort_order: i + 1 })),
+      prev.filter((s, i) => i === 0 || s.id !== id).map((s, i) => ({ ...s, sort_order: i + 1 })),
     )
   }
 
@@ -49,7 +66,7 @@ export default function AdminHero() {
       if (next < 0 || next >= prev.length) return prev
       const arr = [...prev]
       ;[arr[idx], arr[next]] = [arr[next], arr[idx]]
-      return arr.map((s, i) => ({ ...s, sort_order: i + 1 }))
+      return withFirstActive(arr).map((s, i) => ({ ...s, sort_order: i + 1 }))
     })
   }
 
@@ -108,24 +125,29 @@ export default function AdminHero() {
 
               {/* Miniatura */}
               <div className="shrink-0 w-36 h-24 rounded-xl overflow-hidden bg-gray-100 border border-gray-100">
-                {slide.image_url ? (
-                  <img src={slide.image_url} alt="" className="w-full h-full object-cover" />
+                {slideOwnImage(slide) ? (
+                  <img src={slideOwnImage(slide)} alt="" className="w-full h-full object-cover" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <svg className="h-8 w-8 text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <rect x="3" y="3" width="18" height="18" rx="2"/>
-                      <circle cx="8.5" cy="8.5" r="1.5"/>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="m21 15-5-5L5 21"/>
-                    </svg>
+                  // sem imagem própria o site mostra o render do AMBI 2.7
+                  <div className="w-full h-full flex items-center justify-center bg-[#16241a]">
+                    <img src={HERO_RENDER} alt="" className="h-full object-contain" />
                   </div>
                 )}
               </div>
 
               {/* Campos */}
               <div className="flex-1 grid grid-cols-2 gap-3 min-w-0">
+                <div className="col-span-2 flex items-center justify-between gap-3 flex-wrap">
+                  <StatusBadge active={slide.active !== false} />
+                  {idx === 0 ? (
+                    <span className="text-xs text-gray-400">Slide principal: está sempre ativo (o site precisa de pelo menos um)</span>
+                  ) : (
+                    <ToggleButton active={slide.active !== false} onClick={() => toggleSlide(slide)} />
+                  )}
+                </div>
                 <div className="col-span-2">
                   <label className="block text-[12px] font-semibold uppercase tracking-wide text-gray-400 mb-1">
-                    URL da Imagem
+                    URL da Imagem <span className="normal-case font-normal text-gray-300">(vazio = render do AMBI 2.7)</span>
                   </label>
                   <input
                     type="text"
@@ -212,8 +234,10 @@ export default function AdminHero() {
                 <button
                   type="button"
                   onClick={() => removeSlide(slide.id)}
+                  disabled={idx === 0}
+                  title={idx === 0 ? 'O slide principal não se elimina' : undefined}
                   aria-label="Eliminar slide"
-                  className="p-1.5 rounded-lg text-red-400 hover:text-red-600 hover:bg-red-50 transition-colors mt-2"
+                  className="p-1.5 rounded-lg text-red-400 hover:text-red-600 hover:bg-red-50 disabled:opacity-25 disabled:cursor-not-allowed disabled:hover:bg-transparent transition-colors mt-2"
                 >
                   <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="3 6 5 6 21 6"/>

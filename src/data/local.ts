@@ -8,7 +8,7 @@ export function storageUrl(path: string): string {
 export const heroSlides: HeroSlide[] = [
   {
     id: 'slide-1',
-    image_url: '/assets/hero-ecoponto-ambi-27.webp',
+    image_url: '',
     title: 'A infraestrutura de recolha seletiva que a sua cidade merece.',
     subtitle: 'Equipamento para municípios e operadores RSU. Contentores de carga traseira, carga vertical, porta-a-porta e limpeza urbana. Concebido para resistir ao tempo urbano.',
     cta_label: 'Ver Soluções',

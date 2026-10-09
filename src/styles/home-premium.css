@@ -105,12 +105,21 @@
   border-radius: 50%;
   border: 1px dashed rgba(149,216,85,.2);
 }
+.hp-hero-art.has-photo::before, .hp-hero-art.has-photo::after { display: none; }
 .hp-hero-art img {
   position: relative;
   z-index: 1;
   width: 100%;
   filter: drop-shadow(0 40px 50px rgba(0,0,0,.5));
   animation: hp-float 7s ease-in-out infinite;
+}
+.hp-hero-art img.hp-hero-photo {
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 32px;
+  filter: none;
+  animation: none;
+  box-shadow: 0 30px 60px -30px rgba(0,0,0,.6);
 }
 .hp-hero-tag {
   position: absolute;
@@ -137,7 +146,7 @@
   .hp-hero-tag--a { left: 0; }
   .hp-hero-tag--b { right: 0; }
 }
-@media (prefers-reduced-motion: reduce) { .hp-hero-art img { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .hp-hero-art img { animation: none; } .hp-banner-box { transition: none; } }
 
 /* ── INTRO ────────────────────────────────────────────────── */
 .hp-intro {
@@ -296,6 +305,45 @@
   transition: border-color .2s;
 }
 .hp-aud-cta:hover { border-color: #7AB929; }
+
+/* ── BANNER EM DESTAQUE (admin) ───────────────────────────── */
+.hp-banner {
+  background: #E6ECE4;
+  padding: 0 24px 68px; /* 40px ficam por baixo dos cantos da secção Stats */
+}
+.hp-products:has(+ .hp-banner) { padding-bottom: 28px; }
+.hp-banner-stack { position: relative; display: grid; }
+/* todos os banners ocupam a mesma célula: a altura é a do maior e só o ativo se vê */
+.hp-banner-box {
+  grid-area: 1 / 1;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .7s, visibility .7s;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  border-radius: 32px;
+  background-size: cover;
+  background-position: center;
+}
+.hp-banner-box.is-active { opacity: 1; visibility: visible; }
+.hp-banner-dots { position: absolute; left: 64px; bottom: 28px; display: flex; gap: 10px; z-index: 2; }
+.hp-banner-copy { max-width: 520px; padding: 56px 64px 72px; }
+.hp-banner-eyebrow {
+  font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  color: #95d855; margin-bottom: 12px;
+}
+.hp-banner-copy h2 {
+  font-size: clamp(28px, 4vw, 42px); font-weight: 700; line-height: 1.1;
+  color: #fff; margin-bottom: 16px; text-wrap: balance;
+}
+.hp-banner-text { font-size: 16px; line-height: 1.6; color: rgba(255,255,255,.9); margin-bottom: 28px; }
+@media (max-width: 640px) {
+  .hp-banner { padding: 0 14px 60px; }
+  .hp-banner-box { min-height: 360px; border-radius: 24px; }
+  .hp-banner-copy { padding: 36px 24px 64px; }
+  .hp-banner-dots { left: 24px; }
+}
 
 /* ── PRODUCTS ─────────────────────────────────────────────── */
 .hp-products {

@@ -13,6 +13,8 @@ const USE_LOCAL = !db
 
 interface UseNewsOptions {
   limit?: number
+  /** só o admin: inclui as notícias retiradas do site */
+  includeInactive?: boolean
 }
 
 export function useNews(opts: UseNewsOptions = {}): {
@@ -21,7 +23,7 @@ export function useNews(opts: UseNewsOptions = {}): {
   error: string | null
   refetch: () => void
 } {
-  const { limit } = opts
+  const { limit, includeInactive } = opts
   const { lang, tf } = useI18n()
   const [rawArticles, setArticles] = useState<NewsArticle[]>([])
   const [loading, setLoading] = useState(!USE_LOCAL)
@@ -31,7 +33,7 @@ export function useNews(opts: UseNewsOptions = {}): {
 
   useEffect(() => {
     if (USE_LOCAL) {
-      let result = [...localArticles]
+      let result = localArticles.filter((a) => includeInactive || a.active !== false)
       if (limit) result = result.slice(0, limit)
       setArticles(result)
       return
@@ -44,10 +46,14 @@ export function useNews(opts: UseNewsOptions = {}): {
     ;(async () => {
       try {
         const constraints: QueryConstraint[] = [orderBy('published_at', 'desc')]
-        if (limit) constraints.push(fsLimit(limit))
         const snap = await getDocs(query(siteCollection('news'), ...constraints))
         if (!cancelled) {
-          setArticles(snap.docs.map((d) => ({ id: d.id, ...d.data() } as NewsArticle)))
+          // o limite aplica-se depois de tirar as retiradas, para não ficar curto
+          let result = snap.docs
+            .map((d) => ({ id: d.id, ...d.data() } as NewsArticle))
+            .filter((a) => includeInactive || a.active !== false)
+          if (limit) result = result.slice(0, limit)
+          setArticles(result)
         }
       } catch (e) {
         if (!cancelled) setError(String(e))
@@ -57,7 +63,7 @@ export function useNews(opts: UseNewsOptions = {}): {
     })()
 
     return () => { cancelled = true }
-  }, [limit, refreshKey])
+  }, [limit, includeInactive, refreshKey])
 
   const articles = useMemo(() => (lang === 'pt' ? rawArticles : rawArticles.map((a) => localizeArticle(a, tf))), [rawArticles, lang, tf])
 
@@ -76,7 +82,7 @@ export function useNewsArticle(slug: string): {
 
   useEffect(() => {
     if (USE_LOCAL) {
-      setArticle(localArticles.find((a) => a.slug === slug) ?? null)
+      setArticle(localArticles.find((a) => a.slug === slug && a.active !== false) ?? null)
       return
     }
 
@@ -90,7 +96,8 @@ export function useNewsArticle(slug: string): {
           query(siteCollection('news'), where('slug', '==', slug), fsLimit(1))
         )
         if (!cancelled) {
-          setArticle(snap.empty ? null : ({ id: snap.docs[0].id, ...snap.docs[0].data() } as NewsArticle))
+          const found = snap.empty ? null : ({ id: snap.docs[0].id, ...snap.docs[0].data() } as NewsArticle)
+          setArticle(found && found.active !== false ? found : null)
         }
       } catch (e) {
         if (!cancelled) setError(String(e))

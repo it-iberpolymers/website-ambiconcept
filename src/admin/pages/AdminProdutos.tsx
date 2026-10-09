@@ -3,6 +3,7 @@ import { useProducts, useProductCategories, createProduct, updateProduct, delete
 import type { Product } from '@/types'
 import Modal from '@/components/ui/Modal'
 import FirebaseNotice from '../FirebaseNotice'
+import { StatusBadge, ToggleButton } from '../ActiveControls'
 
 const inputClass = 'w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#7ab929]/40 focus:border-[#7ab929] transition-colors'
 const labelClass = 'block text-[12px] font-semibold uppercase tracking-wide text-gray-400 mb-1'
@@ -53,7 +54,7 @@ function toFormState(product: Product | null): FormState {
 }
 
 export default function AdminProdutos() {
-  const { products, loading, refetch } = useProducts()
+  const { products, loading, refetch } = useProducts({ includeInactive: true })
   const { categories } = useProductCategories()
   const [modalOpen, setModalOpen] = useState(false)
   const [editing, setEditing] = useState<Product | null>(null)
@@ -129,6 +130,15 @@ export default function AdminProdutos() {
     }
   }
 
+  async function handleToggle(product: Product) {
+    try {
+      await updateProduct(product.id, { active: product.active === false })
+      refetch()
+    } catch (err) {
+      alert('Erro ao alterar: ' + err)
+    }
+  }
+
   async function handleDelete(product: Product) {
     if (!window.confirm(`Eliminar "${product.name}"?`)) return
     await deleteProduct(product.id)
@@ -162,12 +172,13 @@ export default function AdminProdutos() {
               <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Produto</th>
               <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Categoria</th>
               <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Destaque</th>
+              <th className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Estado</th>
               <th className="px-5 py-3" />
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-50">
             {loading ? (
-              <tr><td colSpan={4} className="px-5 py-8 text-center text-gray-400">A carregar…</td></tr>
+              <tr><td colSpan={5} className="px-5 py-8 text-center text-gray-400">A carregar…</td></tr>
             ) : products.map(product => (
               <tr key={product.id} className="hover:bg-gray-50/60 transition-colors">
                 <td className="px-5 py-4">
@@ -196,7 +207,9 @@ export default function AdminProdutos() {
                     <span className="text-gray-300 text-xs">—</span>
                   )}
                 </td>
+                <td className="px-5 py-4"><StatusBadge active={product.active !== false} /></td>
                 <td className="px-5 py-4 text-right whitespace-nowrap">
+                  <span className="mr-4"><ToggleButton active={product.active !== false} onClick={() => handleToggle(product)} /></span>
                   <button
                     onClick={() => openEdit(product)}
                     className="text-xs font-medium text-[color:var(--green-text)] hover:text-[#5d9519] transition-colors mr-4"

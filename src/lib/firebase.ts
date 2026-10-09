@@ -1,5 +1,5 @@
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app'
-import { getFirestore, collection, doc, type Firestore, type CollectionReference, type DocumentReference } from 'firebase/firestore'
+import { getFirestore, initializeFirestore, collection, doc, type Firestore, type CollectionReference, type DocumentReference } from 'firebase/firestore'
 import { getAuth, type Auth } from 'firebase/auth'
 
 // Este projeto Firebase é partilhado por várias apps do grupo Iberpolymers
@@ -26,7 +26,13 @@ if (configured) {
     appId: import.meta.env.VITE_FIREBASE_APP_ID,
   }
   const app: FirebaseApp = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp()
-  db = getFirestore(app)
+  // O admin envia campos vazios como undefined (imagem, preço, subtítulo); sem
+  // esta opção o Firestore recusa a gravação. Em recarga a quente já existe: reutiliza.
+  try {
+    db = initializeFirestore(app, { ignoreUndefinedProperties: true })
+  } catch {
+    db = getFirestore(app)
+  }
   auth = getAuth(app)
 }
 

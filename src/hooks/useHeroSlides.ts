@@ -1,14 +1,16 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useI18n } from '@/i18n'
 import { localizeHeroSlide } from '@/i18n/localize'
-import { getDocs, query, orderBy, writeBatch } from 'firebase/firestore'
+import { getDocs, query, orderBy, writeBatch, updateDoc } from 'firebase/firestore'
 import { db, siteCollection, siteDoc } from '@/lib/firebase'
 import { heroSlides as localSlides } from '@/data/local'
 import type { HeroSlide } from '@/types'
 
 const USE_LOCAL = !db
 
-export function useHeroSlides(): { slides: HeroSlide[]; loading: boolean; error: string | null } {
+/** includeInactive: só o admin, para ver também os slides retirados do site */
+export function useHeroSlides(opts: { includeInactive?: boolean } = {}): { slides: HeroSlide[]; loading: boolean; error: string | null } {
+  const { includeInactive } = opts
   const { lang, tf } = useI18n()
   const [rawSlides, setSlides] = useState<HeroSlide[]>(USE_LOCAL ? localSlides : [])
   const [loading, setLoading] = useState(!USE_LOCAL)
@@ -25,7 +27,10 @@ export function useHeroSlides(): { slides: HeroSlide[]; loading: boolean; error:
       try {
         const snap = await getDocs(query(siteCollection('heroSlides'), orderBy('sort_order')))
         if (!cancelled) {
-          setSlides(snap.docs.map((d) => ({ id: d.id, ...d.data() } as HeroSlide)))
+          const all = snap.docs.map((d) => ({ id: d.id, ...d.data() } as HeroSlide))
+          const visible = all.filter((s) => includeInactive || s.active !== false)
+          // o site tem sempre pelo menos um slide: se todos estiverem retirados, fica o primeiro
+          setSlides(visible.length === 0 ? all.slice(0, 1) : visible)
         }
       } catch (e) {
         if (!cancelled) setError(String(e))
@@ -35,7 +40,7 @@ export function useHeroSlides(): { slides: HeroSlide[]; loading: boolean; error:
     })()
 
     return () => { cancelled = true }
-  }, [])
+  }, [includeInactive])
 
   const slides = useMemo(() => (lang === 'pt' ? rawSlides : rawSlides.map((s) => localizeHeroSlide(s, tf))), [rawSlides, lang, tf])
 
@@ -57,4 +62,8 @@ export async function saveHeroSlides(current: HeroSlide[], originalIds: string[]
   })
 
   await batch.commit()
+}
+
+export async function setSlideActive(id: string, active: boolean): Promise<void> {
+  await updateDoc(siteDoc('heroSlides', id), { active })
 }

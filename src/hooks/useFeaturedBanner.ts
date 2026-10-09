@@ -1,25 +1,37 @@
-import { useState, useEffect } from 'react'
-import { getDoc, setDoc } from 'firebase/firestore'
-import { db, siteDoc } from '@/lib/firebase'
+import { useState, useEffect, useCallback } from 'react'
+import { getDocs, setDoc, updateDoc, deleteDoc } from 'firebase/firestore'
+import { db, siteCollection, siteDoc } from '@/lib/firebase'
 import type { FeaturedBanner } from '@/types'
 
 const USE_LOCAL = !db
 
-export const defaultBanner: FeaturedBanner = {
-  title: 'Cápsulas',
-  description: 'Conheça a nossa solução prática para a recolha das suas cápsulas de café.',
-  image_url: '/assets/capsulas-restaurante.png',
-  cta_label: 'Ver Produto',
-  cta_url: '/produtos?categoria=capsulas',
+// Modelo de um banner novo (o admin preenche o resto)
+export const emptyBanner: FeaturedBanner = {
+  title: '',
+  description: '',
+  image_url: '',
+  cta_label: 'Saber Mais',
+  cta_url: '/produtos',
   overlay_opacity: 0.45,
+  active: true,
 }
 
-const bannerDocRef = () => siteDoc('siteContent', 'featured-banner')
+// Os banners vivem em siteContent (a coleção que as regras já permitem): o original
+// 'featured-banner' e os novos 'banner-<data>'.
+const isBannerId = (id: string) => id === 'featured-banner' || id.startsWith('banner-')
 
-export function useFeaturedBanner(): { banner: FeaturedBanner; loading: boolean; error: string | null } {
-  const [banner, setBanner] = useState<FeaturedBanner>(defaultBanner)
+export function useBanners(opts: { onlyActive?: boolean } = {}): {
+  banners: FeaturedBanner[]
+  loading: boolean
+  error: string | null
+  refetch: () => void
+} {
+  const { onlyActive } = opts
+  const [banners, setBanners] = useState<FeaturedBanner[]>([])
   const [loading, setLoading] = useState(!USE_LOCAL)
   const [error, setError] = useState<string | null>(null)
+  const [refreshKey, setRefreshKey] = useState(0)
+  const refetch = useCallback(() => setRefreshKey((k) => k + 1), [])
 
   useEffect(() => {
     if (USE_LOCAL) return
@@ -30,10 +42,14 @@ export function useFeaturedBanner(): { banner: FeaturedBanner; loading: boolean;
 
     ;(async () => {
       try {
-        const snap = await getDoc(bannerDocRef())
-        if (!cancelled && snap.exists()) {
-          setBanner({ ...defaultBanner, ...snap.data() } as FeaturedBanner)
-        }
+        const snap = await getDocs(siteCollection('siteContent'))
+        if (cancelled) return
+        let list = snap.docs
+          .filter((d) => isBannerId(d.id))
+          .map((d) => ({ ...emptyBanner, ...d.data(), id: d.id }) as FeaturedBanner)
+          .sort((a, b) => (a.created_at ?? '').localeCompare(b.created_at ?? ''))
+        if (onlyActive) list = list.filter((b) => b.active !== false)
+        setBanners(list)
       } catch (e) {
         if (!cancelled) setError(String(e))
       } finally {
@@ -42,11 +58,22 @@ export function useFeaturedBanner(): { banner: FeaturedBanner; loading: boolean;
     })()
 
     return () => { cancelled = true }
-  }, [])
+  }, [onlyActive, refreshKey])
 
-  return { banner, loading, error }
+  return { banners, loading, error, refetch }
 }
 
-export async function saveFeaturedBanner(banner: FeaturedBanner): Promise<void> {
-  await setDoc(bannerDocRef(), banner)
+// sem id = banner novo
+export async function saveBanner(banner: FeaturedBanner): Promise<void> {
+  const { id, ...data } = banner
+  const docId = id ?? `banner-${Date.now()}`
+  await setDoc(siteDoc('siteContent', docId), { ...data, created_at: data.created_at ?? new Date().toISOString() })
+}
+
+export async function setBannerActive(id: string, active: boolean): Promise<void> {
+  await updateDoc(siteDoc('siteContent', id), { active })
+}
+
+export async function deleteBanner(id: string): Promise<void> {
+  await deleteDoc(siteDoc('siteContent', id))
 }
