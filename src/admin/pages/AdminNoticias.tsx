@@ -4,6 +4,11 @@ import type { NewsArticle } from '@/types'
 import Modal from '@/components/ui/Modal'
 import FirebaseNotice from '../FirebaseNotice'
 import { StatusBadge, ToggleButton } from '../ActiveControls'
+import { translationsFor, TRANSLATION_FAILED } from '../translate'
+
+// textos traduzidos automaticamente ao guardar
+const newsTexts = (a: Pick<NewsArticle, 'title' | 'excerpt' | 'content' | 'category'>) =>
+  ({ title: a.title, excerpt: a.excerpt, content: a.content, category: a.category })
 
 const inputClass = 'w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#7ab929]/40 focus:border-[#7ab929] transition-colors'
 const labelClass = 'block text-[12px] font-semibold uppercase tracking-wide text-gray-400 mb-1'
@@ -83,13 +88,15 @@ export default function AdminNoticias() {
         published_at: publishedAtIso,
         created_at: editing?.created_at ?? new Date().toISOString(),
       }
+      const i18n = await translationsFor(newsTexts(payload), editing ? newsTexts(editing) : undefined, editing?.i18n)
       if (editing) {
-        await updateArticle(editing.id, payload)
+        await updateArticle(editing.id, { ...payload, i18n })
       } else {
-        await createArticle(payload)
+        await createArticle({ ...payload, i18n })
       }
       setModalOpen(false)
       refetch()
+      if (i18n === null) alert(TRANSLATION_FAILED)
     } finally {
       setSaving(false)
     }

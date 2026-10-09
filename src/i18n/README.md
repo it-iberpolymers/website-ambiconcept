@@ -35,8 +35,11 @@ O painel de administração (`/admin`) fica sempre em português.
    Rótulos de especificações mostrados ao utilizador passam por `t('spec.label.<Rótulo em PT>')` (ex.: `spec.label.Capacidade`).
 
 ## Dados (produtos, categorias, notícias…)
-Os hooks de dados (`useProducts`, `useProduct`, `useProductCategories`, `useNews`, `useNewsArticle`, `useHeroSlides`, `useStats`) já devolvem os dados traduzidos
+Os hooks de dados (`useProducts`, `useProduct`, `useProductCategories`, `useNews`, `useNewsArticle`, `useHeroSlides`, `useBanners`, `useStats`) já devolvem os dados traduzidos
 pelas chaves abaixo (ver `src/i18n/localize.ts`). Quem consome esses hooks **não** precisa de traduzir de novo. Sem tradução fica o português.
+
+Produtos, notícias, slides e banners guardados no admin são traduzidos automaticamente ao guardar (`api/translate.ts`, OpenRouter) e levam as traduções
+no próprio documento, no campo `i18n` (`{ en: { title: … }, fr: … }`). Essas traduções ganham às chaves abaixo e só são refeitas quando o texto em português muda ou quando ainda não existem (conteúdo antigo, ou a última tentativa falhou).
 
 | Dado | Chaves |
 |---|---|
@@ -44,6 +47,7 @@ pelas chaves abaixo (ver `src/i18n/localize.ts`). Quem consome esses hooks **nã
 | Produto | `data.product.<slug>.name`, `.short_description`, `.description`, `.spec.<Rótulo>` (valor da especificação) |
 | Notícia | `data.news.<slug>.title`, `.excerpt`, `.content`, `.category` |
 | Slide do herói | `data.hero.<id>.title`, `.subtitle`, `.cta_label` |
+| Banner | `data.banner.<id>.title`, `.subtitle`, `.description`, `.cta_label` |
 | Estatística | `data.stat.<key>.label` |
 
 Conteúdo de ficheiros como `categories-content.ts` e `flows-content.ts` (estruturas grandes): ver as instruções de cada tarefa.

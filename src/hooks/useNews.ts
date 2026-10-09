@@ -65,7 +65,7 @@ export function useNews(opts: UseNewsOptions = {}): {
     return () => { cancelled = true }
   }, [limit, includeInactive, refreshKey])
 
-  const articles = useMemo(() => (lang === 'pt' ? rawArticles : rawArticles.map((a) => localizeArticle(a, tf))), [rawArticles, lang, tf])
+  const articles = useMemo(() => (lang === 'pt' ? rawArticles : rawArticles.map((a) => localizeArticle(a, tf, lang))), [rawArticles, lang, tf])
 
   return { articles, loading, error, refetch }
 }
@@ -109,7 +109,7 @@ export function useNewsArticle(slug: string): {
     return () => { cancelled = true }
   }, [slug])
 
-  const article = useMemo(() => (rawArticle && lang !== 'pt' ? localizeArticle(rawArticle, tf) : rawArticle), [rawArticle, lang, tf])
+  const article = useMemo(() => (rawArticle && lang !== 'pt' ? localizeArticle(rawArticle, tf, lang) : rawArticle), [rawArticle, lang, tf])
 
   return { article, loading, error }
 }

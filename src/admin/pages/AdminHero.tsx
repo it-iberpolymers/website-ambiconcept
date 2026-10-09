@@ -4,22 +4,27 @@ import type { HeroSlide } from '@/types'
 import { HERO_RENDER, HIGHLIGHT_COLORS, slideOwnImage, titleParts } from '@/lib/heroSlide'
 import FirebaseNotice from '../FirebaseNotice'
 import { StatusBadge, ToggleButton } from '../ActiveControls'
+import { translationsFor, TRANSLATION_FAILED } from '../translate'
 
 // o primeiro slide é o principal: está sempre ativo e não se elimina (o site precisa de pelo menos um)
 const withFirstActive = (list: HeroSlide[]): HeroSlide[] =>
   list.length > 0 && list[0].active === false ? [{ ...list[0], active: true }, ...list.slice(1)] : list
 
+// textos traduzidos automaticamente ao guardar
+const slideTexts = (s: HeroSlide) => ({ title: s.title, subtitle: s.subtitle, cta_label: s.cta_label })
+
 export default function AdminHero() {
   const { slides: fetchedSlides, loading } = useHeroSlides({ includeInactive: true })
   const [slides, setSlides] = useState<HeroSlide[]>([])
-  const [originalIds, setOriginalIds] = useState<string[]>([])
+  // os slides como estão guardados na base de dados (para saber o que apagar e o que já está traduzido)
+  const [original, setOriginal] = useState<HeroSlide[]>([])
   const [saved, setSaved] = useState(false)
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     if (!loading) {
       setSlides(withFirstActive(fetchedSlides))
-      setOriginalIds(fetchedSlides.map(s => s.id))
+      setOriginal(fetchedSlides)
     }
   }, [loading, fetchedSlides])
 
@@ -31,7 +36,7 @@ export default function AdminHero() {
   async function toggleSlide(slide: HeroSlide) {
     const active = slide.active === false
     try {
-      if (originalIds.includes(slide.id)) await setSlideActive(slide.id, active)
+      if (original.some(o => o.id === slide.id)) await setSlideActive(slide.id, active)
       updateSlide(slide.id, { active })
     } catch (e) {
       alert('Erro ao alterar: ' + e)
@@ -73,8 +78,13 @@ export default function AdminHero() {
   async function handleSave() {
     setSaving(true)
     try {
-      await saveHeroSlides(slides, originalIds)
-      setOriginalIds(slides.map(s => s.id))
+      const toSave = await Promise.all(slides.map(async (slide) => {
+        const before = original.find(o => o.id === slide.id)
+        return { ...slide, i18n: await translationsFor(slideTexts(slide), before && slideTexts(before), before?.i18n) }
+      }))
+      await saveHeroSlides(toSave, original.map(s => s.id))
+      setOriginal(toSave)
+      if (toSave.some(s => s.i18n === null)) alert(TRANSLATION_FAILED)
       setSaved(true)
       setTimeout(() => setSaved(false), 3000)
     } catch (e) {

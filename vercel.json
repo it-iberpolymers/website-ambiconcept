@@ -17,7 +17,7 @@
     { "source": "/produtos", "has": [{ "type": "query", "key": "categoria", "value": "porta-a-porta" }], "destination": "/fluxos/porta-a-porta", "permanent": true }
   ],
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
   ],
   "headers": [
     {

@@ -1,6 +1,8 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { getDocs, setDoc, updateDoc, deleteDoc } from 'firebase/firestore'
 import { db, siteCollection, siteDoc } from '@/lib/firebase'
+import { useI18n } from '@/i18n'
+import { localizeBanner } from '@/i18n/localize'
 import type { FeaturedBanner } from '@/types'
 
 const USE_LOCAL = !db
@@ -27,7 +29,8 @@ export function useBanners(opts: { onlyActive?: boolean } = {}): {
   refetch: () => void
 } {
   const { onlyActive } = opts
-  const [banners, setBanners] = useState<FeaturedBanner[]>([])
+  const { lang, tf } = useI18n()
+  const [rawBanners, setBanners] = useState<FeaturedBanner[]>([])
   const [loading, setLoading] = useState(!USE_LOCAL)
   const [error, setError] = useState<string | null>(null)
   const [refreshKey, setRefreshKey] = useState(0)
@@ -59,6 +62,8 @@ export function useBanners(opts: { onlyActive?: boolean } = {}): {
 
     return () => { cancelled = true }
   }, [onlyActive, refreshKey])
+
+  const banners = useMemo(() => (lang === 'pt' ? rawBanners : rawBanners.map((b) => localizeBanner(b, tf, lang))), [rawBanners, lang, tf])
 
   return { banners, loading, error, refetch }
 }

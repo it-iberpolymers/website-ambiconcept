@@ -42,7 +42,7 @@ export function useHeroSlides(opts: { includeInactive?: boolean } = {}): { slide
     return () => { cancelled = true }
   }, [includeInactive])
 
-  const slides = useMemo(() => (lang === 'pt' ? rawSlides : rawSlides.map((s) => localizeHeroSlide(s, tf))), [rawSlides, lang, tf])
+  const slides = useMemo(() => (lang === 'pt' ? rawSlides : rawSlides.map((s) => localizeHeroSlide(s, tf, lang))), [rawSlides, lang, tf])
 
   return { slides, loading, error }
 }

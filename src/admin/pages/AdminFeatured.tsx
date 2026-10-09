@@ -3,6 +3,10 @@ import { useBanners, saveBanner, setBannerActive, deleteBanner, emptyBanner } fr
 import type { FeaturedBanner } from '@/types'
 import Modal from '@/components/ui/Modal'
 import FirebaseNotice from '../FirebaseNotice'
+import { translationsFor, TRANSLATION_FAILED } from '../translate'
+
+// textos traduzidos automaticamente ao guardar
+const bannerTexts = (b: FeaturedBanner) => ({ title: b.title, subtitle: b.subtitle, description: b.description, cta_label: b.cta_label })
 
 const inputClass = 'w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#7ab929]/40 focus:border-[#7ab929] transition-colors'
 const labelClass = 'block text-[12px] font-semibold uppercase tracking-wide text-gray-400 mb-1'
@@ -33,9 +37,12 @@ export default function AdminFeatured() {
     e.preventDefault()
     setSaving(true)
     try {
-      await saveBanner(form)
+      const before = banners.find(b => b.id === form.id)
+      const i18n = await translationsFor(bannerTexts(form), before && bannerTexts(before), before?.i18n)
+      await saveBanner({ ...form, i18n })
       setModalOpen(false)
       refetch()
+      if (i18n === null) alert(TRANSLATION_FAILED)
     } catch (err) {
       alert('Erro ao guardar: ' + err)
     } finally {

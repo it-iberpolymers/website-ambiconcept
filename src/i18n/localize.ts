@@ -1,8 +1,16 @@
-import type { HeroSlide, NewsArticle, Product, ProductCategory, SiteStat } from '@/types'
+import type { ContentTranslations, FeaturedBanner, HeroSlide, NewsArticle, Product, ProductCategory, SiteStat } from '@/types'
+import type { Lang } from './routing'
 
 // Traduz os campos de texto dos dados (produtos, categorias, notícias…) pelas chaves `data.*`.
-// Sem tradução fica o texto original (por ex. conteúdo novo criado no painel de administração).
+// O conteúdo guardado no admin traz as suas traduções no campo `i18n` (geradas ao guardar, ver
+// api/translate.ts), que ganham às chaves. Sem nenhuma das duas fica o texto original.
 type Tf = (key: string, fallback: string) => string
+
+/** tradutor dos campos de um documento: tradução guardada no documento → chave `<prefixo>.<campo>` → português */
+function fields(item: { i18n?: ContentTranslations | null }, lang: Lang, prefix: string, tf: Tf) {
+  const own = lang === 'pt' ? undefined : item.i18n?.[lang]
+  return (field: string, pt: string) => own?.[field] ?? tf(`${prefix}.${field}`, pt)
+}
 
 export function localizeCategory(c: ProductCategory, tf: Tf): ProductCategory {
   return {
@@ -12,42 +20,53 @@ export function localizeCategory(c: ProductCategory, tf: Tf): ProductCategory {
   }
 }
 
-export function localizeProduct(p: Product, tf: Tf): Product {
+export function localizeProduct(p: Product, tf: Tf, lang: Lang): Product {
+  const tr = fields(p, lang, `data.product.${p.slug}`, tf)
   const specs = p.specifications
     ? Object.fromEntries(
-        Object.entries(p.specifications).map(([k, v]) => [
-          k,
-          typeof v === 'string' ? tf(`data.product.${p.slug}.spec.${k}`, v) : v,
-        ]),
+        Object.entries(p.specifications).map(([k, v]) => [k, typeof v === 'string' ? tr(`spec.${k}`, v) : v]),
       )
     : p.specifications
   return {
     ...p,
-    name: tf(`data.product.${p.slug}.name`, p.name),
-    short_description: p.short_description ? tf(`data.product.${p.slug}.short_description`, p.short_description) : p.short_description,
-    description: p.description ? tf(`data.product.${p.slug}.description`, p.description) : p.description,
+    name: tr('name', p.name),
+    short_description: p.short_description ? tr('short_description', p.short_description) : p.short_description,
+    description: p.description ? tr('description', p.description) : p.description,
     specifications: specs as Product['specifications'],
     specifications_pt: p.specifications,
     category: p.category ? localizeCategory(p.category, tf) : p.category,
   }
 }
 
-export function localizeArticle(a: NewsArticle, tf: Tf): NewsArticle {
+export function localizeArticle(a: NewsArticle, tf: Tf, lang: Lang): NewsArticle {
+  const tr = fields(a, lang, `data.news.${a.slug}`, tf)
   return {
     ...a,
-    title: tf(`data.news.${a.slug}.title`, a.title),
-    excerpt: a.excerpt ? tf(`data.news.${a.slug}.excerpt`, a.excerpt) : a.excerpt,
-    content: a.content ? tf(`data.news.${a.slug}.content`, a.content) : a.content,
-    category: a.category ? tf(`data.news.${a.slug}.category`, a.category) : a.category,
+    title: tr('title', a.title),
+    excerpt: a.excerpt ? tr('excerpt', a.excerpt) : a.excerpt,
+    content: a.content ? tr('content', a.content) : a.content,
+    category: a.category ? tr('category', a.category) : a.category,
   }
 }
 
-export function localizeHeroSlide(s: HeroSlide, tf: Tf): HeroSlide {
+export function localizeHeroSlide(s: HeroSlide, tf: Tf, lang: Lang): HeroSlide {
+  const tr = fields(s, lang, `data.hero.${s.id}`, tf)
   return {
     ...s,
-    title: tf(`data.hero.${s.id}.title`, s.title),
-    subtitle: s.subtitle ? tf(`data.hero.${s.id}.subtitle`, s.subtitle) : s.subtitle,
-    cta_label: s.cta_label ? tf(`data.hero.${s.id}.cta_label`, s.cta_label) : s.cta_label,
+    title: tr('title', s.title),
+    subtitle: s.subtitle ? tr('subtitle', s.subtitle) : s.subtitle,
+    cta_label: s.cta_label ? tr('cta_label', s.cta_label) : s.cta_label,
+  }
+}
+
+export function localizeBanner(b: FeaturedBanner, tf: Tf, lang: Lang): FeaturedBanner {
+  const tr = fields(b, lang, `data.banner.${b.id}`, tf)
+  return {
+    ...b,
+    title: tr('title', b.title),
+    subtitle: b.subtitle ? tr('subtitle', b.subtitle) : b.subtitle,
+    description: tr('description', b.description),
+    cta_label: tr('cta_label', b.cta_label),
   }
 }
 

@@ -1,3 +1,11 @@
+import type { Lang } from '@/i18n/routing'
+
+/**
+ * Traduções do conteúdo criado no admin, geradas ao guardar (api/translate.ts): língua → campo → texto.
+ * Ganham às chaves `data.*` (src/i18n/localize.ts). null = a última tradução falhou: fica o português.
+ */
+export type ContentTranslations = Partial<Record<Exclude<Lang, 'pt'>, Record<string, string>>>
+
 export interface Product {
   id: string
   slug: string
@@ -20,6 +28,7 @@ export interface Product {
   price?: number
   sort_order?: number
   created_at: string
+  i18n?: ContentTranslations | null
 }
 
 export interface ProductSpec {
@@ -55,6 +64,7 @@ export interface NewsArticle {
   active?: boolean
   published_at: string
   created_at: string
+  i18n?: ContentTranslations | null
 }
 
 export interface SiteStat {
@@ -96,6 +106,7 @@ export interface FeaturedBanner {
   cta_label: string
   cta_url: string
   overlay_opacity: number
+  i18n?: ContentTranslations | null
 }
 
 export interface HeroSlide {
@@ -110,4 +121,5 @@ export interface HeroSlide {
   /** false = retirado do site sem ser apagado (ausente = ativo) */
   active?: boolean
   sort_order: number
+  i18n?: ContentTranslations | null
 }

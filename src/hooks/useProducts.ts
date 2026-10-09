@@ -92,7 +92,7 @@ export function useProducts(opts: UseProductsOptions = {}): {
   }, [categorySlug, featured, limit, includeInactive, refreshKey])
 
   // textos traduzidos para a língua atual (no admin a língua é sempre português)
-  const products = useMemo(() => (lang === 'pt' ? rawProducts : rawProducts.map((p) => localizeProduct(p, tf))), [rawProducts, lang, tf])
+  const products = useMemo(() => (lang === 'pt' ? rawProducts : rawProducts.map((p) => localizeProduct(p, tf, lang))), [rawProducts, lang, tf])
 
   return { products, loading, error, refetch }
 }
@@ -149,7 +149,7 @@ export function useProduct(slug: string): {
     return () => { cancelled = true }
   }, [slug])
 
-  const product = useMemo(() => (rawProduct && lang !== 'pt' ? localizeProduct(rawProduct, tf) : rawProduct), [rawProduct, lang, tf])
+  const product = useMemo(() => (rawProduct && lang !== 'pt' ? localizeProduct(rawProduct, tf, lang) : rawProduct), [rawProduct, lang, tf])
 
   return { product, loading, error }
 }
