@@ -20,8 +20,8 @@ Para voltar a gerar esta lista: ver o fim do ficheiro.
 ## Outras coisas a ver no futuro (não são traduções)
 
 1. **Frames das animações de scroll em falta:** `AMBI10-scroll-01..60.png` (Smart Box), `AMBITWO-scroll-01..60.png` (Ambi Two e Carga Traseira) e `LOCKEY5L-scroll-01..60.png` (Baldes). Sem eles a secção fica escondida. Só o AMBI 2.7 tem animação (frames no Firebase Storage). Recomendado: enviar para o Storage em `produtos/<produto>/scroll/` e ler de lá como o AMBI 2.7.
-2. **Firestore `ambiconceptSite/main` vazio** visto a partir do ambiente de desenvolvimento (0 documentos em produtos, categorias, notícias, slides, estatísticas e conteúdos). Confirmar se a produção usa o mesmo projeto; `npm run seed` preenche-o.
-3. **Migração `papeleiras` → `limpeza-urbana` no Firestore:** `npm run migrate:limpeza-urbana` (ensaio por defeito; `-- --apply` escreve). O site aceita os dois slugs, por isso não é urgente.
+2. ~~**Firestore `ambiconceptSite/main` vazio**~~ **Resolvido a 2026-10-09:** `npm run seed` preencheu 6 categorias, 14 produtos, 2 notícias, 1 slide, 2 estatísticas e 11 conteúdos. Resta apagar, se quiser, o banner de destaque antigo "Cápsulas" no painel de administração.
+3. **Migração `papeleiras` → `limpeza-urbana` no Firestore:** deixou de ser necessária no projeto atual (o seed já criou os dados com o slug novo). Só serve se existir outro ambiente com dados antigos: `npm run migrate:limpeza-urbana`.
 4. **Redirecionamentos da Vercel** (`vercel.json`) por testar em produção; só cobrem endereços em português.
 5. **SEO por língua:** o Google só indexa o que renderiza com JavaScript; considerar pré-renderização. O sitemap (`npm run sitemap`) só tem dados locais: conteúdo criado só no admin não entra.
 6. **Conteúdo novo criado no admin** (produtos, notícias, slides) aparece em português nas outras línguas até lhe juntarem chaves `data.*` (ver `src/i18n/README.md`).
