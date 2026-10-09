@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react'
 import {
   getDocs, query, where,
   limit as fsLimit, orderBy, type QueryConstraint,
-  addDoc, updateDoc, deleteDoc,
+  updateDoc, deleteDoc,
 } from 'firebase/firestore'
 import { db, siteCollection, siteDoc } from '@/lib/firebase'
 import { categories as localCategories, products as localProducts } from '@/data/local'
@@ -95,11 +95,6 @@ export function useProducts(opts: UseProductsOptions = {}): {
   const products = useMemo(() => (lang === 'pt' ? rawProducts : rawProducts.map((p) => localizeProduct(p, tf, lang))), [rawProducts, lang, tf])
 
   return { products, loading, error, refetch }
-}
-
-export async function createProduct(data: Omit<Product, 'id'>): Promise<string> {
-  const ref = await addDoc(siteCollection('products'), data)
-  return ref.id
 }
 
 export async function updateProduct(id: string, data: Partial<Omit<Product, 'id'>>): Promise<void> {

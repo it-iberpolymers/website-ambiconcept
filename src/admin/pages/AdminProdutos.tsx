@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { useProducts, useProductCategories, createProduct, updateProduct, deleteProduct } from '@/hooks/useProducts'
+import { useProducts, useProductCategories, updateProduct, deleteProduct } from '@/hooks/useProducts'
 import type { Product } from '@/types'
 import Modal from '@/components/ui/Modal'
 import FirebaseNotice from '../FirebaseNotice'
@@ -72,12 +72,6 @@ export default function AdminProdutos() {
   const [form, setForm] = useState<FormState>(toFormState(null))
   const [saving, setSaving] = useState(false)
 
-  function openCreate() {
-    setEditing(null)
-    setForm(toFormState(null))
-    setModalOpen(true)
-  }
-
   function openEdit(product: Product) {
     setEditing(product)
     setForm(toFormState(product))
@@ -110,6 +104,8 @@ export default function AdminProdutos() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
+    // só se editam produtos existentes (os novos entram pelo script de seed)
+    if (!editing) return
     setSaving(true)
     try {
       const category = categories.find(c => c.id === form.category_id)
@@ -127,14 +123,9 @@ export default function AdminProdutos() {
         ),
         featured: form.featured,
         price: form.price ? Number(form.price) : undefined,
-        created_at: editing?.created_at ?? new Date().toISOString(),
       }
-      const i18n = await translationsFor(productTexts(payload), editing ? productTexts(editing) : undefined, editing?.i18n)
-      if (editing) {
-        await updateProduct(editing.id, { ...payload, i18n })
-      } else {
-        await createProduct({ ...payload, i18n })
-      }
+      const i18n = await translationsFor(productTexts(payload), productTexts(editing), editing.i18n)
+      await updateProduct(editing.id, { ...payload, i18n })
       setModalOpen(false)
       refetch()
       if (i18n === null) alert(TRANSLATION_FAILED)
@@ -160,20 +151,9 @@ export default function AdminProdutos() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-xl font-semibold text-[#1a2535]">Produtos</h1>
-          <p className="text-sm text-gray-400 mt-0.5">{products.length} produto{products.length !== 1 ? 's' : ''}</p>
-        </div>
-        <button
-          onClick={openCreate}
-          className="flex items-center gap-2 px-4 py-2 bg-[#7ab929] text-[#0e1a10] text-sm font-semibold rounded-xl hover:bg-[#6aa520] transition-colors"
-        >
-          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-          </svg>
-          Novo Produto
-        </button>
+      <div className="mb-6">
+        <h1 className="text-xl font-semibold text-[#1a2535]">Produtos</h1>
+        <p className="text-sm text-gray-400 mt-0.5">{products.length} produto{products.length !== 1 ? 's' : ''}</p>
       </div>
 
       <FirebaseNotice />
@@ -245,7 +225,7 @@ export default function AdminProdutos() {
       <Modal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        title={editing ? 'Editar Produto' : 'Novo Produto'}
+        title="Editar Produto"
         maxWidthClassName="max-w-2xl"
       >
         <form onSubmit={handleSubmit} className="space-y-4">
