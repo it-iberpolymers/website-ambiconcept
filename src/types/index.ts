@@ -105,6 +105,8 @@ export interface HeroSlide {
   subtitle?: string
   cta_label?: string
   cta_url?: string
+  /** cor das partes do título marcadas com *asteriscos* (ausente = verde) */
+  highlight_color?: string
   /** false = retirado do site sem ser apagado (ausente = ativo) */
   active?: boolean
   sort_order: number

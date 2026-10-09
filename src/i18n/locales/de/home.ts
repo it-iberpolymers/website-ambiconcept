@@ -92,7 +92,7 @@ export default {
   'home.products.ptp.name': 'Haus-zu-Haus-Sammlung',
   'home.products.ptp.desc': 'Container für die Haushaltssammlung, entwickelt für Haus-zu-Haus-Systeme. Kompatibel mit Fahrzeugflotten mit Heckbeladung und anpassbar an jeden urbanen Kontext.',
   'home.products.ptp.capacity': '120 – 340\u00a0Liter',
-  'home.products.ptp.wheels': '2 oder 4',
+  'home.products.ptp.wheels': '2',
   'home.products.ptp.system': 'Heckbeladung',
   'home.products.ptp.cta': 'Haus-zu-Haus-Container ansehen →',
 

@@ -497,6 +497,16 @@
 }
 .hp-product-cta:hover { border-color: #7AB929; }
 
+/* Ecrãs grandes: textos e espaços dos painéis crescem com a largura (em ecrãs pequenos ficam como estão) */
+.hp-product-panel { min-height: max(520px, min(28vw, 780px)); }
+.hp-product-copy { padding: max(56px, min(3.6vw, 110px)) max(64px, min(4.2vw, 130px)); }
+.hp-product-index, .hp-product-models { font-size: max(12px, min(.76vw, 16px)); }
+.hp-spec-row { font-size: max(13px, min(.9vw, 19px)); }
+.hp-product-cta { font-size: max(13px, min(.86vw, 18px)); }
+.hp-product-specs { gap: max(8px, min(.6vw, 14px)); }
+.hp-product-name { font-size: max(clamp(26px, 3vw, 40px), min(2.4vw, 58px)); }
+.hp-product-desc { font-size: max(14px, min(.94vw, 20px)); max-width: max(380px, min(25vw, 580px)); }
+
 /* ── STATS ────────────────────────────────────────────────── */
 
 /* Centered label variant (stats section) */

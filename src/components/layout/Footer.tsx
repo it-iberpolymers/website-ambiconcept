@@ -42,6 +42,9 @@ export default function Footer() {
   return (
     <>
       <footer className="ft-root">
+        <svg className="ft-wave" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 60V28C240 -4 480 -4 720 22s480 30 720 4V60z" />
+        </svg>
 
         {/* ── Brand bar ─────────────────────────────────────── */}
         <div className="ft-brand-bar">

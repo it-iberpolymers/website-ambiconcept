@@ -92,7 +92,7 @@ export default {
   'home.products.ptp.name': 'Porta a porta',
   'home.products.ptp.desc': 'Contenitori per la raccolta domiciliare progettati per i sistemi porta a porta. Compatibili con i parchi mezzi a carico posteriore e adattabili a qualsiasi contesto urbano.',
   'home.products.ptp.capacity': '120 – 340 litri',
-  'home.products.ptp.wheels': '2 o 4',
+  'home.products.ptp.wheels': '2',
   'home.products.ptp.system': 'Carico posteriore',
   'home.products.ptp.cta': 'Vedi contenitori porta a porta →',
 

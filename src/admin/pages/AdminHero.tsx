@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useHeroSlides, saveHeroSlides, setSlideActive } from '@/hooks/useHeroSlides'
 import type { HeroSlide } from '@/types'
-import { HERO_RENDER, slideOwnImage } from '@/lib/heroSlide'
+import { HERO_RENDER, HIGHLIGHT_COLORS, slideOwnImage, titleParts } from '@/lib/heroSlide'
 import FirebaseNotice from '../FirebaseNotice'
 import { StatusBadge, ToggleButton } from '../ActiveControls'
 
@@ -168,6 +168,33 @@ export default function AdminHero() {
                     placeholder="Título do slide"
                     className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#7ab929]/40 focus:border-[#7ab929] transition-colors"
                   />
+                  <p className="text-xs text-gray-400 mt-1.5">
+                    Para dar cor a parte do título, rodeie essas palavras com asteriscos. Ex.: A infraestrutura que a <strong>*sua cidade*</strong> merece.
+                  </p>
+                  {slide.title.includes('*') && (
+                    <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2">
+                      <div className="rounded-lg bg-[#16241a] px-3 py-2 text-[15px] font-bold text-white leading-snug">
+                        {titleParts(slide.title).map((p, i) => (
+                          <span key={i} style={p.highlight ? { color: slide.highlight_color ?? HIGHLIGHT_COLORS[0].value } : undefined}>{p.text}</span>
+                        ))}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-gray-400">Cor do destaque</span>
+                        {HIGHLIGHT_COLORS.map(c => (
+                          <button
+                            key={c.value}
+                            type="button"
+                            title={c.label}
+                            aria-label={c.label}
+                            aria-pressed={(slide.highlight_color ?? HIGHLIGHT_COLORS[0].value) === c.value}
+                            onClick={() => updateSlide(slide.id, { highlight_color: c.value })}
+                            className="h-6 w-6 rounded-full border border-gray-300 aria-pressed:ring-2 aria-pressed:ring-offset-1 aria-pressed:ring-[#303f49]"
+                            style={{ background: c.value }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
                 <div className="col-span-2">
                   <label className="block text-[12px] font-semibold uppercase tracking-wide text-gray-400 mb-1">

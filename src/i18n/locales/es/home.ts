@@ -92,7 +92,7 @@ export default {
   'home.products.ptp.name': 'Puerta a puerta',
   'home.products.ptp.desc': 'Contenedores de recogida domiciliaria concebidos para sistemas puerta a puerta. Compatibles con flotas de carga trasera y adaptables a cualquier contexto urbano.',
   'home.products.ptp.capacity': '120 – 340 litros',
-  'home.products.ptp.wheels': '2 o 4',
+  'home.products.ptp.wheels': '2',
   'home.products.ptp.system': 'Carga trasera',
   'home.products.ptp.cta': 'Ver contenedores puerta a puerta →',
 

@@ -2,12 +2,16 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link } from '@/i18n/router'
 import { useHeroSlides } from '@/hooks/useHeroSlides'
 import { useI18n } from '@/i18n'
-import { HERO_RENDER, slideOwnImage } from '@/lib/heroSlide'
+import { HERO_RENDER, slideOwnImage, titleParts } from '@/lib/heroSlide'
 import '@/styles/home-premium.css'
 
 
 // destaca a expressão (ex.: "sua cidade") no título, como na proposta aprovada; sem a expressão, o título fica como está
-function Title({ text, phrase }: { text: string; phrase: string }) {
+// o admin marca as partes a destacar com *asteriscos* e escolhe a cor
+function Title({ text, phrase, color }: { text: string; phrase: string; color?: string }) {
+  if (text.includes('*')) {
+    return <>{titleParts(text).map((p, i) => (p.highlight ? <em key={i} style={color ? { color } : undefined}>{p.text}</em> : p.text))}</>
+  }
   if (!phrase) return <>{text}</>
   const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   const lower = phrase.toLowerCase()
@@ -49,7 +53,7 @@ export default function Hero() {
         <div className="hp-hero-copy">
           <p className="hp-label hp-hero-eyebrow">{t('home.hero.eyebrow')}</p>
           <h1 key={slide.id + '-title'} className="hp-hero-title animate-fade-in">
-            <Title text={slide.title} phrase={t('home.hero.highlight')} />
+            <Title text={slide.title} phrase={t('home.hero.highlight')} color={slide.highlight_color} />
           </h1>
           {slide.subtitle && (
             <p key={slide.id + '-sub'} className="hp-hero-sub animate-fade-in">{slide.subtitle}</p>

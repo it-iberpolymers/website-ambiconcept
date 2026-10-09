@@ -92,7 +92,7 @@ export default {
   'home.products.ptp.name': 'Porta-a-porta',
   'home.products.ptp.desc': 'Contentores de recolha domiciliária concebidos para sistemas porta-a-porta. Compatíveis com frota de carga traseira e adaptáveis a qualquer contexto urbano.',
   'home.products.ptp.capacity': '120 – 340 Litros',
-  'home.products.ptp.wheels': '2 ou 4',
+  'home.products.ptp.wheels': '2',
   'home.products.ptp.system': 'Carga traseira',
   'home.products.ptp.cta': 'Ver contentores porta-a-porta →',
 

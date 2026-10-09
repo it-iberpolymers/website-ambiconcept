@@ -92,7 +92,7 @@ export default {
   'home.products.ptp.name': 'Door-to-door',
   'home.products.ptp.desc': 'Household collection containers designed for door-to-door systems. Compatible with rear loading fleets and adaptable to any urban context.',
   'home.products.ptp.capacity': '120 – 340 Litres',
-  'home.products.ptp.wheels': '2 or 4',
+  'home.products.ptp.wheels': '2',
   'home.products.ptp.system': 'Rear loading',
   'home.products.ptp.cta': 'View door-to-door containers →',
 

@@ -92,7 +92,7 @@ export default {
   'home.products.ptp.name': 'Porte-à-porte',
   'home.products.ptp.desc': 'Des conteneurs de collecte à domicile conçus pour les systèmes porte-à-porte. Compatibles avec les flottes à chargement arrière et adaptables à tout contexte urbain.',
   'home.products.ptp.capacity': '120 – 340 litres',
-  'home.products.ptp.wheels': '2 ou 4',
+  'home.products.ptp.wheels': '2',
   'home.products.ptp.system': 'Chargement arrière',
   'home.products.ptp.cta': 'Voir les conteneurs porte-à-porte →',
 

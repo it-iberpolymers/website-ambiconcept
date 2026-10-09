@@ -1,10 +1,24 @@
 /* ── Footer Premium ────────────────────────────────────────── */
 
 .ft-root {
+  position: relative;
+  z-index: 3;
   background: #303F49;
   font-family: Poppins, system-ui, sans-serif;
   color: rgba(240,237,230,.78);
 }
+
+/* Linha ondulada no topo: sobrepõe-se ao fim da página, seja qual for a cor do fundo */
+.ft-wave {
+  position: absolute;
+  left: 0;
+  top: -59px;
+  width: 100%;
+  height: 60px;
+  display: block;
+  pointer-events: none;
+}
+.ft-wave path { fill: #303F49; }
 
 /* Brand bar */
 .ft-brand-bar {
